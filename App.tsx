@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -15,7 +15,30 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
+  type EmitterSubscription,
+  NativeEventEmitter,
+  NativeModules,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {HomeScreen} from './screens/Home/Homepage';
+import {LoginScreen} from './screens/Login/LoginPage';
+import {SignupScreen} from './screens/Signup/SignupPage';
+import {globalStyles} from './styles/Styles';
+
+/*
+import {
+  Button,
+  type EmitterSubscription,
+  NativeEventEmitter,
+  NativeModules,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+*/
 
 import {
   Colors,
@@ -25,43 +48,187 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {
+  Bridgefy,
+  BridgefyEvents,
+  BridgefyTransmissionModeType,
+} from 'bridgefy-react-native';
+import * as RNPermissions from 'react-native-permissions';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+let bridgefy = new Bridgefy();
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createNativeStackNavigator();
+
+function App(): React.JSX.Element {
+  const [logText, setLog] = useState<string>('');
+  const userId = useRef<string>('');
+  const scrollViewLogs = useRef<ScrollView>(null);
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [started, setStarted] = useState<boolean>(false);
+  console.log('initialized ', initialized);
+
+  const log = (event: string, body: any, error = false) => {
+    setLog(`${logText}${event} ${JSON.stringify(body)}\n`);
+    scrollViewLogs.current?.scrollToEnd();
+    if (error) {
+      console.error(event, body);
+    } else {
+      console.log(event, body);
+    }
+  };
+
+  /*
+  useEffect(() => {
+    const subscriptions: EmitterSubscription[] = [];
+    const eventEmitter = new NativeEventEmitter(
+      NativeModules.BridgefyReactNative,
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidStart, event => {
+        userId.current = event.userId;
+        log(`bridgefyDidStart`, event);
+        bridgefy.isStarted().then(value => {
+          setStarted(value);
+        });
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidFailToStart, event => {
+        log(`bridgefyDidFailToStart`, event, true);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidStop, () => {
+        log(`bridgefyDidStop`, 'Bridgefy stopped.');
+        setStarted(false);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidFailToStop, event => {
+        log(`bridgefyDidFailToStop`, event, true);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidDestroySession,
+        event => {
+          log(`bridgefyDidDestroySession`, event);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailToDestroySession,
+        event => {
+          log(`bridgefyDidFailToDestroySession`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidConnect, event => {
+        log(`bridgefyDidConnect`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidDisconnect, event => {
+        log(`bridgefyDidDisconnect`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidEstablishSecureConnection,
+        event => {
+          log(`bridgefyDidEstablishSecureConnection`, event);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailToEstablishSecureConnection,
+        event => {
+          log(`bridgefyDidFailToEstablishSecureConnection`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidSendMessage, event => {
+        log(`bridgefyDidSendMessage`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailSendingMessage,
+        event => {
+          log(`bridgefyDidFailSendingMessage`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
+        log(`bridgefyDidReceiveData`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidSendDataProgress,
+        event => {
+          log(`bridgefyDidSendDataProgress`, event);
+        },
+      ),
+    );
+
+    RNPermissions.requestMultiple([
+      RNPermissions.PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      RNPermissions.PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE,
+      RNPermissions.PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
+      RNPermissions.PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
+    ]).then(_statuses => {
+      // Initialize Bridgefy using our API key.
+      bridgefy
+        .initialize('355b1a15-76c0-4c4f-8f65-fbb1e08458eb', true)
+        .then(() => {
+          bridgefy
+            .isInitialized()
+            .then(value => {
+              setInitialized(value);
+            })
+            .catch(error => {
+              log(`isInitialized error`, error.message, true);
+            });
+        })
+        .catch(error => {
+          log(`Initialize error`, error.message, true);
+        });
+    });
+    return () => {
+      for (const sub of subscriptions) {
+        sub.remove();
+      }
+      bridgefy.stop();
+      bridgefy = null;
+    };
+  }, []);
+  */
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export default App;
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+/*
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -87,32 +254,46 @@ function App(): React.JSX.Element {
             <DebugInstructions />
           </Section>
           <Section title="Learn More">
-            Read the docs to discover what to do next:
+            Read the docs to discover what to do next: abc
           </Section>
+          <Section title="HELLO">Is initialized: {initialized}</Section>
           <LearnMoreLinks />
+        </View>
+        <View style={styles.buttonBar}>
+          <Button
+            disabled={!initialized || started}
+            title="Start"
+            onPress={() =>
+              bridgefy.start().catch(error => {
+                log(`Started error`, error.message, true);
+              })
+            }
+          />
+          <Button
+            disabled={!initialized || !started}
+            title="Stop"
+            onPress={() =>
+              bridgefy.stop().catch(error => {
+                log(`Stopped error`, error.message, true);
+              })
+            }
+          />
+          <Button
+            title="Send data"
+            disabled={initialized && !started}
+            onPress={() =>
+              bridgefy
+                .send('Hello world', {
+                  type: BridgefyTransmissionModeType.broadcast,
+                  uuid: userId.current,
+                })
+                .then(result => {
+                  log(`Sent message`, result);
+                })
+            }
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+  */
