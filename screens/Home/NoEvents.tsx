@@ -1,10 +1,45 @@
-import {Text, View, Button} from 'react-native';
+import {Text, View, Button, TouchableOpacity} from 'react-native';
+import {Event} from '../../types/event';
+import {globalStyles} from '../../styles/Styles';
 
 export function NoEvents({navigation}) {
   console.log('HERE');
+  const testEvents: Event[] = [
+    {
+      name: 'vans warped tour 2001',
+      organizer: 'string',
+      description: 'sample description here...',
+      id: '2',
+      genre: 'rock and roll',
+      active: false,
+    },
+    {
+      name: 'vans warped tour 2001',
+      organizer: 'string',
+      description: 'sample description here...',
+      id: '1',
+      genre: 'hip hop',
+      active: false,
+    },
+  ];
   return (
     <View>
-      <Text>NO EVENTS - pick one...</Text>
+      <Text>No events selected abc</Text>
+      <Text>Events</Text>
+      {testEvents.map(event => {
+        return (
+          <TouchableOpacity
+            key={event.id}
+            style={globalStyles.card}
+            onPress={() => {
+              console.log('adsfadsf');
+              navigation.navigate('Event', {id: event.id});
+            }}>
+            <Text style={globalStyles.title}>{event.name}</Text>
+            <Text>{event.genre}</Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }

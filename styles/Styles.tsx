@@ -20,4 +20,15 @@ export const globalStyles = StyleSheet.create({
     color: 'grey', // Text color
     lineHeight: 24, // Line height to improve readability
   },
+  card: {
+    backgroundColor: '#f9f9f9', // Light grey background
+    borderRadius: 8, // Rounded corners
+    padding: 16, // Padding around the content inside the card
+    shadowColor: '#000', // Black color for shadow
+    shadowOffset: {width: 0, height: 2}, // Shadow positioned slightly below the card
+    shadowOpacity: 0.1, // Slightly visible shadow
+    shadowRadius: 6, // Soft shadow edges
+    elevation: 5, // Elevation for Android (shadow effect)
+    marginBottom: 20, // Margin at the bottom of the card
+  },
 });

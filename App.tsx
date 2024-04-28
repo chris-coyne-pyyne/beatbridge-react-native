@@ -25,7 +25,9 @@ import {HomeScreen} from './screens/Home/Homepage';
 import {LoginScreen} from './screens/Login/LoginPage';
 import {SignupScreen} from './screens/Signup/SignupPage';
 import {globalStyles} from './styles/Styles';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
+const queryClient = new QueryClient();
 /*
 import {
   Button,
@@ -55,6 +57,9 @@ import {
 } from 'bridgefy-react-native';
 import * as RNPermissions from 'react-native-permissions';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {EventScreen} from './screens/Event/Event';
+import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
+import {AppProvider} from './stores/store';
 
 let bridgefy = new Bridgefy();
 
@@ -216,13 +221,22 @@ function App(): React.JSX.Element {
   */
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Event" component={EventScreen} />
+            <Stack.Screen
+              name="Notification"
+              component={NewNotificationScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AppProvider>
+    </QueryClientProvider>
   );
 }
 

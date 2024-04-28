@@ -4,21 +4,42 @@ import useAsyncStorage from '../../hooks/useAsyncStorage';
 import {globalStyles} from '../../styles/Styles';
 import {User} from '../../types/user';
 import {NoEvents} from './NoEvents';
+import {Event} from '../../types/event';
+import {ActiveEvent} from './ActiveEvent';
+import {useContext, useState} from 'react';
+import {AppContext, AppProvider} from '../../stores/store';
 
 export function HomeScreen({navigation}) {
-  const {data, loading, error} = useAsyncStorage<User>('user');
-  console.log('DATA ', data);
+  // const {data: user, loading, error} = useAsyncStorage<User>('user');
+  const context = useContext(AppContext);
+  const {
+    data: events,
+    loading: eventLoading,
+    error: eventError,
+  } = useAsyncStorage<Event[]>('events');
 
-  if (loading) {
+  const activeEventApi = events
+    ? events.find(event => event.active === true)
+    : null;
+
+  const [activeEvent, setActiveEvent] = useState<Event | null>(
+    activeEventApi || null,
+  );
+
+  if (context?.globalState.user === 'loading' || eventLoading) {
     return <Text>loading...</Text>;
   }
 
+  if (context?.globalState.user?.email && activeEvent) {
+    return <ActiveEvent activeEvent={activeEvent} navigation={navigation} />;
+  }
+
   // return
-  if (data) {
+  if (context?.globalState.user?.email) {
     return <NoEvents navigation={navigation} />;
   }
 
-  if (!data) {
+  if (!context?.globalState.user?.email) {
     return (
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Beat Bridge</Text>
