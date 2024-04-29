@@ -3,9 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {globalStyles} from '../../styles/Styles';
 import {Event} from '../../types/event';
+import {useContext} from 'react';
+import {AppContext} from '../../stores/store';
 
 export function EventScreen({route, navigation}) {
   const {id} = route.params;
+  const context = useContext(AppContext);
+
   console.log('id ', id);
   const mockEvent: Event = {
     active: true,
@@ -17,18 +21,24 @@ export function EventScreen({route, navigation}) {
   };
 
   const addEvent = async () => {
-    const allEvents = await AsyncStorage.getItem('events');
-    const parsedEvents = JSON.parse(allEvents || '[]');
-    const newEvents = [...parsedEvents, mockEvent];
-    await AsyncStorage.setItem('events', JSON.stringify(newEvents));
-    navigation.navigate('Home');
+    try {
+      const allEvents = await AsyncStorage.getItem('events');
+      const parsedEvents = JSON.parse(allEvents || '[]');
+      const newEvents = [...parsedEvents, mockEvent];
+      console.log('new Events ', newEvents);
+      await AsyncStorage.setItem('events', JSON.stringify(newEvents));
+      context?.updateGlobalState({events: newEvents});
+      navigation.navigate('Home');
+    } catch (e) {
+      console.log('error ', e);
+    }
   };
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>{mockEvent.name}</Text>
       <Text>{mockEvent.genre}</Text>
       <Text style={globalStyles.paragraph}>{mockEvent.description}</Text>
-      <Button onClick={() => addEvent()} title={'Add Event'} />
+      <Button onPress={() => addEvent()} title={'Add Event'} />
     </View>
   );
 }

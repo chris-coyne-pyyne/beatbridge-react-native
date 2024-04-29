@@ -9,13 +9,14 @@ import React, {
 } from 'react';
 import {Notification} from '../types/notification';
 import {User} from '../types/user';
+import {Event} from '../types/event';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Define an interface for your global state
 interface GlobalState {
   user: User | null | 'loading';
   notifications: Notification[];
-  activeEvent: Event | null;
+  events: Event[];
 }
 
 // Define the context type
@@ -32,7 +33,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [globalState, setGlobalState] = useState<GlobalState>({
     user: 'loading',
     notifications: [],
-    activeEvent: null,
+    events: [],
   });
 
   useEffect(() => {
@@ -57,6 +58,30 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     };
 
     loadUserData();
+  }, []);
+
+  useEffect(() => {
+    const loadEventsData = async () => {
+      try {
+        const storedEvents = await AsyncStorage.getItem('events');
+        console.log('stored events ', storedEvents);
+        if (storedEvents && storedEvents.length) {
+          setGlobalState(prevState => ({
+            ...prevState,
+            events: JSON.parse(storedEvents),
+          }));
+        } else {
+          setGlobalState(prevState => ({
+            ...prevState,
+            events: [],
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load user from AsyncStorage', error);
+      }
+    };
+
+    loadEventsData();
   }, []);
 
   const updateGlobalState = (newState: Partial<GlobalState>) => {

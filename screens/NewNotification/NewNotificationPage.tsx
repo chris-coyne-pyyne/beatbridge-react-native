@@ -22,8 +22,10 @@ export function NewNotificationScreen({navigation}) {
   const [message, setMessage] = useState('');
 
   const handleCreateNotification = () => {
-    // Here, you can integrate with actual notification logic
-    Alert.alert(title, message);
+    /*
+     * send notification with bridgefy, then add it locally
+     */
+    console.log('sending notification...');
   };
 
   return (

@@ -230,7 +230,7 @@ function App(): React.JSX.Element {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Event" component={EventScreen} />
             <Stack.Screen
-              name="Notification"
+              name="NewNotification"
               component={NewNotificationScreen}
             />
           </Stack.Navigator>

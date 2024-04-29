@@ -12,21 +12,16 @@ import {AppContext, AppProvider} from '../../stores/store';
 export function HomeScreen({navigation}) {
   // const {data: user, loading, error} = useAsyncStorage<User>('user');
   const context = useContext(AppContext);
-  const {
-    data: events,
-    loading: eventLoading,
-    error: eventError,
-  } = useAsyncStorage<Event[]>('events');
 
-  const activeEventApi = events
-    ? events.find(event => event.active === true)
+  console.log('global state events ', context?.globalState.events);
+
+  const activeEvent = context?.globalState.events
+    ? context.globalState.events.find(event => event.active === true)
     : null;
 
-  const [activeEvent, setActiveEvent] = useState<Event | null>(
-    activeEventApi || null,
-  );
+  console.log('active event ', activeEvent);
 
-  if (context?.globalState.user === 'loading' || eventLoading) {
+  if (context?.globalState.user === 'loading') {
     return <Text>loading...</Text>;
   }
 
