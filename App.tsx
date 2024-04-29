@@ -24,6 +24,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {HomeScreen} from './screens/Home/Homepage';
 import {LoginScreen} from './screens/Login/LoginPage';
 import {SignupScreen} from './screens/Signup/SignupPage';
+import {NewEventScreen} from './screens/NewEvent/NewEventScreen';
 import {globalStyles} from './styles/Styles';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
@@ -229,6 +230,7 @@ function App(): React.JSX.Element {
             <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Event" component={EventScreen} />
+            <Stack.Screen name="NewEvent" component={NewEventScreen} />
             <Stack.Screen
               name="NewNotification"
               component={NewNotificationScreen}

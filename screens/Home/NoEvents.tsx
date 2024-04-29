@@ -31,15 +31,16 @@ export function NoEvents({navigation}) {
           <TouchableOpacity
             key={event.id}
             style={globalStyles.card}
-            onPress={() => {
-              console.log('adsfadsf');
-              navigation.navigate('Event', {id: event.id});
-            }}>
+            onPress={() => navigation.navigate('Event', {id: event.id})}>
             <Text style={globalStyles.title}>{event.name}</Text>
             <Text>{event.genre}</Text>
           </TouchableOpacity>
         );
       })}
+      <Button
+        title={'New Event'}
+        onPress={() => navigation.navigate('NewEvent')}
+      />
     </View>
   );
 }
