@@ -27,6 +27,7 @@ import {SignupScreen} from './screens/Signup/SignupPage';
 import {NewEventScreen} from './screens/NewEvent/NewEventScreen';
 import {globalStyles} from './styles/Styles';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const queryClient = new QueryClient();
 /*
@@ -58,6 +59,7 @@ import {
 } from 'bridgefy-react-native';
 import * as RNPermissions from 'react-native-permissions';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {EventScreen} from './screens/Event/Event';
 import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
 import {AppProvider} from './stores/store';
@@ -70,6 +72,8 @@ type SectionProps = PropsWithChildren<{
 
 const Stack = createNativeStackNavigator();
 
+const Tab = createBottomTabNavigator();
+
 function App(): React.JSX.Element {
   const [logText, setLog] = useState<string>('');
   const userId = useRef<string>('');
@@ -78,6 +82,7 @@ function App(): React.JSX.Element {
   const [started, setStarted] = useState<boolean>(false);
   console.log('initialized ', initialized);
 
+  /*
   const log = (event: string, body: any, error = false) => {
     setLog(`${logText}${event} ${JSON.stringify(body)}\n`);
     scrollViewLogs.current?.scrollToEnd();
@@ -88,12 +93,12 @@ function App(): React.JSX.Element {
     }
   };
 
-  /*
   useEffect(() => {
     const subscriptions: EmitterSubscription[] = [];
     const eventEmitter = new NativeEventEmitter(
       NativeModules.BridgefyReactNative,
     );
+
     subscriptions.push(
       eventEmitter.addListener(BridgefyEvents.bridgefyDidStart, event => {
         userId.current = event.userId;
@@ -219,6 +224,65 @@ function App(): React.JSX.Element {
       bridgefy = null;
     };
   }, []);
+
+  return (
+    <SafeAreaView>
+      <StatusBar />
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <Header />
+        <View>
+          <Button
+            disabled={!initialized || started}
+            title="Start"
+            onPress={() =>
+              bridgefy.start().catch(error => {
+                log(`Started error`, error.message, true);
+              })
+            }
+          />
+          <Button
+            disabled={!initialized || !started}
+            title="Stop"
+            onPress={() =>
+              bridgefy.stop().catch(error => {
+                log(`Stopped error`, error.message, true);
+              })
+            }
+          />
+          <Button
+            title="Send data"
+            disabled={initialized && !started}
+            onPress={() =>
+              bridgefy
+                .send('Hello world', {
+                  type: BridgefyTransmissionModeType.broadcast,
+                  uuid: userId.current,
+                })
+                .then(result => {
+                  log(`Sent message`, result);
+                })
+            }
+          />
+          <Button
+            title="Bridgefy Details"
+            disabled={initialized && !started}
+            onPress={async () => {
+              try {
+                const connectedPeers = await bridgefy.connectedPeers();
+                console.log('connected peers ', connectedPeers);
+                console.log('xyz');
+                const currentUser = await bridgefy.currentUserId();
+                console.log('current user ', currentUser);
+                console.log('HERE ');
+              } catch (e) {
+                console.log('ERROR ', e);
+              }
+            }}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
   */
 
   return (
