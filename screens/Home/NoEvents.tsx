@@ -67,6 +67,7 @@ export function NoEvents({navigation}) {
         placeholder={'searchEvents'}
         value={text}
         onChangeText={setText}
+        label={'Event'}
       />
       <ScrollView style={{borderWidth: 2, borderColor: 'red'}}>
         {testEvents.map(event => {
@@ -83,7 +84,7 @@ export function NoEvents({navigation}) {
       </ScrollView>
       <BBButton
         title={'New Event'}
-        callback={() => navigation.navigate('NewEvent')}
+        onPress={() => navigation.navigate('NewEvent')}
       />
     </View>
   );

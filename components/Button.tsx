@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
 type ButtonProps = {
   title: string;
-  callback: () => void;
+  onPress: () => void;
   theme?: 'primary' | 'danger';
   filled?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -56,7 +56,7 @@ type ButtonProps = {
 
 export const Button = ({
   title,
-  callback,
+  onPress,
   filled,
   size = 'md',
   disabled,
@@ -68,11 +68,11 @@ export const Button = ({
 
   return (
     <TouchableOpacity
-      onPress={callback}
+      onPress={onPress}
       style={[
         styles.button,
         styles[size],
-        {backgroundColor, borderColor, borderWidth: filled ? 0 : 1},
+        {backgroundColor, borderColor, borderWidth: filled ? 0 : 2},
         disabled && styles.disabled,
       ]}
       activeOpacity={0.8}

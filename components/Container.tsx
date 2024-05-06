@@ -14,5 +14,5 @@ const styles = StyleSheet.create({
 
 export const BBContainer = ({children}: ContainerProps) => {
   const {height: screenHeight} = useWindowDimensions();
-  return <View styles={{height: screenHeight}}>{children}</View>;
+  return <View style={{height: screenHeight, padding: 16}}>{children}</View>;
 };
