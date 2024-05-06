@@ -1,7 +1,7 @@
 import {Text as RNText, StyleSheet} from 'react-native';
 
 type TextProps = {
-  size?: 'small' | 'medium' | 'large' | 'xlarge';
+  size?: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge';
   weight?: string;
   children: any;
 };
@@ -11,6 +11,7 @@ export const TextSizeStyles = StyleSheet.create({
   medium: {fontSize: 16},
   large: {fontSize: 20, color: 'black'},
   xlarge: {fontSize: 24, color: 'black'},
+  xxlarge: {fontSize: 28, color: 'black'},
 });
 
 export const TextWeightStyles = StyleSheet.create({

@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
     borderColor: 'green',
-    height: '100%',
+    minHeight: '100%',
   },
 });
 
-export const BBContainer = ({children}: ContainerProps) => {
+export const Container = ({children}: ContainerProps) => {
   const {height: screenHeight} = useWindowDimensions();
-  return <View style={{height: screenHeight, padding: 16}}>{children}</View>;
+  return <View style={{padding: 16}}>{children}</View>;
 };

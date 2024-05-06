@@ -6,7 +6,7 @@ import {TextInput as BBTextInput} from '../../components/TextInput';
 import {Text, TextStyles} from '../../components/Text';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {BBContainer} from '../../components/Container';
+import {Container} from '../../components/Container';
 import StepCounter from './StepCounter';
 import {Section0} from './Section0';
 import {Section1} from './Section1';
@@ -91,9 +91,9 @@ export const NewEventScreen = ({navigation}) => {
 
       // create new event
       const newEvent: Event = {
-        name,
-        genre,
-        description,
+        name: 'Vans Warped Tour 2001',
+        genre: 'Pop Punk',
+        description: 'lorem ipsum...',
         active: true,
         id: generateRandomString(16),
         organizer: 'chris.coyne@pyyne.com',
@@ -128,7 +128,7 @@ export const NewEventScreen = ({navigation}) => {
   };
 
   return (
-    <BBContainer>
+    <Container>
       <StepCounter currentStep={step} totalSteps={3} />
       {step === 0 ? (
         <Section0
@@ -158,6 +158,6 @@ export const NewEventScreen = ({navigation}) => {
           setStep={setStep}
         />
       )}
-    </BBContainer>
+    </Container>
   );
 };
