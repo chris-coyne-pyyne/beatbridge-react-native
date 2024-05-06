@@ -19,7 +19,13 @@ export function HomeScreen({navigation}) {
   const activeEvent = context?.globalState.events
     ? context.globalState.events.find(event => event.active === true)
     : null;
+  // const activeEvent = null;
+  console.log(
+    'events ',
+    context.globalState.events.find(event => event.active === true),
+  );
 
+  console.log('user ', context?.globalState.user);
   console.log('active event ', activeEvent);
 
   if (context?.globalState.user === 'loading') {

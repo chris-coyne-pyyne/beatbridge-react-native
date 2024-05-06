@@ -28,6 +28,29 @@ import {NewEventScreen} from './screens/NewEvent/NewEventScreen';
 import {globalStyles} from './styles/Styles';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+  success: props => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: 'orange'}}
+      contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 16}}
+      text1Style={{
+        fontSize: 24,
+        fontWeight: '400',
+      }}
+      text2Style={{
+        fontSize: 16,
+        fontWeight: '400',
+      }}
+    />
+  ),
+};
 
 const queryClient = new QueryClient();
 /*
@@ -302,6 +325,7 @@ function App(): React.JSX.Element {
           </Stack.Navigator>
         </NavigationContainer>
       </AppProvider>
+      <Toast config={toastConfig} />
     </QueryClientProvider>
   );
 }

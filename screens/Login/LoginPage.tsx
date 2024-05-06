@@ -1,10 +1,11 @@
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Text, View, Button, StyleSheet, TextInput, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import {globalStyles} from '../../styles/Styles';
 import {User} from '../../types/user';
+import {AppContext} from '../../stores/store';
 
 const styles = StyleSheet.create({
   input: {
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
 export function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const context = useContext(AppContext);
 
   const handleLogin = async () => {
     await AsyncStorage.setItem('userToken', 'TEST TOKEN');
@@ -44,7 +46,12 @@ export function LoginScreen({navigation}) {
       };
       await AsyncStorage.setItem('user', JSON.stringify(user));
 
-      // Handle success
+      // update store
+      context?.updateGlobalState({
+        user: user,
+      });
+
+      // after - go to home
       navigation.navigate('Home');
     } catch (error) {
       // Handle errors

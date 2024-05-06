@@ -1,8 +1,5 @@
-import {useContext, useState} from 'react';
 import {View, ScrollView, StyleSheet, Image} from 'react-native';
 import {Button} from '../../components/Button';
-import {AppContext} from '../../stores/store';
-import {TextInput as BBTextInput} from '../../components/TextInput';
 import {Text, TextStyles} from '../../components/Text';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
