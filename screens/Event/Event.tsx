@@ -34,7 +34,7 @@ export function EventScreen({route, navigation}) {
     }
   };
   return (
-    <View style={globalStyles.container}>
+    <View>
       <Text style={globalStyles.title}>{mockEvent.name}</Text>
       <Text>{mockEvent.genre}</Text>
       <Text style={globalStyles.paragraph}>{mockEvent.description}</Text>

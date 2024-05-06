@@ -289,7 +289,10 @@ function App(): React.JSX.Element {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              cardStyle: {padding: 16, borderWidth: 12, borderColor: 'red'},
+            }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />

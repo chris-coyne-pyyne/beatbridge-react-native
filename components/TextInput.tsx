@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput as Input, View, StyleSheet} from 'react-native';
+import {TextInput as Input, View, StyleSheet, Text} from 'react-native';
 
 // Define the props type for TypeScript support
 type CustomTextInputProps = {
@@ -7,6 +7,7 @@ type CustomTextInputProps = {
   value: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
+  label: string;
 };
 
 export const TextInput = ({
@@ -14,30 +15,30 @@ export const TextInput = ({
   value,
   onChangeText,
   secureTextEntry = false,
+  label,
 }: CustomTextInputProps) => {
   return (
-    <Input
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      secureTextEntry={secureTextEntry}
-      placeholderTextColor="#888" // Example of custom placeholder color
-    />
+    <View>
+      <Text style={styles.label}>{label}</Text>
+      <Input
+        style={styles.input}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
+        placeholderTextColor="#888"
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 5,
-    marginVertical: 5,
-  },
   input: {
     color: '#333',
     fontSize: 16,
+    borderWidth: 2,
+    borderColor: '#000',
+    borderStyle: 'solid',
+    borderRadius: 5,
   },
 });

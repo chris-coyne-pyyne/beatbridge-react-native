@@ -1,15 +1,11 @@
 import {useContext, useState} from 'react';
-import {
-  Text,
-  View,
-  Button,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-} from 'react-native';
+import {Text, View, Button, ScrollView, StyleSheet} from 'react-native';
 import {AppContext} from '../../stores/store';
+import {TextInput as BBTextInput} from '../../components/TextInput';
+import {TextStyles} from '../../components/Text';
 
 export const NewEventScreen = ({navigation}) => {
+  const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
@@ -31,42 +27,41 @@ export const NewEventScreen = ({navigation}) => {
     }
   };
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>New Event</Text>
+  if (step === 0) {
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={[TextStyles.xlarge]}>Event Description</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-      />
+        <BBTextInput
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+          label={'Event Name'}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Genre"
-        value={genre}
-        onChangeText={setGenre}
-      />
+        <BBTextInput
+          placeholder="Genre"
+          value={genre}
+          onChangeText={setGenre}
+          label={'Event Genre'}
+        />
 
-      <TextInput
-        style={styles.textArea}
-        placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
-        multiline={true}
-        numberOfLines={4}
-      />
+        <BBTextInput
+          placeholder="Description"
+          value={description}
+          onChangeText={setDescription}
+          label={'Event Description'}
+        />
 
-      <Button title="Create" onPress={handleCreate} />
-    </ScrollView>
-  );
+        <Button title="Next Section" onPress={handleCreate} />
+      </ScrollView>
+    );
+  }
+
+  return <Text>Step not found</Text>;
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',

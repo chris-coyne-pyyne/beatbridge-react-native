@@ -8,6 +8,7 @@ import {Event} from '../../types/event';
 import {ActiveEvent} from './ActiveEvent';
 import {useContext, useState} from 'react';
 import {AppContext, AppProvider} from '../../stores/store';
+import {BBContainer} from '../../components/Container';
 
 export function HomeScreen({navigation}) {
   // const {data: user, loading, error} = useAsyncStorage<User>('user');
