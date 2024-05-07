@@ -19,6 +19,7 @@ import {
   type EmitterSubscription,
   NativeEventEmitter,
   NativeModules,
+  Touchable,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {HomeScreen} from './screens/Home/Homepage';
@@ -29,6 +30,8 @@ import {globalStyles} from './styles/Styles';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {ProfileScreen} from './screens/Profile/ProfileScreen';
+import {BridgefyProvider} from './stores/bridgefyStore';
 
 const toastConfig = {
   /*
@@ -101,9 +104,7 @@ function App(): React.JSX.Element {
   const [logText, setLog] = useState<string>('');
   const userId = useRef<string>('');
   const scrollViewLogs = useRef<ScrollView>(null);
-  const [initialized, setInitialized] = useState<boolean>(false);
   const [started, setStarted] = useState<boolean>(false);
-  console.log('initialized ', initialized);
 
   /*
   const log = (event: string, body: any, error = false) => {
@@ -311,19 +312,40 @@ function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Event" component={EventScreen} />
-            <Stack.Screen name="NewEvent" component={NewEventScreen} />
-            <Stack.Screen
-              name="NewNotification"
-              component={NewNotificationScreen}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <BridgefyProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={({navigation}) => {
+                return {
+                  headerStyle: {
+                    backgroundColor: '#f4511e',
+                  },
+                  headerTintColor: '#fff',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                  headerRight: () => (
+                    <Button
+                      onPress={() => navigation.navigate('Profile')}
+                      title="Profile"
+                      color="#fff"
+                    />
+                  ),
+                };
+              }}>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Event" component={EventScreen} />
+              <Stack.Screen name="NewEvent" component={NewEventScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen
+                name="NewNotification"
+                component={NewNotificationScreen}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </BridgefyProvider>
       </AppProvider>
       <Toast config={toastConfig} />
     </QueryClientProvider>

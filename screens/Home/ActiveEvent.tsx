@@ -17,7 +17,6 @@ import {Container} from '../../components/Container';
 import {Tag} from '../../components/Tag';
 
 export function ActiveEvent({navigation, activeEvent}) {
-  console.log('active event ', activeEvent);
   const context = useContext(AppContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
   const notifications: Notification[] = [
@@ -51,9 +50,7 @@ export function ActiveEvent({navigation, activeEvent}) {
     },
   ];
 
-  console.log('modal open ', modalOpen);
   const archiveEvent = () => {
-    console.log('archiving...');
     context?.updateGlobalState({events: []});
     /*
     const events = context?.globalState.events;
@@ -68,7 +65,6 @@ export function ActiveEvent({navigation, activeEvent}) {
     */
   };
 
-  console.log('NOTIFICATIONS ', context?.globalState.notifications);
   return (
     <Container>
       <ScrollView style={{borderWidth: 2, borderColor: 'red'}}>
