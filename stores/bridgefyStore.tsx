@@ -6,6 +6,8 @@ import React, {
   Dispatch,
   SetStateAction,
   useEffect,
+  useContext,
+  useRef,
 } from 'react';
 import {
   Bridgefy,
@@ -13,6 +15,34 @@ import {
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
 import * as RNPermissions from 'react-native-permissions';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Button,
+  type EmitterSubscription,
+  NativeEventEmitter,
+  NativeModules,
+  Touchable,
+} from 'react-native';
+import {AppContext} from './store';
+import Toast from 'react-native-toast-message';
+import useAsyncStorage from '../../hooks/useAsyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Event} from '../../types/event';
+import {generateRandomString} from '../../utils/randomNumber';
+
+const showToast = () => {
+  Toast.show({
+    type: 'success',
+    text1: 'Received New Notification',
+    text2: 'message...',
+  });
+};
 
 // Define an interface for your global state
 interface BridgefyState {
@@ -41,6 +71,22 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
     initialized: false,
   });
 
+  const userId = useRef<string>('');
+
+  const appContext = useContext(AppContext);
+
+  console.log('BRIDGEFY USER ', appContext?.globalState.user);
+
+  // if initialized - try to start
+  useEffect(() => {
+    if (bridgefyState.initialized === true) {
+      console.log('STARTING BRIDGEFY');
+      bridgefy.start().catch(error => {
+        log(`Started error`, error.message, true);
+      });
+    }
+  }, [bridgefyState.initialized]);
+
   const log = (event: string, body: any, error = false) => {
     if (error) {
       console.error(event, body);
@@ -50,6 +96,105 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
   };
 
   useEffect(() => {
+    const subscriptions: EmitterSubscription[] = [];
+    const eventEmitter = new NativeEventEmitter(
+      NativeModules.BridgefyReactNative,
+    );
+    // subscription for successful notification send
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidStart, event => {
+        userId.current = event.userId;
+        log(`bridgefyDidStart`, event);
+        bridgefy.isStarted().then(value => {
+          console.log('bridgefy successfully started');
+        });
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidFailToStart, event => {
+        log(`bridgefyDidFailToStart`, event, true);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidStop, () => {
+        log(`bridgefyDidStop`, 'Bridgefy stopped.');
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidFailToStop, event => {
+        log(`bridgefyDidFailToStop`, event, true);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidDestroySession,
+        event => {
+          log(`bridgefyDidDestroySession`, event);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailToDestroySession,
+        event => {
+          log(`bridgefyDidFailToDestroySession`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidConnect, event => {
+        log(`bridgefyDidConnect`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidDisconnect, event => {
+        log(`bridgefyDidDisconnect`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidEstablishSecureConnection,
+        event => {
+          log(`bridgefyDidEstablishSecureConnection`, event);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailToEstablishSecureConnection,
+        event => {
+          log(`bridgefyDidFailToEstablishSecureConnection`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidSendMessage, event => {
+        log(`bridgefyDidSendMessage`, event);
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidFailSendingMessage,
+        event => {
+          log(`bridgefyDidFailSendingMessage`, event, true);
+        },
+      ),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
+        log(`bridgefyDidReceiveData`, event);
+        showToast();
+      }),
+    );
+    subscriptions.push(
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidSendDataProgress,
+        event => {
+          log(`bridgefyDidSendDataProgress`, event);
+        },
+      ),
+    );
+
     RNPermissions.requestMultiple([
       RNPermissions.PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       RNPermissions.PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE,
@@ -75,6 +220,12 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
           log(`Initialize error`, error.message, true);
         });
     });
+
+    return () => {
+      for (const sub of subscriptions) {
+        sub.remove();
+      }
+    };
   }, []);
 
   const updateBridgefyState = (newState: Partial<BridgefyState>) => {
