@@ -36,6 +36,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     events: [],
   });
 
+  // TODO: turn useeffects into custom, reusable hooks
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -82,6 +83,30 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     };
 
     loadEventsData();
+  }, []);
+
+  useEffect(() => {
+    const loadNotificationsData = async () => {
+      try {
+        const storedNotifications = await AsyncStorage.getItem('notifications');
+        console.log('stored notifications ', storedNotifications);
+        if (storedNotifications && storedNotifications.length) {
+          setGlobalState(prevState => ({
+            ...prevState,
+            notifications: JSON.parse(storedNotifications),
+          }));
+        } else {
+          setGlobalState(prevState => ({
+            ...prevState,
+            notifications: [],
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load notifications from AsyncStorage', error);
+      }
+    };
+
+    loadNotificationsData();
   }, []);
 
   const updateGlobalState = (newState: Partial<GlobalState>) => {

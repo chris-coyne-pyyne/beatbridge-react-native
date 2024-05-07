@@ -67,6 +67,8 @@ export function ActiveEvent({navigation, activeEvent}) {
     }
     */
   };
+
+  console.log('NOTIFICATIONS ', context?.globalState.notifications);
   return (
     <Container>
       <ScrollView style={{borderWidth: 2, borderColor: 'red'}}>

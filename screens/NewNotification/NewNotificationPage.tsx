@@ -1,13 +1,27 @@
-import {useState} from 'react';
-import {Text, View, Button, StyleSheet, TextInput, Alert} from 'react-native';
-import {globalStyles} from '../../styles/Styles';
-import {User} from '../../types/user';
+import {useContext, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Text} from '../../components/Text';
+import {Container} from '../../components/Container';
+import {TextInput} from '../../components/TextInput';
+import {Button} from '../../components/Button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import {Notification} from '../../types/notification';
+import {generateRandomString} from '../../utils/randomNumber';
+import {AppContext} from '../../stores/store';
+
+const showToast = () => {
+  Toast.show({
+    type: 'success',
+    text1: 'Sent notification',
+    text2: 'Your notification has been sent to all users within your area',
+  });
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
+    display: 'flex',
+    gap: 16,
   },
   input: {
     height: 40,
@@ -20,31 +34,68 @@ const styles = StyleSheet.create({
 export function NewNotificationScreen({navigation}) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
+  const [tags, setTags] = useState('');
+  const context = useContext(AppContext);
 
-  const handleCreateNotification = () => {
-    /*
-     * send notification with bridgefy, then add it locally
-     */
+  const handleCreateNotification = async () => {
+    // send notification with bridgefy, then add it locally
     console.log('sending notification...');
+
+    const oldNotifications = await AsyncStorage.getItem('notifications');
+    const parsedOldNotifications = JSON.parse(oldNotifications || '[]');
+    const newNotification: Notification = {
+      id: generateRandomString(16),
+      message: 'test message lorem ipsum...',
+      title: 'Test Title',
+      tags: ['event'],
+    };
+
+    // add notification to local db
+    await AsyncStorage.setItem(
+      'notifications',
+      JSON.stringify([...parsedOldNotifications, newNotification]),
+    );
+
+    // sync context notifications
+    context?.updateGlobalState({
+      notifications: [...parsedOldNotifications, newNotification],
+    });
+
+    // navigate to home + toast
+    showToast();
+    navigation.navigate('Home');
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter title"
-        value={title}
-        onChangeText={setTitle}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter message"
-        value={message}
-        multiline
-        numberOfLines={4}
-        onChangeText={setMessage}
-      />
-      <Button title="Create Notification" onPress={handleCreateNotification} />
-    </View>
+    <Container>
+      <Text size="xlarge" weight="semibold">
+        Notification
+      </Text>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Enter title"
+          value={title}
+          onChangeText={setTitle}
+          label="Notification Title"
+        />
+        <TextInput
+          label="Notification Title"
+          placeholder="Enter message"
+          value={message}
+          onChangeText={setMessage}
+        />
+        <TextInput
+          label="Notification Tags"
+          placeholder="Enter tags separated by space"
+          value={tags}
+          onChangeText={setTags}
+        />
+        <Button
+          title="Create Notification"
+          onPress={handleCreateNotification}
+          filled
+        />
+      </View>
+    </Container>
   );
 }

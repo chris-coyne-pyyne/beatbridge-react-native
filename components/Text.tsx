@@ -16,6 +16,7 @@ export const TextSizeStyles = StyleSheet.create({
 
 export const TextWeightStyles = StyleSheet.create({
   normal: {fontWeight: 'normal'},
+  semibold: {fontWeight: 600},
   bold: {fontWeight: 'bold'},
 });
 
