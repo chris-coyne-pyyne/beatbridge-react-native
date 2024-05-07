@@ -88,7 +88,12 @@ export function ActiveEvent({navigation, activeEvent}) {
           <View>
             <Text size="medium">April 20 - April 30</Text>
             <Text size="medium">Rock and Roll</Text>
-            <Text size="medium">Event Page</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Event', {id: activeEvent.id})
+              }>
+              <Text size="medium">Event Page {'->'}</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <Text size="xlarge">Notifications</Text>
