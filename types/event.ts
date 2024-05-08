@@ -1,7 +1,8 @@
 export type Event = {
   id: string;
-  organizer: {
-    id: string; // same as email, for convenience
+  organizer?: {
+    id: string;
+    email: string;
     name: string;
     pic: string;
   };
