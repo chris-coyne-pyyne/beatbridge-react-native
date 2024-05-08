@@ -15,6 +15,7 @@ import {useContext, useState} from 'react';
 import {AppContext} from '../../stores/store';
 import {Container} from '../../components/Container';
 import {Tag} from '../../components/Tag';
+import {FAB} from 'react-native-paper';
 
 export function ActiveEvent({navigation, activeEvent}) {
   const context = useContext(AppContext);
@@ -142,6 +143,13 @@ export function ActiveEvent({navigation, activeEvent}) {
           </Modal>
         )}
       </ScrollView>
+      <FAB
+        style={styles.fab}
+        small
+        icon="pencil"
+        label="Notification"
+        onPress={() => navigation.navigate('NewReport')}
+      />
     </Container>
   );
 }
@@ -176,5 +184,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%', // Control the size of the modal itself
     alignItems: 'center', // Center the text inside the modal
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

@@ -1,6 +1,6 @@
-import {View, ScrollView, StyleSheet, Image} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {Button} from '../../components/Button';
-import {Text, TextStyles} from '../../components/Text';
+import {Text} from '../../components/Text';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 export const Section2 = ({

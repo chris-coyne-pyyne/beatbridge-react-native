@@ -33,6 +33,19 @@ import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
 
+import {
+  Bridgefy,
+  BridgefyEvents,
+  BridgefyTransmissionModeType,
+} from 'bridgefy-react-native';
+import * as RNPermissions from 'react-native-permissions';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {EventScreen} from './screens/Event/Event';
+import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
+import {AppProvider} from './stores/store';
+import {NewReportPage} from './screens/NewReport/NewReportPage';
+
 const toastConfig = {
   /*
     Overwrite 'success' type,
@@ -55,40 +68,22 @@ const toastConfig = {
   ),
 };
 
+// Create a new component for the Bottom Tabs
+function BottomTabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
+        tabBarInactiveTintColor: 'gray',
+      }}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Events" component={EventScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
 const queryClient = new QueryClient();
-/*
-import {
-  Button,
-  type EmitterSubscription,
-  NativeEventEmitter,
-  NativeModules,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-*/
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
-import * as RNPermissions from 'react-native-permissions';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {EventScreen} from './screens/Event/Event';
-import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
-import {AppProvider} from './stores/store';
 
 let bridgefy = new Bridgefy();
 
@@ -339,6 +334,7 @@ function App(): React.JSX.Element {
               <Stack.Screen name="Event" component={EventScreen} />
               <Stack.Screen name="NewEvent" component={NewEventScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="NewReport" component={NewReportPage} />
               <Stack.Screen
                 name="NewNotification"
                 component={NewNotificationScreen}
