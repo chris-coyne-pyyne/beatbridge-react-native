@@ -14,7 +14,7 @@ export const Section2 = ({
   setStep,
 }: any) => {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <Text size="large" weight="bold">
         Event Itinerary
       </Text>
@@ -22,7 +22,7 @@ export const Section2 = ({
         title="Show Start Date Picker"
         onPress={() => setStartVis(true)}
       />
-      <Button title="Show End Date Picker" onPress={() => setStartVis(true)} />
+      <Button title="Show End Date Picker" onPress={() => setEndVis(true)} />
       <DateTimePickerModal
         isVisible={startVis}
         mode="date"
@@ -58,12 +58,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     marginBottom: 12,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    gap: 16,
   },
 });

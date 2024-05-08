@@ -5,7 +5,7 @@ import {Text, TextStyles} from '../../components/Text';
 
 export const Section1 = ({selectImage, imageSource, setStep}: any) => {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <Text size="large" weight="bold">
         Event Thumbnail
       </Text>
@@ -43,12 +43,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     marginBottom: 12,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    gap: 16,
   },
 });

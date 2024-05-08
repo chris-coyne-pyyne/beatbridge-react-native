@@ -1,7 +1,8 @@
 import {useContext, useState} from 'react';
-import {Text, View, Button, ScrollView, StyleSheet} from 'react-native';
+import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import {Button} from '../../components/Button';
 import {AppContext} from '../../stores/store';
-import {TextInput as BBTextInput} from '../../components/TextInput';
+import {TextInput} from '../../components/TextInput';
 
 export const Section0 = ({
   name,
@@ -13,27 +14,26 @@ export const Section0 = ({
   setStep,
 }: any) => {
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.container}>
+    <View>
+      <ScrollView>
         <Text size="xlarge" weight="bold">
           Event Description
         </Text>
 
-        <BBTextInput
+        <TextInput
           placeholder="Name"
           value={name}
           onChangeText={setName}
           label={'Event Name'}
         />
-
-        <BBTextInput
+        <TextInput
           placeholder="Genre"
           value={genre}
           onChangeText={setGenre}
           label={'Event Genre'}
         />
 
-        <BBTextInput
+        <TextInput
           placeholder="Description"
           value={description}
           onChangeText={setDescription}

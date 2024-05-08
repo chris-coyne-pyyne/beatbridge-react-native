@@ -13,6 +13,7 @@ import useAsyncStorage from '../../hooks/useAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Event} from '../../types/event';
 import {generateRandomString} from '../../utils/randomNumber';
+import {formatDate} from '../../utils/dates';
 
 const showToast = () => {
   Toast.show({
@@ -57,18 +58,24 @@ export const NewEventScreen = ({navigation}) => {
   const [description, setDescription] = useState('');
   const context = useContext(AppContext);
   const [imageSource, setImageSource] = useState(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
 
   // date picker stuff
   const [startVis, setStartVis] = useState(false);
   const [endVis, setEndVis] = useState(false);
 
   const handleEndConfirm = date => {
-    console.warn('A date has been picked: ', date);
-    setEndVis;
+    console.log('handle end confrim');
+    const formatted = formatDate(date);
+    setEndDate(formatted);
+    setEndVis(false);
   };
 
   const handleStartConfirm = date => {
-    console.warn('A date has been picked: ', date);
+    console.log('handle start confirm');
+    const formatted = formatDate(date);
+    setStartDate(formatted);
     setStartVis(false);
   };
 
@@ -79,8 +86,20 @@ export const NewEventScreen = ({navigation}) => {
     setImageSource(result);
   };
 
+  console.log('END ', endDate);
+
   const handleCreate = async () => {
     // create new event with data - save to API, and also save locally afterwards
+    console.log(
+      'relevant info: ',
+      name,
+      genre,
+      description,
+      imageSource,
+      startDate,
+      endDate,
+    );
+    return;
     // send to api
 
     if (context?.globalState.events) {
@@ -123,6 +142,8 @@ export const NewEventScreen = ({navigation}) => {
       navigation.navigate('Home');
     }
   };
+
+  console.log('step ', step);
 
   return (
     <Container>

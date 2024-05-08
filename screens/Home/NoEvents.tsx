@@ -3,7 +3,7 @@ import {Event} from '../../types/event';
 import {globalStyles} from '../../styles/Styles';
 import {Button} from '../../components/Button';
 import {TextInput} from '../../components/TextInput';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
 import {Container} from '../../components/Container';
@@ -14,9 +14,6 @@ const fetchData = async () => {
 };
 
 export function NoEvents({navigation}) {
-  console.log('HERE');
-  const testEvents: Event[] = [];
-
   const {
     data: events,
     error,
