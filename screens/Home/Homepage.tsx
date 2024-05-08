@@ -1,4 +1,6 @@
-import {Text, View, Button} from 'react-native';
+import {View} from 'react-native';
+import {Button} from '../../components/Button';
+import {Text} from '../../components/Text';
 import useAsyncStorage from '../../hooks/useAsyncStorage';
 
 import {globalStyles} from '../../styles/Styles';
@@ -42,15 +44,17 @@ export function HomeScreen({navigation}) {
 
   if (!context?.globalState.user?.email) {
     return (
-      <View style={globalStyles.container}>
-        <Text style={globalStyles.title}>Beat Bridge</Text>
-        <Text style={globalStyles.paragraph}>
+      <Container>
+        <Text size="xxlarge" weight="bold">
+          Beat Bridge
+        </Text>
+        <Text>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Text>
         <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
         <Button title="Log In" onPress={() => navigation.navigate('Login')} />
-      </View>
+      </Container>
     );
   }
 }

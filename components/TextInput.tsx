@@ -7,7 +7,7 @@ type CustomTextInputProps = {
   value: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
-  label: string;
+  label?: string;
 };
 
 export const TextInput = ({
@@ -19,7 +19,7 @@ export const TextInput = ({
 }: CustomTextInputProps) => {
   return (
     <View>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <Input
         style={styles.input}
         placeholder={placeholder}
