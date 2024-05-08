@@ -14,6 +14,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Event} from '../../types/event';
 import {generateRandomString} from '../../utils/randomNumber';
 import {formatDate} from '../../utils/dates';
+import {useMutation} from 'react-query';
+import {apiClient} from '../../api/axiosConfig';
+import {create} from 'react-test-renderer';
 
 const showToast = () => {
   Toast.show({
@@ -56,14 +59,64 @@ export const NewEventScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
-  const context = useContext(AppContext);
   const [imageSource, setImageSource] = useState(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
 
+  const context = useContext(AppContext);
+
+  const user = context?.globalState.user;
+
   // date picker stuff
   const [startVis, setStartVis] = useState(false);
   const [endVis, setEndVis] = useState(false);
+
+  // axios
+  const {mutate, isLoading, error} = useMutation(
+    async () => {
+      const response = await apiClient.post('event', {
+        name,
+        genre,
+        description,
+        imageSource,
+        startDate,
+        endDate,
+        userId: user && user !== 'loading' ? user.id : '',
+      });
+      return response.data;
+    },
+    {
+      onSuccess: async data => {
+        console.log('data ', data);
+        const newLocalEvents = events || [];
+        for (const e of newLocalEvents) {
+          e.active = false;
+        }
+
+        const createdEvent = {...data, active: true};
+
+        console.log('WILL ADD EVENT ', [...newLocalEvents, createdEvent]);
+
+        await AsyncStorage.setItem(
+          'events',
+          JSON.stringify([...newLocalEvents, createdEvent]),
+        );
+        context?.updateGlobalState({
+          events: [...newLocalEvents, createdEvent],
+        });
+
+        showToast();
+        navigation.navigate('Home');
+      },
+      onError: err => {
+        // Optional: Handle error in mutation state
+        console.error(
+          'Error logging in:',
+          err.response ? err.response.data.message : err.message,
+        );
+      },
+    },
+  );
 
   const handleEndConfirm = date => {
     console.log('handle end confrim');
@@ -172,7 +225,7 @@ export const NewEventScreen = ({navigation}) => {
           startVis={startVis}
           handleStartConfirm={handleStartConfirm}
           handleEndConfirm={handleEndConfirm}
-          handleCreate={handleCreate}
+          handleCreate={mutate}
           setStep={setStep}
         />
       )}

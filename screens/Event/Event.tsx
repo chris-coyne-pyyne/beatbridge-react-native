@@ -55,6 +55,10 @@ export function EventScreen({route, navigation}) {
       console.log('error ', e);
     }
   };
+
+  const loadedUser =
+    context?.globalState.user !== 'loading' &&
+    context?.globalState.user !== null;
   if (!selectedEvent) {
     return (
       <Container>
@@ -102,13 +106,13 @@ export function EventScreen({route, navigation}) {
           )}
         </View>
         {/* show buttons based on login + role */}
-        {
+        {loadedUser &&
           /* if active event is not viewed event - let them join */
-          activeEvent?.id !== selectedEvent.id ? (
+          (activeEvent?.id !== selectedEvent.id ? (
             <Button onPress={() => addEvent()} title={'Add Event'} />
-          ) : selectedEvent.organizer?.id === activeEvent?.id ? (
+          ) : selectedEvent.organizer?.id === context?.globalState.user.id ? (
             <>
-              <Button onPress={() => addEvent()} title={'Send Notification'} />{' '}
+              <Button onPress={() => addEvent()} title={'Send Notification'} />
               <Button
                 onPress={() => console.log('end event')}
                 title={'Archive event'}
@@ -119,8 +123,7 @@ export function EventScreen({route, navigation}) {
               onPress={() => console.log('sending...')}
               title={'Send Message'}
             />
-          )
-        }
+          ))}
       </ScrollView>
     </Container>
   );
