@@ -35,6 +35,7 @@ import useAsyncStorage from '../../hooks/useAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Event} from '../../types/event';
 import {generateRandomString} from '../../utils/randomNumber';
+import {Notification} from '../types/notification';
 
 const showToast = () => {
   Toast.show({
@@ -79,13 +80,23 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
 
   // if initialized - try to start
   useEffect(() => {
-    if (bridgefyState.initialized === true) {
+    console.log(
+      'should i start?',
+      'initialized ',
+      bridgefyState.initialized,
+      ' , user ',
+      appContext?.globalState.user?.id,
+    );
+    if (
+      bridgefyState.initialized === true &&
+      appContext?.globalState.user?.id
+    ) {
       console.log('STARTING BRIDGEFY');
-      bridgefy.start().catch(error => {
+      bridgefy.start(appContext?.globalState.user?.id).catch(error => {
         log(`Started error`, error.message, true);
       });
     }
-  }, [bridgefyState.initialized]);
+  }, [bridgefyState.initialized, appContext?.globalState.user?.id]);
 
   const log = (event: string, body: any, error = false) => {
     if (error) {
@@ -184,6 +195,11 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
       eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
         log(`bridgefyDidReceiveData`, event);
         showToast();
+        // add to DB
+        const receivedNotification: Notification = JSON.parse(event.data);
+        const oldNotifications = appContext?.globalState.notifications || [];
+        const newNotifications = [...oldNotifications, receivedNotification];
+        appContext?.updateGlobalState({notifications: newNotifications});
       }),
     );
     subscriptions.push(

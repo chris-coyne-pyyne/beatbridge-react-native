@@ -69,27 +69,29 @@ export function ActiveEvent({navigation, activeEvent}) {
         </View>
         <Text size="xlarge">Notifications</Text>
 
-        {notifications.map(notification => (
-          <TouchableOpacity
-            id={notification.id}
-            style={styles.notificationContainer}
-            delayPressIn={50}
-            onPress={() => setModalOpen(notification)}>
-            <View>
-              <Text>18</Text>
-              <Text>December</Text>
-            </View>
-            <View>
-              <Text>{notification.title}</Text>
-              <Text>{notification.message}</Text>
-              <View style={styles.notificationTagsContainer}>
-                {notification.tags.map(tag => (
-                  <Tag title={tag} />
-                ))}
+        {notifications &&
+          notifications.map(notification => (
+            <TouchableOpacity
+              key={notification.id}
+              id={notification.id}
+              style={styles.notificationContainer}
+              delayPressIn={50}
+              onPress={() => setModalOpen(notification)}>
+              <View>
+                <Text>18</Text>
+                <Text>December</Text>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+              <View>
+                <Text>{notification.title}</Text>
+                <Text>{notification.message}</Text>
+                <View style={styles.notificationTagsContainer}>
+                  {notification.tags.map(tag => (
+                    <Tag title={tag} />
+                  ))}
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
         <Button onPress={() => archiveEvent()} title={'Archive Event'} />
         <Button
           onPress={() => navigation.navigate('NewNotification')}
