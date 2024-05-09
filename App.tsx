@@ -32,6 +32,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import {
   Bridgefy,
@@ -45,6 +46,8 @@ import {EventScreen} from './screens/Event/Event';
 import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
 import {AppProvider} from './stores/store';
 import {NewReportPage} from './screens/NewReport/NewReportPage';
+
+import {Provider, DefaultTheme} from 'react-native-paper';
 
 const toastConfig = {
   /*
@@ -100,6 +103,15 @@ function App(): React.JSX.Element {
   const userId = useRef<string>('');
   const scrollViewLogs = useRef<ScrollView>(null);
   const [started, setStarted] = useState<boolean>(false);
+
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: '#dc5100', // Custom orange color. You can replace it with any hex color.
+      accent: '#FFC107', // Optional: change the accent color if you want.
+    },
+  };
 
   /*
   const log = (event: string, body: any, error = false) => {
@@ -308,39 +320,41 @@ function App(): React.JSX.Element {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <BridgefyProvider>
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={({navigation}) => {
-                return {
-                  headerStyle: {
-                    backgroundColor: '#f4511e',
-                  },
-                  headerTintColor: '#fff',
-                  headerTitleStyle: {
-                    fontWeight: 'bold',
-                  },
-                  headerRight: () => (
-                    <Button
-                      onPress={() => navigation.navigate('Profile')}
-                      title="Profile"
-                      color="#fff"
-                    />
-                  ),
-                };
-              }}>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Signup" component={SignupScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Event" component={EventScreen} />
-              <Stack.Screen name="NewEvent" component={NewEventScreen} />
-              <Stack.Screen name="Profile" component={ProfileScreen} />
-              <Stack.Screen name="NewReport" component={NewReportPage} />
-              <Stack.Screen
-                name="NewNotification"
-                component={NewNotificationScreen}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={({navigation}) => {
+                  return {
+                    headerStyle: {
+                      backgroundColor: '#fff',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                      fontWeight: 'bold',
+                    },
+                    headerRight: () => (
+                      <Button
+                        onPress={() => navigation.navigate('Profile')}
+                        title="Profile"
+                        color="#fff"
+                      />
+                    ),
+                  };
+                }}>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Signup" component={SignupScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Event" component={EventScreen} />
+                <Stack.Screen name="NewEvent" component={NewEventScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="NewReport" component={NewReportPage} />
+                <Stack.Screen
+                  name="NewNotification"
+                  component={NewNotificationScreen}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
         </BridgefyProvider>
       </AppProvider>
       <Toast config={toastConfig} />

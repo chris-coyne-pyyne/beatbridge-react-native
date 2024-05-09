@@ -1,6 +1,6 @@
-import {View} from 'react-native';
-import {Button} from '../../components/Button';
-import {Text} from '../../components/Text';
+import {View, Image, StyleSheet} from 'react-native';
+// import {Button} from '../../components/Button';
+// import {Text} from '../../components/Text';
 import useAsyncStorage from '../../hooks/useAsyncStorage';
 
 import {globalStyles} from '../../styles/Styles';
@@ -11,9 +11,9 @@ import {ActiveEvent} from './ActiveEvent';
 import {useContext, useState} from 'react';
 import {AppContext, AppProvider} from '../../stores/store';
 import {Container} from '../../components/Container';
+import {Button, Text} from 'react-native-paper';
 
 export function HomeScreen({navigation}) {
-  // const {data: user, loading, error} = useAsyncStorage<User>('user');
   const context = useContext(AppContext);
 
   console.log('global state events ', context?.globalState.events);
@@ -21,13 +21,6 @@ export function HomeScreen({navigation}) {
   const activeEvent = context?.globalState.events
     ? context.globalState.events.find(event => event.active === true)
     : null;
-  // const activeEvent = null;
-  /*
-  console.log(
-    'events ',
-    context.globalState.events.find(event => event.active === true),
-  );
-  */
 
   if (context?.globalState.userLoading === true) {
     return <Text>loading...</Text>;
@@ -44,17 +37,51 @@ export function HomeScreen({navigation}) {
 
   if (!context?.globalState.user?.email) {
     return (
-      <Container>
-        <Text size="xxlarge" weight="bold">
-          Beat Bridge
-        </Text>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
-        <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
-        <Button title="Log In" onPress={() => navigation.navigate('Login')} />
-      </Container>
+      <View style={styles.container}>
+        <Image
+          source={require('../../assets/Home_no_login_background.png')}
+          style={{width: 250, height: 250}}
+        />
+        <View>
+          <Text variant="headlineLarge">Beat Bridge</Text>
+        </View>
+        <View style={styles.view}>
+          <Text variant="bodyLarge" style={{textAlign: 'center'}}>
+            Feel the music, stay connected – only with Beat Bridge.
+          </Text>
+        </View>
+        <View style={styles.view}>
+          <Button
+            title="Sign Up"
+            mode="contained"
+            onPress={() => navigation.navigate('Signup')}>
+            Sign Up
+          </Button>
+        </View>
+        <View style={styles.view}>
+          <Button
+            type="outlined"
+            title="Log In"
+            mode="outlined"
+            onPress={() => navigation.navigate('Login')}>
+            Log In
+          </Button>
+        </View>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Takes full height of the screen
+    justifyContent: 'center', // Centers content vertically in the container
+    alignItems: 'center', // Centers content horizontally in the container
+    padding: 16,
+  },
+  view: {
+    textAlign: 'center',
+    marginTop: 12,
+    width: '80%',
+  },
+});
