@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// notifications allow the admin to send messages to event attendees
 export function NewNotificationScreen({navigation}) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');

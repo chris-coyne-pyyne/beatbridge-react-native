@@ -29,7 +29,7 @@ export function HomeScreen({navigation}) {
   );
   */
 
-  if (context?.globalState.user === 'loading') {
+  if (context?.globalState.userLoading === true) {
     return <Text>loading...</Text>;
   }
 

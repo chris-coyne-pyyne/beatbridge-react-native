@@ -56,9 +56,6 @@ export function EventScreen({route, navigation}) {
     }
   };
 
-  const loadedUser =
-    context?.globalState.user !== 'loading' &&
-    context?.globalState.user !== null;
   if (!selectedEvent) {
     return (
       <Container>
@@ -106,11 +103,11 @@ export function EventScreen({route, navigation}) {
           )}
         </View>
         {/* show buttons based on login + role */}
-        {loadedUser &&
+        {!context?.globalState.userLoading &&
           /* if active event is not viewed event - let them join */
           (activeEvent?.id !== selectedEvent.id ? (
             <Button onPress={() => addEvent()} title={'Add Event'} />
-          ) : selectedEvent.organizer?.id === context?.globalState.user.id ? (
+          ) : selectedEvent.organizer?.id === context?.globalState.user?.id ? (
             <>
               <Button onPress={() => addEvent()} title={'Send Notification'} />
               <Button

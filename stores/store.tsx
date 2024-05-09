@@ -11,12 +11,15 @@ import {Notification} from '../types/notification';
 import {User} from '../types/user';
 import {Event} from '../types/event';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Message} from '../types/message';
 
 // Define an interface for your global state
 interface GlobalState {
-  user: User | null | 'loading';
+  user: User | null;
+  userLoading: boolean;
   notifications: Notification[];
   events: Event[];
+  messages: Message[];
 }
 
 // Define the context type
@@ -31,9 +34,11 @@ export const AppContext = createContext<AppContextType | undefined>(undefined);
 // Provider component
 export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [globalState, setGlobalState] = useState<GlobalState>({
-    user: 'loading',
+    user: null,
+    userLoading: true,
     notifications: [],
     events: [],
+    messages: [],
   });
 
   // TODO: turn useeffects into custom, reusable hooks
@@ -53,12 +58,41 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
             user: null,
           }));
         }
+        // set loading to false for user
+        setGlobalState(prevState => ({
+          ...prevState,
+          userLoading: false,
+        }));
       } catch (error) {
         console.error('Failed to load user from AsyncStorage', error);
       }
     };
 
     loadUserData();
+  }, []);
+
+  useEffect(() => {
+    const loadMessagesData = async () => {
+      try {
+        const storedMessages = await AsyncStorage.getItem('messages');
+        console.log('stored messages ', storedMessages);
+        if (storedMessages && storedMessages.length) {
+          setGlobalState(prevState => ({
+            ...prevState,
+            events: JSON.parse(storedMessages),
+          }));
+        } else {
+          setGlobalState(prevState => ({
+            ...prevState,
+            messages: [],
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load messages from AsyncStorage', error);
+      }
+    };
+
+    loadMessagesData();
   }, []);
 
   useEffect(() => {

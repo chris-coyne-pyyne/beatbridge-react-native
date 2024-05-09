@@ -20,36 +20,10 @@ import {FAB} from 'react-native-paper';
 export function ActiveEvent({navigation, activeEvent}) {
   const context = useContext(AppContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
-  const notifications: Notification[] = [
-    {
-      id: '123213',
-      title: 'Important notice about bathrooms...',
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-      tags: ['Event'],
-    },
-    {
-      id: '999',
-      title: 'Important notice about bathrooms...',
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-      tags: ['Postponement'],
-    },
-    {
-      id: '123213sdf',
-      title: 'Important notice about bathrooms...',
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-      tags: ['Event'],
-    },
-    {
-      id: '999sdf',
-      title: 'Important notice about bathrooms...',
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-      tags: ['Postponement'],
-    },
-  ];
+
+  console.log('messages ', context?.globalState.messages);
+
+  const notifications = context?.globalState.notifications;
 
   const archiveEvent = () => {
     context?.updateGlobalState({events: []});
@@ -147,7 +121,7 @@ export function ActiveEvent({navigation, activeEvent}) {
         style={styles.fab}
         small
         icon="pencil"
-        label="Notification"
+        label="Report"
         onPress={() => navigation.navigate('NewReport')}
       />
     </Container>
