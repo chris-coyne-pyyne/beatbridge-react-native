@@ -1,47 +1,66 @@
-import {useContext, useState} from 'react';
-import {View, ScrollView, StyleSheet, Image} from 'react-native';
-import {Button} from '../../components/Button';
-import {Text, TextStyles} from '../../components/Text';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import {Button, Text, Icon} from 'react-native-paper';
 
 export const Section1 = ({selectImage, imageSource, setStep}: any) => {
   return (
     <ScrollView>
-      <Text size="large" weight="bold">
+      <Text variant="titleLarge" style={styles.container}>
         Event Thumbnail
       </Text>
-      <View>
-        <Button title="Select Image" onPress={selectImage} />
-        {imageSource && (
-          <Image
-            source={{
-              uri: imageSource.assets[0].uri,
-            }}
-            style={{width: 200, height: 200}}
-          />
+      <View style={styles.container}>
+        {/* TODO - add a way to reselect image if they want to change */}
+        {imageSource ? (
+          <View style={styles.imageContainer}>
+            <Image
+              source={{
+                uri: imageSource.assets[0].uri,
+              }}
+              style={{width: 200, height: 200}}
+            />
+          </View>
+        ) : (
+          <TouchableOpacity onPress={selectImage} style={styles.imagePicker}>
+            <Icon source="camera" size={20} />
+            <Text>Select Image</Text>
+          </TouchableOpacity>
         )}
       </View>
-      <Button title="Prev Section" onPress={() => setStep(0)} filled />
-      <Button title="Next Section" onPress={() => setStep(2)} filled />
+      <Button
+        onPress={() => setStep(0)}
+        mode="contained"
+        style={styles.container}>
+        Prev Section
+      </Button>
+      <Button
+        onPress={() => setStep(2)}
+        mode="contained"
+        style={styles.container}>
+        Next Section
+      </Button>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  container: {
+    marginTop: 12,
   },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
+  imagePicker: {
+    height: 150,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E9E9E9',
   },
-  textArea: {
-    height: 100,
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 12,
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
