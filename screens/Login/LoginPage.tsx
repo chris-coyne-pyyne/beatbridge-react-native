@@ -1,11 +1,11 @@
 import {useContext, useEffect, useState} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
-import {TextInput} from '../../components/TextInput';
-import {Button} from '../../components/Button';
-import {Text} from '../../components/Text';
+import {View, StyleSheet, Alert, Image} from 'react-native';
+// import {TextInput} from '../../components/TextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useMutation} from 'react-query';
+
+import {Button, Text, TextInput, Divider} from 'react-native-paper';
 
 import {globalStyles} from '../../styles/Styles';
 import {User} from '../../types/user';
@@ -42,7 +42,6 @@ export function LoginScreen({navigation}) {
         navigation.navigate('Home');
       },
       onError: err => {
-        // Optional: Handle error in mutation state
         console.error(
           'Error logging in:',
           err.response ? err.response.data.message : err.message,
@@ -51,85 +50,85 @@ export function LoginScreen({navigation}) {
     },
   );
 
-  /*
-  const handleLogin = async () => {
-    console.log('handling...');
-    try {
-      const response = await apiClient.post('user')
-
-      console.log('response ', response.data);
-      return;
-    } catch (e: any) {
-      console.log('Error: ', e.message);
-      if (e.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(e.response.data);
-        console.log(e.response.status);
-        console.log(e.response.headers);
-      } else if (e.request) {
-        // The request was made but no response was received
-        console.log(e.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', e.message);
-      }
-      return;
-    }
-    await AsyncStorage.setItem('userToken', 'TEST TOKEN');
-    const testToken = await AsyncStorage.getItem('userToken');
-    console.log('test token ', testToken);
-    console.log('Login attempt with:', email, password);
-
-    try {
-      let response;
-
-      // mock for now
-      const user: User = {
-        name: 'christopher coyne',
-        email: 'chris@pyyne.com',
-        token: 'token...',
-      };
-      await AsyncStorage.setItem('user', JSON.stringify(user));
-
-      // update store
-      context?.updateGlobalState({
-        user: user,
-      });
-
-      // after - go to home
-      navigation.navigate('Home');
-    } catch (error) {
-      // Handle errors
-      console.error(
-        'Login error:',
-        error.response ? error.response.data : error,
-      );
-      Alert.alert(
-        'Login Failed',
-        error.response ? error.response.data.message : 'An error occurred.',
-      );
-    }
-  };
-  */
-
   return (
-    <Container>
-      <Text>Login</Text>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true} // Hides the password text
-      />
-      <Button title="Login" onPress={mutate} />
-    </Container>
+    <View>
+      <View style={{width: '100%', height: '35%'}}>
+        <Text style={styles.title} variant="headlineLarge">
+          Welcome{'\n'}Back
+        </Text>
+        <Image
+          source={require('../../assets/background-abstract.png')}
+          style={{width: '100%', height: '100%'}}
+        />
+      </View>
+      <View style={styles.loginContainer}>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            mode="flat"
+          />
+        </View>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            mode="flat"
+          />
+        </View>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            mode="flat"
+          />
+        </View>
+        <View style={{marginTop: 24}}>
+          <View style={styles.container}>
+            <Button
+              mode="contained"
+              onPress={() => mutate()}
+              loading={isLoading}>
+              Login
+            </Button>
+          </View>
+          <View style={[styles.container, styles.dividerContainer]}>
+            <Text>Or</Text>
+          </View>
+          <View style={styles.container}>
+            <Button
+              mode="outlined"
+              onPress={() => navigation.navigate('Signup')}>
+              Sign Up
+            </Button>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  title: {
+    position: 'absolute',
+    top: '45%',
+    left: '10%',
+    zIndex: 2,
+    color: 'white',
+    fontWeight: 700,
+  },
+  container: {
+    marginTop: 12,
+  },
+  dividerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   input: {
     width: '80%', // Specifies width relative to the container
     padding: 10, // Padding inside the text input
@@ -138,5 +137,8 @@ const styles = StyleSheet.create({
     borderColor: '#ddd', // Color of the border
     borderRadius: 6, // Rounds the corners of the border
     backgroundColor: '#fff', // Background color of the input
+  },
+  loginContainer: {
+    padding: 16,
   },
 });

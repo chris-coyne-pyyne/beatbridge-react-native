@@ -110,6 +110,7 @@ function App(): React.JSX.Element {
       ...DefaultTheme.colors,
       primary: '#dc5100', // Custom orange color. You can replace it with any hex color.
       accent: '#FFC107', // Optional: change the accent color if you want.
+      surfaceVariant: '#eaeaea',
     },
   };
 
@@ -342,8 +343,16 @@ function App(): React.JSX.Element {
                   };
                 }}>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="Signup" component={SignupScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen
+                  name="Signup"
+                  component={SignupScreen}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{headerShown: false}}
+                />
                 <Stack.Screen name="Event" component={EventScreen} />
                 <Stack.Screen name="NewEvent" component={NewEventScreen} />
                 <Stack.Screen name="Profile" component={ProfileScreen} />
