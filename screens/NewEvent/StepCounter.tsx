@@ -28,7 +28,7 @@ const StepCounter = ({currentStep, totalSteps}: StepCounterProps) => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative', // Added position relative
-    marginBottom: 10,
+    marginBottom: 12,
   },
   progressBarContainer: {
     width: '100%',

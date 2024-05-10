@@ -1,8 +1,19 @@
 import {useContext, useState} from 'react';
-import {Text, View, ScrollView, StyleSheet} from 'react-native';
-import {Button} from '../../components/Button';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import {AppContext} from '../../stores/store';
-import {TextInput} from '../../components/TextInput';
+import {TextInput, Button, Text, Chip} from 'react-native-paper';
+
+const sampleGenres = [
+  'Jazz',
+  'Hip Hop',
+  'Country',
+  'Electronic',
+  'Rock',
+  'Emo',
+  'Pop Punk',
+  'Folk',
+  'Indie',
+];
 
 export const Section0 = ({
   name,
@@ -16,59 +27,62 @@ export const Section0 = ({
   return (
     <View>
       <ScrollView>
-        <Text size="xlarge" weight="bold">
+        <Text variant="titleLarge" style={styles.container}>
           Event Description
         </Text>
-
         <TextInput
-          placeholder="Name"
           value={name}
           onChangeText={setName}
           label={'Event Name'}
+          style={styles.container}
         />
         <TextInput
-          placeholder="Genre"
           value={genre}
           onChangeText={setGenre}
           label={'Event Genre'}
+          style={styles.container}
         />
+        <View style={styles.chipContainer}>
+          {sampleGenres.map(genre => (
+            <Chip onPress={() => setGenre(genre)} style={styles.chip}>
+              {genre}
+            </Chip>
+          ))}
+        </View>
 
         <TextInput
           placeholder="Description"
           value={description}
           onChangeText={setDescription}
           label={'Event Description'}
+          multiline
+          numberOfLines={5}
+          style={styles.container}
         />
 
-        <Button title="Next Section" onPress={() => setStep(1)} filled />
+        <Button
+          title="Next Section"
+          onPress={() => setStep(1)}
+          style={styles.container}
+          mode="contained">
+          Next Section
+        </Button>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  textArea: {
-    height: 100,
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 12,
-  },
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    gap: 16,
+    marginTop: 12,
+  },
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 12,
+  },
+  chip: {
+    marginRight: 16,
+    marginBottom: 16,
   },
 });
