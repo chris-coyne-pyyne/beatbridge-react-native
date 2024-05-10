@@ -111,8 +111,27 @@ function App(): React.JSX.Element {
       primary: '#dc5100', // Custom orange color. You can replace it with any hex color.
       accent: '#FFC107', // Optional: change the accent color if you want.
       surfaceVariant: '#eaeaea',
+      primaryContainer: '#ffd1bd',
+      onPrimaryContainer: '#9a3e00',
+      secondaryContainer: '#ffd8be',
+      onSecondaryContainer: '#502400',
     },
   };
+
+  /*
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      primary: 'rgb(255, 255, 0)',
+      onPrimary: 'rgb(255, 255, 255)',
+      primaryContainer: 'rgb(255, 255, 0)',
+      onPrimaryContainer: 'rgb(255, 255, 0)',
+      secondary: 'rgb(255, 255, 0)',
+      onSecondary: 'rgb(255, 255, 255)',
+      secondaryContainer: 'rgb(255, 255, 0)',
+    },
+  };
+  */
 
   /*
   const log = (event: string, body: any, error = false) => {
