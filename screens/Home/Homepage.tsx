@@ -36,6 +36,7 @@ export function HomeScreen({navigation}) {
   }
 
   if (!context?.globalState.user?.email) {
+    /*
     return (
       <View style={styles.container}>
         <Image
@@ -69,6 +70,8 @@ export function HomeScreen({navigation}) {
         </View>
       </View>
     );
+    */
+    navigation.navigate('Intro');
   }
 }
 

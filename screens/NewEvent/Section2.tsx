@@ -1,6 +1,5 @@
-import {ScrollView, StyleSheet} from 'react-native';
-import {Button} from '../../components/Button';
-import {Text} from '../../components/Text';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {TextInput, Button, Text} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 export const Section2 = ({
@@ -12,17 +11,33 @@ export const Section2 = ({
   handleEndConfirm,
   handleCreate,
   setStep,
+  endDate,
+  startDate,
 }: any) => {
+  console.log('END IN SEC 2 ', endDate);
   return (
     <ScrollView>
-      <Text size="large" weight="bold">
+      <Text variant="titleLarge" style={styles.marginTop}>
         Event Itinerary
       </Text>
-      <Button
-        title="Show Start Date Picker"
-        onPress={() => setStartVis(true)}
-      />
-      <Button title="Show End Date Picker" onPress={() => setEndVis(true)} />
+      <View style={styles.dateInputContainer}>
+        <TextInput
+          label="Start Date"
+          value={startDate}
+          style={styles.container}
+          right={
+            <TextInput.Icon icon="calendar" onPress={() => setStartVis(true)} />
+          }
+        />
+        <TextInput
+          label="End Date"
+          style={styles.container}
+          value={endDate}
+          right={
+            <TextInput.Icon icon="calendar" onPress={() => setEndVis(true)} />
+          }
+        />
+      </View>
       <DateTimePickerModal
         isVisible={startVis}
         mode="date"
@@ -35,13 +50,36 @@ export const Section2 = ({
         onConfirm={handleEndConfirm}
         onCancel={() => setEndVis(false)}
       />
-      <Button title="Prev Section" onPress={() => setStep(1)} filled />
-      <Button title="Create Event" onPress={() => handleCreate()} filled />
+      <Text variant="titleLarge" style={styles.marginTop}>
+        Artists
+      </Text>
+
+      <Text variant="titleLarge" style={styles.marginTop}>
+        Add a New Artist
+      </Text>
+      <View>
+        <TextInput label="Artist Name" />
+      </View>
+      <Button
+        onPress={() => setStep(1)}
+        mode="contained"
+        style={styles.container}>
+        Prev Section
+      </Button>
+      <Button
+        onPress={() => handleCreate()}
+        mode="contained"
+        style={styles.container}>
+        Create Event
+      </Button>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 12,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -58,5 +96,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     marginBottom: 12,
+  },
+  dateInputContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

@@ -1,15 +1,13 @@
 import {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '../../components/Text';
 import {Container} from '../../components/Container';
-import {TextInput} from '../../components/TextInput';
-import {Button} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Notification} from '../../types/notification';
 import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
 import {BridgefyContext} from '../../stores/bridgefyStore';
+import {TextInput, Button, Text} from 'react-native-paper';
 import {
   Bridgefy,
   BridgefyEvents,
@@ -60,10 +58,8 @@ export const NewReportPage = ({navigation}) => {
 
   return (
     <Container>
-      <Text size="xxlarge" weight="semibold">
-        Report
-      </Text>
-      <Text size="medium" weight="normal">
+      <Text variant="titleLarge">Report</Text>
+      <Text variant="bodyLarge">
         Send a message to the administrators letting them know if theres a
         problem
       </Text>
@@ -80,7 +76,9 @@ export const NewReportPage = ({navigation}) => {
           value={message}
           onChangeText={setMessage}
         />
-        <Button title="Send Report" onPress={handleCreateReport} filled />
+        <Button onPress={handleCreateReport} mode="contained">
+          Send Report
+        </Button>
       </View>
     </Container>
   );

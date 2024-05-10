@@ -15,7 +15,6 @@ import {
   Text,
   useColorScheme,
   View,
-  Button,
   type EmitterSubscription,
   NativeEventEmitter,
   NativeModules,
@@ -32,7 +31,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {
+  Provider as PaperProvider,
+  Avatar,
+  IconButton,
+} from 'react-native-paper';
 
 import {
   Bridgefy,
@@ -48,6 +51,7 @@ import {AppProvider} from './stores/store';
 import {NewReportPage} from './screens/NewReport/NewReportPage';
 
 import {Provider, DefaultTheme} from 'react-native-paper';
+import {IntroScreen} from './screens/Intro/Intro';
 
 const toastConfig = {
   /*
@@ -108,13 +112,13 @@ function App(): React.JSX.Element {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#dc5100', // Custom orange color. You can replace it with any hex color.
-      accent: '#FFC107', // Optional: change the accent color if you want.
-      surfaceVariant: '#eaeaea',
-      primaryContainer: '#ffd1bd',
-      onPrimaryContainer: '#9a3e00',
-      secondaryContainer: '#ffd8be',
-      onSecondaryContainer: '#502400',
+      primary: '#0077b6', // A strong blue, suitable as the primary color.
+      accent: '#03a9f4', // A lighter, vibrant blue for accentuating elements.
+      surfaceVariant: '#ededed', // A very light cyan, works well for surfaces and variants.
+      primaryContainer: '#bbdefb', // A light blue, good for containers of primary elements.
+      onPrimaryContainer: '#003c8f', // A dark blue that contrasts well on primary containers.
+      secondaryContainer: '#b3e5fc', // Another light blue, slightly different for secondary containers.
+      onSecondaryContainer: '#002171', // A very dark blue, providing high contrast on secondary containers.
     },
   };
 
@@ -343,24 +347,23 @@ function App(): React.JSX.Element {
           <PaperProvider theme={theme}>
             <NavigationContainer>
               <Stack.Navigator
-                screenOptions={({navigation}) => {
+                initialRouteName="Home"
+                screenOptions={({navigation, route}) => {
+                  const isIntro = route.name === 'Intro';
                   return {
-                    headerStyle: {
-                      backgroundColor: '#fff',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                      fontWeight: 'bold',
-                    },
+                    // Conditionally set the header style and header right component
+                    headerStyle: {backgroundColor: '#fff'}, // Apply no style if it's 'Intro'
                     headerRight: () => (
-                      <Button
+                      <IconButton
+                        icon="account"
                         onPress={() => navigation.navigate('Profile')}
-                        title="Profile"
-                        color="#fff"
                       />
                     ),
+                    // You might want to also control the visibility of the header
+                    headerShown: !isIntro, // Hide the header completely if it's 'Intro'
                   };
                 }}>
+                <Stack.Screen name="Intro" component={IntroScreen} />
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen
                   name="Signup"

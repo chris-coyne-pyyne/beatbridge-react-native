@@ -1,3 +1,10 @@
+type Set = {
+  startTime: string;
+  endTime: string;
+  player: string;
+  date: string;
+};
+
 export type Event = {
   id: string;
   organizer?: {
@@ -13,4 +20,5 @@ export type Event = {
   active: boolean;
   startDate: string;
   endDate: string;
+  itinerary: Set[];
 };

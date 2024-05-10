@@ -140,8 +140,6 @@ export const NewEventScreen = ({navigation}) => {
     setImageSource(result);
   };
 
-  console.log('END ', endDate);
-
   const handleCreate = async () => {
     // create new event with data - save to API, and also save locally afterwards
     console.log(
@@ -197,8 +195,6 @@ export const NewEventScreen = ({navigation}) => {
     }
   };
 
-  console.log('step ', step);
-
   return (
     <Container>
       <StepCounter currentStep={step} totalSteps={3} />
@@ -228,6 +224,8 @@ export const NewEventScreen = ({navigation}) => {
           handleEndConfirm={handleEndConfirm}
           handleCreate={mutate}
           setStep={setStep}
+          startDate={startDate}
+          endDate={endDate}
         />
       )}
     </Container>
