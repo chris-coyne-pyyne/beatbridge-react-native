@@ -3,4 +3,5 @@ export type Notification = {
   message: string;
   title: string;
   tags: string[];
+  date: string;
 };

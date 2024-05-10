@@ -1,21 +1,18 @@
 import {
   View,
-  Button,
   Image,
   StyleSheet,
   Modal,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {Text} from '../../components/Text';
 
 import {globalStyles} from '../../styles/Styles';
 import {Notification} from '../../types/notification';
 import {useContext, useState} from 'react';
 import {AppContext} from '../../stores/store';
 import {Container} from '../../components/Container';
-import {Tag} from '../../components/Tag';
-import {FAB} from 'react-native-paper';
+import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 
 export function ActiveEvent({navigation, activeEvent}) {
   const context = useContext(AppContext);
@@ -23,7 +20,38 @@ export function ActiveEvent({navigation, activeEvent}) {
 
   console.log('messages ', context?.globalState.messages);
 
+  /*
   const notifications = context?.globalState.notifications;
+  */
+
+  const notifications = [
+    {
+      id: '123',
+      title: 'random',
+      message:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      tags: ['postponement'],
+      date: '18 Dec',
+    },
+    {
+      id: '123897',
+      title: 'random',
+      message:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      tags: ['postponement'],
+      date: '18 Dec',
+    },
+    {
+      id: '123897sdf',
+      title: 'random',
+      message:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      tags: ['postponement'],
+      date: '18 Dec',
+    },
+  ];
+
+  const isAdmin = context?.globalState.user?.id === activeEvent?.id;
 
   const archiveEvent = () => {
     context?.updateGlobalState({events: []});
@@ -41,62 +69,76 @@ export function ActiveEvent({navigation, activeEvent}) {
   };
 
   return (
-    <Container>
-      <ScrollView style={{borderWidth: 2, borderColor: 'red'}}>
-        <Text size="xlarge">{activeEvent.name}</Text>
+    <View style={styles.pageContainer}>
+      <ScrollView>
+        <Text variant="headlineLarge">{activeEvent.name}</Text>
         <View style={styles.eventContainer}>
           <Image
             source={{
-              uri: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Vans_Warped_Tour_Logo.png',
+              uri: activeEvent.pic,
             }}
             style={{
-              width: 125,
-              height: 100,
-              borderWidth: 2,
-              borderColor: 'red',
+              width: 150,
+              height: 125,
             }}
           />
-          <View>
-            <Text size="medium">April 20 - April 30</Text>
-            <Text size="medium">Rock and Roll</Text>
+          <View style={styles.headerTextContainer}>
+            <Text variant="bodyLarge" style={{marginTop: 6}}>
+              April 20 - April 30
+            </Text>
+            <Text variant="bodyLarge" style={{marginTop: 6}}>
+              Rock and Roll
+            </Text>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Event', {id: activeEvent.id})
-              }>
-              <Text size="medium">Event Page {'->'}</Text>
+              onPress={() => navigation.navigate('Event', {id: activeEvent.id})}
+              mode="contained">
+              <Text variant="bodyLarge" style={{marginTop: 6, color: 'orange'}}>
+                Event Page
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <Text size="xlarge">Notifications</Text>
+
+        <View style={styles.notificationTitleContainer}>
+          <Text variant="titleLarge">Notifications</Text>
+        </View>
 
         {notifications &&
           notifications.map(notification => (
             <TouchableOpacity
               key={notification.id}
               id={notification.id}
-              style={styles.notificationContainer}
+              style={[styles.notificationContainer, styles.container]}
               delayPressIn={50}
               onPress={() => setModalOpen(notification)}>
-              <View>
-                <Text>18</Text>
-                <Text>December</Text>
+              <View style={styles.dateContainer}>
+                <Text variant="titleLarge">18</Text>
+                <Text variant="titleLarge">Dec</Text>
               </View>
-              <View>
-                <Text>{notification.title}</Text>
-                <Text>{notification.message}</Text>
-                <View style={styles.notificationTagsContainer}>
+              <View style={styles.notificationTextContainer}>
+                <Text variant="titleLarge">{notification.title}</Text>
+                <Text
+                  variant="bodyLarge"
+                  ellipsizeMode="tail"
+                  numberOfLines={4}
+                  style={styles.container}>
+                  {notification.message}
+                </Text>
+                <View
+                  style={[styles.notificationTagsContainer, styles.container]}>
                   {notification.tags.map(tag => (
-                    <Tag title={tag} />
+                    <Chip>{tag}</Chip>
                   ))}
                 </View>
               </View>
             </TouchableOpacity>
           ))}
-        <Button onPress={() => archiveEvent()} title={'Archive Event'} />
-        <Button
-          onPress={() => navigation.navigate('NewNotification')}
-          title={'Write Notification'}
-        />
+        {isAdmin && (
+          <Button
+            onPress={() => navigation.navigate('NewNotification')}
+            title={'Write Notification'}
+          />
+        )}
 
         {modalOpen && (
           <Modal
@@ -105,15 +147,25 @@ export function ActiveEvent({navigation, activeEvent}) {
             onRequestClose={() => setModalOpen(null)}>
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
-                <Text>Test modal</Text>
-                <TouchableOpacity onPress={() => setModalOpen(null)}>
-                  <Text>{modalOpen.title}</Text>
-                  <Text>{modalOpen.message}</Text>
-                  {modalOpen.tags.map(tag => (
-                    <Tag title={tag} />
-                  ))}
-                  <Text>Close Modal</Text>
-                </TouchableOpacity>
+                <ScrollView>
+                  <TouchableOpacity onPress={() => setModalOpen(null)}>
+                    <Text variant="titleLarge">{modalOpen.title}</Text>
+                    <Divider
+                      bold={true}
+                      style={{marginTop: 6, marginBottom: 6}}
+                    />
+                    <Text variant="bodyLarge">{modalOpen.message}</Text>
+                    <View
+                      style={[
+                        {display: 'flex', flexDirection: 'row'},
+                        styles.container,
+                      ]}>
+                      {modalOpen.tags.map(tag => (
+                        <Chip>{tag}</Chip>
+                      ))}
+                    </View>
+                  </TouchableOpacity>
+                </ScrollView>
               </View>
             </View>
           </Modal>
@@ -126,22 +178,43 @@ export function ActiveEvent({navigation, activeEvent}) {
         label="Report"
         onPress={() => navigation.navigate('NewReport')}
       />
-    </Container>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  headerTextContainer: {
+    paddingLeft: 12,
+  },
+  notificationTitleContainer: {
+    borderBottomWidth: 2,
+    borderColor: '#E1E1E1',
+    padding: 6,
+  },
+  container: {
+    marginTop: 12,
+  },
+  pageContainer: {
+    display: 'flex',
+    padding: 12,
+  },
   eventContainer: {
     paddingVertical: 24,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space between',
-    borderWidth: 2,
-    borderColor: 'red',
   },
   notificationContainer: {
     display: 'flex',
     flexDirection: 'row',
+    borderBottomWidth: 2,
+    padding: 12,
+    borderColor: '#E1E1E1',
+  },
+  notificationTextContainer: {
+    overflow: 'visible',
+    flexShrink: 1,
+    marginLeft: 16,
   },
   notificationTagsContainer: {
     display: 'flex',
@@ -160,11 +233,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%', // Control the size of the modal itself
     alignItems: 'center', // Center the text inside the modal
+    maxHeight: 400,
   },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  dateContainer: {
+    backgroundColor: '#E1E1E1',
+    borderRadius: 50,
+    height: 90,
+    width: 90,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    maxHeight: 100,
   },
 });
