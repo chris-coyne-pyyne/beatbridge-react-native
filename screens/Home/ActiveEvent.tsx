@@ -13,6 +13,7 @@ import {useContext, useState} from 'react';
 import {AppContext} from '../../stores/store';
 import {Container} from '../../components/Container';
 import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
+import {formatUnixTimestamp} from '../../utils/dates';
 
 export function ActiveEvent({navigation, activeEvent}) {
   const context = useContext(AppContext);
@@ -20,9 +21,8 @@ export function ActiveEvent({navigation, activeEvent}) {
 
   console.log('messages ', context?.globalState.messages);
 
-  const notifications = context?.globalState.notifications;
+  // const notifications = context?.globalState.notifications;
 
-  /*
   const notifications = [
     {
       id: '123',
@@ -30,7 +30,7 @@ export function ActiveEvent({navigation, activeEvent}) {
       message:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       tags: ['postponement'],
-      date: '18 Dec',
+      date: 1715452835,
     },
     {
       id: '123897',
@@ -38,7 +38,7 @@ export function ActiveEvent({navigation, activeEvent}) {
       message:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       tags: ['postponement'],
-      date: '18 Dec',
+      date: 1715452835,
     },
     {
       id: '123897sdf',
@@ -46,10 +46,9 @@ export function ActiveEvent({navigation, activeEvent}) {
       message:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       tags: ['postponement'],
-      date: '18 Dec',
+      date: 1715452835,
     },
   ];
-  */
 
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer.id;
 
@@ -116,8 +115,12 @@ export function ActiveEvent({navigation, activeEvent}) {
               delayPressIn={50}
               onPress={() => setModalOpen(notification)}>
               <View style={styles.dateContainer}>
-                <Text variant="titleLarge">18</Text>
-                <Text variant="titleLarge">Dec</Text>
+                <Text variant="titleLarge">
+                  {formatUnixTimestamp(notification.date).day}
+                </Text>
+                <Text variant="titleLarge">
+                  {formatUnixTimestamp(notification.date).month}
+                </Text>
               </View>
               <View style={styles.notificationTextContainer}>
                 <Text variant="titleLarge">{notification.title}</Text>
@@ -159,7 +162,7 @@ export function ActiveEvent({navigation, activeEvent}) {
                         styles.container,
                       ]}>
                       {modalOpen.tags.map(tag => (
-                        <Chip>{tag}</Chip>
+                        <Chip key={tag}>{tag}</Chip>
                       ))}
                     </View>
                   </TouchableOpacity>
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -240,8 +243,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    width: '80%', // Control the size of the modal itself
-    alignItems: 'center', // Center the text inside the modal
+    width: '80%',
+    alignItems: 'center',
     maxHeight: 400,
   },
   fab: {

@@ -119,6 +119,14 @@ function App(): React.JSX.Element {
       onPrimaryContainer: '#003c8f', // A dark blue that contrasts well on primary containers.
       secondaryContainer: '#b3e5fc', // Another light blue, slightly different for secondary containers.
       onSecondaryContainer: '#002171', // A very dark blue, providing high contrast on secondary containers.
+      elevation: {
+        level0: 'white',
+        level1: 'white',
+        level2: 'white',
+        level3: 'white',
+        level4: 'white',
+        level5: 'white',
+      },
     },
   };
 
@@ -127,12 +135,42 @@ function App(): React.JSX.Element {
     ...DefaultTheme,
     colors: {
       primary: 'rgb(255, 255, 0)',
-      onPrimary: 'rgb(255, 255, 255)',
+      onPrimary: 'rgb(255, 255, 0)',
       primaryContainer: 'rgb(255, 255, 0)',
       onPrimaryContainer: 'rgb(255, 255, 0)',
       secondary: 'rgb(255, 255, 0)',
-      onSecondary: 'rgb(255, 255, 255)',
+      onSecondary: 'rgb(255, 255, 0)',
       secondaryContainer: 'rgb(255, 255, 0)',
+      onSecondaryContainer: 'rgb(255, 255, 0)',
+      tertiary: 'rgb(255, 255, 0)',
+      onTertiary: 'rgb(255, 255, 0)',
+      tertiaryContainer: 'rgb(255, 255, 0)',
+      onTertiaryContainer: 'rgb(255, 255, 0)',
+      error: 'rgb(255, 255, 0)',
+      onError: 'rgb(255, 255, 0)',
+      errorContainer: 'rgb(255, 255, 0)',
+      onErrorContainer: 'rgb(255, 255, 0)',
+      background: 'rgb(255, 255, 0)',
+      onBackground: 'rgb(255, 255, 0)',
+      surface: 'rgb(255, 255, 0)',
+      onSurface: 'rgb(255, 255, 0)',
+      surfaceVariant: 'rgb(255, 255, 0)',
+      onSurfaceVariant: 'rgb(255, 255, 0)',
+      outline: 'rgb(255, 255, 0)',
+      outlineVariant: 'rgb(255, 255, 0)',
+      shadow: 'rgb(255, 255, 0)',
+      scrim: 'rgb(255, 255, 0)',
+      inverseSurface: 'rgb(255, 255, 0)',
+      inverseOnSurface: 'rgb(255, 255, 0)',
+      inversePrimary: 'rgb(255, 255, 0)',
+      elevation: {
+        level0: 'rgb(255, 255, 0)',
+        level1: 'rgb(255, 255, 0)',
+        level2: 'rgb(255, 255, 0)',
+        level3: 'rgb(255, 255, 0)',
+        level4: 'rgb(255, 255, 0)',
+        level5: 'rgb(255, 255, 0)',
+      },
     },
   };
   */

@@ -1,9 +1,6 @@
 import {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '../../components/Text';
 import {Container} from '../../components/Container';
-import {TextInput} from '../../components/TextInput';
-import {Button} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Notification} from '../../types/notification';
@@ -11,6 +8,7 @@ import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
 import uuid from 'react-native-uuid';
 import {BridgefyContext} from '../../stores/bridgefyStore';
+import {TextInput, Text, Button} from 'react-native-paper';
 import {
   Bridgefy,
   BridgefyEvents,
@@ -27,8 +25,7 @@ const showToast = () => {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    gap: 16,
+    marginTop: 12,
   },
   input: {
     height: 40,
@@ -52,11 +49,14 @@ export function NewNotificationScreen({navigation}) {
 
     const oldNotifications = await AsyncStorage.getItem('notifications');
     const parsedOldNotifications = JSON.parse(oldNotifications || '[]');
+
+    const currentDate = new Date();
     const newNotification: Notification = {
       id: uuid.v4(),
       message,
       title,
       tags: [tags],
+      date: Math.floor(currentDate.getTime() / 1000),
     };
 
     // add notification to local db
@@ -89,8 +89,8 @@ export function NewNotificationScreen({navigation}) {
 
   return (
     <Container>
-      <Text size="xlarge" weight="semibold">
-        Notification
+      <Text style={styles.container} variant="titleLarge">
+        Send new notification
       </Text>
       <View style={styles.container}>
         <TextInput
@@ -98,24 +98,31 @@ export function NewNotificationScreen({navigation}) {
           value={title}
           onChangeText={setTitle}
           label="Notification Title"
+          style={styles.container}
         />
         <TextInput
-          label="Notification Title"
+          label="Notification Message"
           placeholder="Enter message"
+          multiline
+          numberOfLines={4}
           value={message}
           onChangeText={setMessage}
+          style={styles.container}
         />
         <TextInput
           label="Notification Tags"
           placeholder="Enter tags separated by space"
           value={tags}
           onChangeText={setTags}
+          style={styles.container}
         />
         <Button
-          title="Create Notification"
           onPress={handleCreateNotification}
-          filled
-        />
+          style={styles.container}
+          mode="contained"
+          filled>
+          Create Notification
+        </Button>
       </View>
     </Container>
   );

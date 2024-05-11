@@ -20,30 +20,11 @@ export function EventScreen({route, navigation}) {
   };
 
   // TODO - should only be called if coming from the main event picker component
-  /*
   const {
     data: apiEvent,
     error,
     isLoading,
   } = useQuery<Event[]>(['event', id], fetchData);
-  */
-  const apiEvent = {
-    id: '1234',
-    organizer: {
-      id: '578ec1bc-147d-415e-8edb-de52fc2b3b0e',
-      email: 'alexjohnson@gmail.com',
-      name: 'Alex Johnson',
-    },
-    pic: 'https://static.vecteezy.com/system/resources/previews/012/825/177/original/trumpet-logo-jazz-music-festival-logo-vector.jpg',
-    name: 'Jazz Event',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    genre: 'Jazz',
-    active: true,
-    startDate: 'June 7',
-    endDate: 'June 14',
-  };
-  console.log('EVENT INFO ', apiEvent);
 
   let selectedEvent: Event | null;
 
@@ -73,6 +54,22 @@ export function EventScreen({route, navigation}) {
     }
   };
 
+  const archiveEvent = () => {
+    // for now - just reset all events. ideally should only deactivate active event tho
+    context?.updateGlobalState({events: []});
+    /*
+    const events = context?.globalState.events;
+    if (events) {
+      const newEvents = [...events];
+      const activeEventInd = newEvents.findIndex(
+        event => event.active === true,
+      );
+      newEvents[activeEventInd].active = false;
+      context?.updateGlobalState({events: newEvents});
+    }
+    */
+  };
+
   if (!selectedEvent) {
     return (
       <Container>
@@ -96,11 +93,11 @@ export function EventScreen({route, navigation}) {
         </View>
         <View style={[styles.subtitleContainer, styles.container]}>
           <Chip>{selectedEvent.genre}</Chip>
-          <Text variant="bodyMedium">
+          <Text variant="bodyLarge">
             {selectedEvent.startDate} - {selectedEvent.endDate}
           </Text>
         </View>
-        <Text variant="bodyMedium" style={[styles.container]}>
+        <Text variant="bodyLarge" style={[styles.container]}>
           {selectedEvent.description}
         </Text>
         <View style={styles.titleContainer}>
@@ -116,37 +113,68 @@ export function EventScreen({route, navigation}) {
                 }}
                 style={styles.profilePic}
               />
-              <View style={styles.cardTextContainer}>
-                <Text variant="bodyMedium">{selectedEvent.organizer.name}</Text>
-                <Text variant="bodyMedium">
-                  {selectedEvent.organizer.email}
+              <View style={[styles.cardTextContainer]}>
+                <Text variant="bodyLarge" style={{flexWrap: 'wrap'}}>
+                  {selectedEvent.organizer.name}
                 </Text>
+                <Text variant="bodyLarge">{selectedEvent.organizer.email}</Text>
               </View>
             </View>
           </Card>
         )}
         {/* show buttons based on login + role */}
-        {!context?.globalState.userLoading &&
+        {!context?.globalState.userLoading && (
           /* if active event is not viewed event - let them join */
-          (activeEvent?.id !== selectedEvent.id ? (
-            <Button onPress={() => addEvent()} mode="contained">
-              Add Event
-            </Button>
-          ) : selectedEvent.organizer?.id === context?.globalState.user?.id ? (
-            <>
-              <Button onPress={() => console.log('going...')}>
-                Send Notification{' '}
+          <View style={styles.buttonContainer}>
+            {activeEvent?.id !== selectedEvent.id ? (
+              <Button
+                onPress={() => addEvent()}
+                mode="contained"
+                style={styles.container}>
+                Add Event
               </Button>
-              <Button onPress={() => console.log('end event')}>
-                {' '}
-                Archive Event{' '}
-              </Button>
-            </>
-          ) : (
-            <Button onPress={() => console.log('sending...')}>
-              Send Message{' '}
-            </Button>
-          ))}
+            ) : selectedEvent.organizer?.id ===
+              context?.globalState.user?.id ? (
+              <>
+                <Button
+                  onPress={() => navigation.navigate('NewNotification')}
+                  mode="contained"
+                  icon="pencil"
+                  style={styles.container}>
+                  Send Notification{' '}
+                </Button>
+                <Button
+                  onPress={() => archiveEvent()}
+                  mode="outlined"
+                  textColor="red"
+                  icon="trash-can"
+                  style={styles.container}>
+                  {' '}
+                  Archive Event{' '}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onPress={() => navigation.navigate('NewReport')}
+                  mode="contained"
+                  icon="pencil"
+                  style={styles.container}>
+                  Send Report{' '}
+                </Button>
+                <Button
+                  onPress={() => archiveEvent()}
+                  mode="outlined"
+                  textColor="red"
+                  icon="trash-can"
+                  style={styles.container}>
+                  {' '}
+                  Archive Event{' '}
+                </Button>
+              </>
+            )}
+          </View>
+        )}
       </ScrollView>
     </Container>
   );
@@ -177,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    margin: 12,
+    marginTop: 12,
   },
   cardContainer: {
     padding: 12,
@@ -185,10 +213,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   profilePic: {
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
   },
   cardTextContainer: {
     paddingLeft: 6,
+  },
+  buttonContainer: {
+    marginTop: 24,
   },
 });
