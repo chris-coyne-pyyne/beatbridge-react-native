@@ -22,8 +22,8 @@ import {create} from 'react-test-renderer';
 const showToast = () => {
   Toast.show({
     type: 'success',
-    text1: 'Hello',
-    text2: 'This is some something 👋',
+    text1: 'Event created',
+    text2: 'Your event has been successfully created',
   });
 };
 
@@ -67,6 +67,7 @@ export const NewEventScreen = ({navigation}) => {
   const context = useContext(AppContext);
 
   const user = context?.globalState.user;
+  const isUserLoading = context?.globalState.userLoading;
 
   // date picker stuff
   const [startVis, setStartVis] = useState(false);
@@ -82,7 +83,7 @@ export const NewEventScreen = ({navigation}) => {
         imageSource,
         startDate,
         endDate,
-        userId: user && user !== 'loading' ? user.id : '',
+        userId: user && !isUserLoading ? user.id : '',
       });
       return response.data;
     },
@@ -138,61 +139,6 @@ export const NewEventScreen = ({navigation}) => {
 
     console.log('result ', result);
     setImageSource(result);
-  };
-
-  const handleCreate = async () => {
-    // create new event with data - save to API, and also save locally afterwards
-    console.log(
-      'relevant info: ',
-      name,
-      genre,
-      description,
-      imageSource,
-      startDate,
-      endDate,
-    );
-    return;
-    // send to api
-
-    if (context?.globalState.events) {
-      // TO DO - send post request to backend to create
-
-      // create new event
-      const newEvent: Event = {
-        name: 'Vans Warped Tour 2001',
-        genre: 'Pop Punk',
-        description: 'lorem ipsum...',
-        active: true,
-        id: generateRandomString(16),
-        organizer: 'chris.coyne@pyyne.com',
-      };
-
-      // after API request - update all events in local database
-      console.log(
-        'SETTING ASYNC WITH NEW EVENTS ',
-        'events ',
-        events,
-        ' new event ',
-        newEvent,
-      );
-      const newLocalEvents = events || [];
-      for (const e of newLocalEvents) {
-        e.active = false;
-      }
-
-      console.log('WILL ADD EVENT ', [...newLocalEvents, newEvent]);
-
-      await AsyncStorage.setItem(
-        'events',
-        JSON.stringify([...newLocalEvents, newEvent]),
-      );
-      context?.updateGlobalState({
-        events: [...newLocalEvents, newEvent],
-      });
-
-      showToast();
-      navigation.navigate('Home');
-    }
   };
 
   return (

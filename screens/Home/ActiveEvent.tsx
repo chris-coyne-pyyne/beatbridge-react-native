@@ -20,10 +20,9 @@ export function ActiveEvent({navigation, activeEvent}) {
 
   console.log('messages ', context?.globalState.messages);
 
-  /*
   const notifications = context?.globalState.notifications;
-  */
 
+  /*
   const notifications = [
     {
       id: '123',
@@ -50,8 +49,9 @@ export function ActiveEvent({navigation, activeEvent}) {
       date: '18 Dec',
     },
   ];
+  */
 
-  const isAdmin = context?.globalState.user?.id === activeEvent?.id;
+  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer.id;
 
   const archiveEvent = () => {
     context?.updateGlobalState({events: []});
@@ -72,6 +72,10 @@ export function ActiveEvent({navigation, activeEvent}) {
     <View style={styles.pageContainer}>
       <ScrollView>
         <Text variant="headlineLarge">{activeEvent.name}</Text>
+        <View
+          style={[{display: 'flex', flexDirection: 'row'}, styles.container]}>
+          <Chip>{isAdmin ? 'Admin' : 'Attendee'}</Chip>
+        </View>
         <View style={styles.eventContainer}>
           <Image
             source={{
@@ -83,16 +87,16 @@ export function ActiveEvent({navigation, activeEvent}) {
             }}
           />
           <View style={styles.headerTextContainer}>
-            <Text variant="bodyLarge" style={{marginTop: 6}}>
+            <Text variant="bodyLarge" style={{marginTop: 2}}>
               April 20 - April 30
             </Text>
-            <Text variant="bodyLarge" style={{marginTop: 6}}>
+            <Text variant="bodyLarge" style={{marginTop: 2}}>
               Rock and Roll
             </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Event', {id: activeEvent.id})}
               mode="contained">
-              <Text variant="bodyLarge" style={{marginTop: 6, color: 'orange'}}>
+              <Text variant="bodyLarge" style={{marginTop: 2, color: 'orange'}}>
                 Event Page
               </Text>
             </TouchableOpacity>
@@ -127,18 +131,12 @@ export function ActiveEvent({navigation, activeEvent}) {
                 <View
                   style={[styles.notificationTagsContainer, styles.container]}>
                   {notification.tags.map(tag => (
-                    <Chip>{tag}</Chip>
+                    <Chip key={tag}>{tag}</Chip>
                   ))}
                 </View>
               </View>
             </TouchableOpacity>
           ))}
-        {isAdmin && (
-          <Button
-            onPress={() => navigation.navigate('NewNotification')}
-            title={'Write Notification'}
-          />
-        )}
 
         {modalOpen && (
           <Modal
@@ -171,13 +169,23 @@ export function ActiveEvent({navigation, activeEvent}) {
           </Modal>
         )}
       </ScrollView>
-      <FAB
-        style={styles.fab}
-        small
-        icon="pencil"
-        label="Report"
-        onPress={() => navigation.navigate('NewReport')}
-      />
+      {isAdmin ? (
+        <FAB
+          style={styles.fab}
+          small
+          icon="pencil"
+          label="Notification"
+          onPress={() => navigation.navigate('NewNotification')}
+        />
+      ) : (
+        <FAB
+          style={styles.fab}
+          small
+          icon="pencil"
+          label="Report"
+          onPress={() => navigation.navigate('NewReport')}
+        />
+      )}
     </View>
   );
 }
@@ -197,6 +205,7 @@ const styles = StyleSheet.create({
   pageContainer: {
     display: 'flex',
     padding: 12,
+    flex: 1,
   },
   eventContainer: {
     paddingVertical: 24,

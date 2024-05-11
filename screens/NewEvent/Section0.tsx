@@ -44,7 +44,10 @@ export const Section0 = ({
         />
         <View style={styles.chipContainer}>
           {sampleGenres.map(genre => (
-            <Chip onPress={() => setGenre(genre)} style={styles.chip}>
+            <Chip
+              key={genre}
+              onPress={() => setGenre(genre)}
+              style={styles.chip}>
               {genre}
             </Chip>
           ))}

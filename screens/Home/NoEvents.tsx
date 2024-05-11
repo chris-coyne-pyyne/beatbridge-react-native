@@ -96,7 +96,7 @@ export function NoEvents({navigation}) {
   const [text, setText] = useState('');
   return (
     <View style={styles.pageContainer}>
-      <ScrollView style={{borderWidth: 2, borderColor: 'red'}}>
+      <ScrollView>
         <View style={styles.container}>
           <Text variant="headlineLarge">Let's get started</Text>
         </View>
