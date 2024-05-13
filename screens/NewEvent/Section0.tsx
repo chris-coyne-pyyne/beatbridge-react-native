@@ -1,6 +1,7 @@
 import {useContext, useState} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {AppContext} from '../../stores/store';
+import {useFormContext, Controller} from 'react-hook-form';
 import {TextInput, Button, Text, Chip} from 'react-native-paper';
 
 const sampleGenres = [
@@ -23,44 +24,89 @@ export const Section0 = ({
   description,
   setDescription,
   setStep,
+  form,
+  setForm,
 }: any) => {
+  const {register, watch, setValue, control} = useFormContext();
+  const allValues = watch();
+  console.log('all values ', allValues);
+
+  const onRegister = (name: string) => {
+    return (text: string) => {
+      setValue(name, text, {
+        shouldValidate: true,
+      });
+    };
+  };
   return (
     <View>
       <ScrollView>
         <Text variant="titleLarge" style={styles.container}>
           Event Description
         </Text>
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          label={'Event Name'}
-          style={styles.container}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={[styles.input, styles.container]}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              label="Event Name"
+            />
+          )}
+          name="name"
+          defaultValue=""
         />
-        <TextInput
-          value={genre}
-          onChangeText={setGenre}
-          label={'Event Genre'}
-          style={styles.container}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={[styles.input, styles.container]}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              label="Event Genre"
+            />
+          )}
+          name="genre"
+          defaultValue=""
         />
         <View style={styles.chipContainer}>
           {sampleGenres.map(genre => (
             <Chip
               key={genre}
-              onPress={() => setGenre(genre)}
+              onPress={() => setValue('genre', genre)}
               style={styles.chip}>
               {genre}
             </Chip>
           ))}
         </View>
 
-        <TextInput
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-          label={'Event Description'}
-          multiline
-          numberOfLines={5}
-          style={styles.container}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={[styles.input, styles.container]}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              multiline
+              numberOfLines={4}
+              label="Event Description"
+            />
+          )}
+          name="description"
+          defaultValue=""
         />
 
         <Button

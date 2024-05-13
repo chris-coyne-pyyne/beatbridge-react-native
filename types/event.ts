@@ -1,4 +1,4 @@
-type Set = {
+export type BandSet = {
   startTime: string;
   endTime: string;
   player: string;
@@ -20,5 +20,5 @@ export type Event = {
   active: boolean;
   startDate: string;
   endDate: string;
-  itinerary: Set[];
+  itinerary: BandSet[];
 };

@@ -19,6 +19,7 @@ import {apiClient} from '../../api/axiosConfig';
 import {TextInput} from 'react-native-paper';
 import {BandSet} from '../../types/event';
 import {create} from 'react-test-renderer';
+import {useForm, FormProvider} from 'react-hook-form';
 
 const showToast = () => {
   Toast.show({
@@ -55,8 +56,30 @@ const styles = StyleSheet.create({
   },
 });
 
+type Form = {
+  name: string;
+  genre: string;
+  description: string;
+  imageSource: string;
+  artists: BandSet[];
+  startDate: string;
+  endDate: string;
+};
+
+const emptyForm = {
+  name: '',
+  genre: '',
+  description: '',
+  imageSource: '',
+  artists: [],
+  startDate: '',
+  endDate: '',
+};
+
 // TODO - refactor this to be less messy
 export const NewEventScreen = ({navigation}) => {
+  const [form, setForm] = useState<Form>(emptyForm);
+
   const {data: events} = useAsyncStorage<Event[]>('events');
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
@@ -66,6 +89,10 @@ export const NewEventScreen = ({navigation}) => {
   const [imageSource, setImageSource] = useState(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [startVis, setStartVis] = useState(false);
+  const [endVis, setEndVis] = useState(false);
+
+  const methods = useForm({defaultValues: emptyForm, mode: 'onSubmit'});
 
   const context = useContext(AppContext);
 
@@ -73,8 +100,13 @@ export const NewEventScreen = ({navigation}) => {
   const isUserLoading = context?.globalState.userLoading;
 
   // date picker stuff
-  const [startVis, setStartVis] = useState(false);
-  const [endVis, setEndVis] = useState(false);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [timeVisStartArtist, setTimeVisStartArtist] = useState(false);
+  const [timeVisEndArtist, setTimeVisEndArtist] = useState(false);
+  const [artistDate, setArtistDate] = useState<string | null>(null);
+  const [dateVisArtist, setDateVisArtist] = useState(false);
+  console.log('ROOT TIME VIS END ARTIST ', timeVisEndArtist);
 
   // axios
   const {mutate, isLoading, error} = useMutation(
@@ -125,16 +157,30 @@ export const NewEventScreen = ({navigation}) => {
 
   const handleEndConfirm = date => {
     console.log('handle end confrim');
-    const formatted = formatDate(date);
+    const formatted = formatDate(date).formattedDate;
     setEndDate(formatted);
     setEndVis(false);
   };
 
   const handleStartConfirm = date => {
     console.log('handle start confirm');
-    const formatted = formatDate(date);
+    const formatted = formatDate(date).formattedDate;
     setStartDate(formatted);
     setStartVis(false);
+  };
+
+  const handleEndTimeArtistConfirm = time => {
+    const formattedTime = formatDate(time).formattedTime;
+    console.log('time ', formattedTime);
+    setEndTime(formattedTime);
+    setTimeVisEndArtist(false);
+  };
+
+  const handleStartTimeArtistConfirm = time => {
+    const formattedTime = formatDate(time).formattedTime;
+    console.log('time ', time);
+    setStartTime(formattedTime);
+    setTimeVisStartArtist(false);
   };
 
   const selectImage = async () => {
@@ -144,42 +190,119 @@ export const NewEventScreen = ({navigation}) => {
     setImageSource(result);
   };
 
+  const handleDateArtistConfirm = date => {
+    const formatted = formatDate(date).formattedDate;
+    setArtistDate(formatted);
+    setDateVisArtist(false);
+  };
+
+  const onSubmit = data => {
+    console.log('submitting...', data);
+  };
+
   return (
-    <Container>
-      <StepCounter currentStep={step} totalSteps={3} />
-      {step === 0 ? (
-        <Section0
-          name={name}
-          setName={setName}
-          genre={genre}
-          setGenre={setGenre}
-          description={description}
-          setDescription={setDescription}
-          setStep={setStep}
-        />
-      ) : step === 1 ? (
-        <Section1
-          selectImage={selectImage}
-          imageSource={imageSource}
-          setStep={setStep}
-        />
-      ) : (
-        <Section2
-          setStartVis={setStartVis}
-          setEndVis={setEndVis}
-          endVis={endVis}
-          startVis={startVis}
-          handleStartConfirm={handleStartConfirm}
-          handleEndConfirm={handleEndConfirm}
-          handleCreate={mutate}
-          setStep={setStep}
-          startDate={startDate}
-          endDate={endDate}
-          isLoading={isLoading}
-          artists={artists}
-          setArtists={setArtists}
-        />
-      )}
-    </Container>
+    <FormProvider {...methods}>
+      <View>
+        <Container>
+          <StepCounter currentStep={step} totalSteps={3} />
+          {step === 0 ? (
+            <Section0
+              name={name}
+              setName={setName}
+              genre={genre}
+              setGenre={setGenre}
+              description={description}
+              setDescription={setDescription}
+              setStep={setStep}
+              form={form}
+              setForm={setForm}
+            />
+          ) : step === 1 ? (
+            <Section1
+              selectImage={selectImage}
+              imageSource={imageSource}
+              setStep={setStep}
+            />
+          ) : (
+            <Section2
+              setStartVis={setStartVis}
+              setEndVis={setEndVis}
+              endVis={endVis}
+              startVis={startVis}
+              handleStartConfirm={handleStartConfirm}
+              handleEndConfirm={handleEndConfirm}
+              handleCreate={mutate}
+              setStep={setStep}
+              startDate={startDate}
+              endDate={endDate}
+              isLoading={isLoading}
+              artists={artists}
+              setArtists={setArtists}
+              handleEndTimeArtistConfirm={handleEndTimeArtistConfirm}
+              handleStartTimeArtistConfirm={handleStartTimeArtistConfirm}
+              timeVisStartArtist={timeVisStartArtist}
+              timeVisEndArtist={timeVisEndArtist}
+              setTimeVisStartArtist={setTimeVisStartArtist}
+              setTimeVisEndArtist={setTimeVisEndArtist}
+              startTime={startTime}
+              endTime={endTime}
+              artistDate={artistDate}
+              setArtistDate={setArtistDate}
+              dateVisArtist={dateVisArtist}
+              setDateVisArtist={setDateVisArtist}
+              handleDateArtistConfirm={handleDateArtistConfirm}
+            />
+          )}
+          {/* step === 0 ? (
+            <Section0
+              name={name}
+              setName={setName}
+              genre={genre}
+              setGenre={setGenre}
+              description={description}
+              setDescription={setDescription}
+              setStep={setStep}
+              form={form}
+              setForm={setForm}
+            />
+          ) : step === 1 ? (
+            <Section1
+              selectImage={selectImage}
+              imageSource={imageSource}
+              setStep={setStep}
+            />
+          ) : (
+            <Section2
+              setStartVis={setStartVis}
+              setEndVis={setEndVis}
+              endVis={endVis}
+              startVis={startVis}
+              handleStartConfirm={handleStartConfirm}
+              handleEndConfirm={handleEndConfirm}
+              handleCreate={mutate}
+              setStep={setStep}
+              startDate={startDate}
+              endDate={endDate}
+              isLoading={isLoading}
+              artists={artists}
+              setArtists={setArtists}
+              handleEndTimeArtistConfirm={handleEndTimeArtistConfirm}
+              handleStartTimeArtistConfirm={handleStartTimeArtistConfirm}
+              timeVisStartArtist={timeVisStartArtist}
+              timeVisEndArtist={timeVisEndArtist}
+              setTimeVisStartArtist={setTimeVisStartArtist}
+              setTimeVisEndArtist={setTimeVisEndArtist}
+              startTime={startTime}
+              endTime={endTime}
+              artistDate={artistDate}
+              setArtistDate={setArtistDate}
+              dateVisArtist={dateVisArtist}
+              setDateVisArtist={setDateVisArtist}
+              handleDateArtistConfirm={handleDateArtistConfirm}
+            />
+          )*/}
+        </Container>
+      </View>
+    </FormProvider>
   );
 };

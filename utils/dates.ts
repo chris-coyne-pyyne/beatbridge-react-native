@@ -2,6 +2,12 @@ export const formatDate = (isoDateString: string) => {
   // Create a new Date object using the ISO date string
   const date = new Date(isoDateString);
 
+  const formattedTime = date.toLocaleTimeString('en-US', {
+    hour: 'numeric', // 'numeric' for hour of the day
+    minute: '2-digit', // '2-digit' for minute with leading zeros if required
+    hour12: true, // Use 12-hour format
+  });
+
   // Use toLocaleDateString to format the date as "Month Day"
   // Here 'en-US' is used for English language formatting, and options are provided to show only month and day
   const formattedDate = date.toLocaleDateString('en-US', {
@@ -9,8 +15,7 @@ export const formatDate = (isoDateString: string) => {
     day: 'numeric', // 'numeric' for day of the month
   });
 
-  console.log('formatted ', formattedDate);
-  return formattedDate;
+  return {formattedDate, formattedTime};
 };
 
 export const formatUnixTimestamp = (unixTimestamp: number) => {

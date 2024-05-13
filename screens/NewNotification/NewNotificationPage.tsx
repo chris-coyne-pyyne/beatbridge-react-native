@@ -1,5 +1,10 @@
 import {useContext, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import {Container} from '../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -101,15 +106,19 @@ export function NewNotificationScreen({navigation}) {
           label="Notification Title"
           style={styles.container}
         />
-        <TextInput
-          label="Notification Message"
-          placeholder="Enter message"
-          multiline
-          numberOfLines={4}
-          value={message}
-          onChangeText={setMessage}
-          style={styles.container}
-        />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View>
+            <TextInput
+              label="Notification Message"
+              placeholder="Enter message"
+              multiline
+              numberOfLines={4}
+              value={message}
+              onChangeText={setMessage}
+              style={styles.container}
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <TextInput
           label="Notification Tags"
           placeholder="Enter tags separated by space"

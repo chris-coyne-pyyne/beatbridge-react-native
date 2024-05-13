@@ -5,9 +5,22 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {useFormContext, Controller} from 'react-hook-form';
 import {Button, Text, Icon} from 'react-native-paper';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-export const Section1 = ({selectImage, imageSource, setStep}: any) => {
+export const Section1 = ({setStep}: any) => {
+  const {register, watch, setValue, control} = useFormContext();
+  const allValues = watch();
+
+  const selectImage = async () => {
+    const result = await launchImageLibrary();
+
+    console.log('result ', result);
+    setValue('imageSource', result);
+  };
+
+  console.log('all values ', allValues);
   return (
     <ScrollView>
       <Text variant="titleLarge" style={styles.container}>
@@ -15,11 +28,11 @@ export const Section1 = ({selectImage, imageSource, setStep}: any) => {
       </Text>
       <View style={styles.container}>
         {/* TODO - add a way to reselect image if they want to change */}
-        {imageSource ? (
+        {allValues?.imageSource.assets ? (
           <View style={styles.imageContainer}>
             <Image
               source={{
-                uri: imageSource.assets[0].uri,
+                uri: allValues.imageSource.assets[0].uri,
               }}
               style={{width: 200, height: 200}}
             />
