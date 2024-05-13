@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {colors} from '../../styles/colors';
+import {View, StyleSheet} from 'react-native';
+import {Text} from 'react-native-paper';
 
 type StepCounterProps = {
   currentStep: number;
@@ -13,7 +13,7 @@ const StepCounter = ({currentStep, totalSteps}: StepCounterProps) => {
 
   return (
     <View style={styles.container}>
-      <Text>
+      <Text variant="bodyLarge">
         {currentStep + 1} Steps of {totalSteps}
       </Text>
       <View style={styles.progressBarContainer}>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: colors.primary,
+    backgroundColor: 'rgb(147, 190, 255)',
   },
 });
 

@@ -17,6 +17,7 @@ import {formatDate} from '../../utils/dates';
 import {useMutation} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
 import {TextInput} from 'react-native-paper';
+import {BandSet} from '../../types/event';
 import {create} from 'react-test-renderer';
 
 const showToast = () => {
@@ -54,10 +55,12 @@ const styles = StyleSheet.create({
   },
 });
 
+// TODO - refactor this to be less messy
 export const NewEventScreen = ({navigation}) => {
   const {data: events} = useAsyncStorage<Event[]>('events');
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
+  const [artists, setArtists] = useState<BandSet[]>([]);
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
   const [imageSource, setImageSource] = useState(null);
@@ -172,6 +175,9 @@ export const NewEventScreen = ({navigation}) => {
           setStep={setStep}
           startDate={startDate}
           endDate={endDate}
+          isLoading={isLoading}
+          artists={artists}
+          setArtists={setArtists}
         />
       )}
     </Container>
