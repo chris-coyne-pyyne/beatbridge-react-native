@@ -4,4 +4,5 @@ export type Notification = {
   title: string;
   tags: string[];
   date: number;
+  mode: 'notification';
 };

@@ -52,6 +52,7 @@ export const NewReportPage = ({navigation}) => {
       id: uuid.v4(),
       message,
       title,
+      mode: 'message',
       date: Math.floor(currentDate.getTime() / 1000),
     };
     const newReportString = JSON.stringify(newReport);
@@ -63,7 +64,7 @@ export const NewReportPage = ({navigation}) => {
 
     console.log('sending to event admin ', eventAdminId);
 
-    await bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
+    bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
       type: BridgefyTransmissionModeType.mesh,
       uuid: eventAdminId,
     });

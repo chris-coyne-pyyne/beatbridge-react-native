@@ -25,8 +25,10 @@ export function ActiveEvent({navigation, activeEvent}) {
 
   const notifications = context?.globalState.notifications;
 
+  const messages = context?.globalState.messages;
+
   /*
-  const notifications = [
+  const messages = [
     {
       id: '123',
       title: 'random',
@@ -129,6 +131,40 @@ export function ActiveEvent({navigation, activeEvent}) {
               </View>
             </TouchableOpacity>
           ))}
+
+        <View style={styles.notificationTitleContainer}>
+          <Text variant="titleLarge">Messages</Text>
+        </View>
+
+        {messages.map(message => {
+          return (
+            <TouchableOpacity
+              key={message.id}
+              id={message.id}
+              style={[styles.notificationContainer, styles.container]}
+              delayPressIn={50}
+              onPress={() => console.log('hello world')}>
+              <View style={styles.dateContainer}>
+                <Text variant="titleLarge">
+                  {formatUnixTimestamp(message.date).day}
+                </Text>
+                <Text variant="titleLarge">
+                  {formatUnixTimestamp(message.date).month}
+                </Text>
+              </View>
+              <View style={styles.notificationTextContainer}>
+                <Text variant="titleLarge">{message.title}</Text>
+                <Text
+                  variant="bodyLarge"
+                  ellipsizeMode="tail"
+                  numberOfLines={4}
+                  style={styles.container}>
+                  {message.message}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
 
         {modalOpen && (
           <Modal

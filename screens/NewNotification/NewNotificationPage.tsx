@@ -55,6 +55,7 @@ export function NewNotificationScreen({navigation}) {
       id: uuid.v4(),
       message,
       title,
+      mode: 'notification',
       tags: [tags],
       date: Math.floor(currentDate.getTime() / 1000),
     };

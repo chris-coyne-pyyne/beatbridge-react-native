@@ -37,11 +37,11 @@ import {Event} from '../../types/event';
 import {generateRandomString} from '../../utils/randomNumber';
 import {Notification} from '../types/notification';
 
-const showToast = (message: string) => {
+const showToast = (title: string, message: string) => {
   Toast.show({
     type: 'success',
-    text1: 'Received New Notification',
-    text2: {message},
+    text1: title,
+    text2: message,
   });
 };
 
@@ -194,13 +194,21 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
     subscriptions.push(
       eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
         log(`bridgefyDidReceiveData`, event);
+        console.log('RECEIVED DATA ');
 
         // add to DB
-        const receivedNotification: Notification = JSON.parse(event.data);
-        showToast(receivedNotification.message);
-        const oldNotifications = appContext?.globalState.notifications || [];
-        const newNotifications = [...oldNotifications, receivedNotification];
-        appContext?.updateGlobalState({notifications: newNotifications});
+        const receivedData: any = JSON.parse(event.data);
+        if (receivedData.mode === 'message') {
+          showToast('Received New Message ', receivedData.message);
+          const oldMessages = appContext?.globalState.messages || [];
+          const newMessages = [...oldMessages, receivedData];
+          appContext?.updateGlobalState({messages: newMessages});
+        } else {
+          showToast('Received New Report ', receivedData.message);
+          const oldNotifications = appContext?.globalState.notifications || [];
+          const newNotifications = [...oldNotifications, receivedData];
+          appContext?.updateGlobalState({notifications: newNotifications});
+        }
       }),
     );
     subscriptions.push(
