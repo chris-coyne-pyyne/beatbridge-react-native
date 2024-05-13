@@ -24,8 +24,10 @@ export function ActiveEvent({navigation, activeEvent}) {
   console.log('messages ', context?.globalState.messages);
 
   const notifications = context?.globalState.notifications;
+  notifications?.sort((a, b) => b.date - a.date);
 
   const messages = context?.globalState.messages;
+  messages?.sort((a, b) => b.date - a.date);
 
   /*
   const messages = [

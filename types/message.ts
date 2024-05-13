@@ -1,5 +1,6 @@
-export type Message = {
-  id: string;
+import {BridgefyData} from './bridgefyData';
+
+export interface Message extends BridgefyData {
   sender?: {
     id: string;
     email: string;
@@ -11,5 +12,4 @@ export type Message = {
   title: string;
   message: string;
   date: number;
-  mode: 'message';
-};
+}
