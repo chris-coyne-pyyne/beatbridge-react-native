@@ -8,11 +8,13 @@ import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
 import {BridgefyContext} from '../../stores/bridgefyStore';
 import {TextInput, Button, Text} from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import {
   Bridgefy,
   BridgefyEvents,
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
+import {Message} from '../../types/message';
 
 const showToast = () => {
   Toast.show({
@@ -45,15 +47,26 @@ export const NewReportPage = ({navigation}) => {
   console.log('sending to organizer: ', activeEvent?.organizer?.id);
 
   const handleCreateReport = async () => {
+    const currentDate = new Date();
+    const newReport: Message = {
+      id: uuid.v4(),
+      message,
+      title,
+      date: Math.floor(currentDate.getTime() / 1000),
+    };
+    const newReportString = JSON.stringify(newReport);
     // send notification with bridgefy TO THE ADMIN of the event
     console.log('CREATING');
 
-    /*
-    await bridgefyContext?.bridgefyState.bridgefy.send('Hello world', {
-      type: BridgefyTransmissionModeType.broadcast,
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+    const activeEvent = context?.globalState.events.find(event => event.active);
+    const eventAdminId = activeEvent?.organizer?.id;
+
+    console.log('sending to event admin ', eventAdminId);
+
+    await bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
+      type: BridgefyTransmissionModeType.mesh,
+      uuid: eventAdminId,
     });
-    */
   };
 
   return (

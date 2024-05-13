@@ -76,14 +76,14 @@ export function NewNotificationScreen({navigation}) {
     try {
       await bridgefyContext?.bridgefyState.bridgefy.send(payloadString, {
         type: BridgefyTransmissionModeType.broadcast,
-        uuid: '123e4567-e89b-12d3-a456-426614174000',
+        uuid: context?.globalState.user?.id,
       });
 
       // navigate to home + toast
       showToast();
       navigation.navigate('Home');
     } catch (e: any) {
-      console.log('error ', e.message());
+      console.log('error ', e);
     }
   };
 

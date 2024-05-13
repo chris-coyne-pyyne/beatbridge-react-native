@@ -50,6 +50,7 @@ export const Section2 = ({
         onConfirm={handleEndConfirm}
         onCancel={() => setEndVis(false)}
       />
+      {/*
       <Text variant="titleLarge" style={styles.marginTop}>
         Artists
       </Text>
@@ -60,6 +61,7 @@ export const Section2 = ({
       <View>
         <TextInput label="Artist Name" />
       </View>
+        */}
       <Button
         onPress={() => setStep(1)}
         mode="contained"

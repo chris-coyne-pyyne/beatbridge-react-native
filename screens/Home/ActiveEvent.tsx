@@ -9,20 +9,23 @@ import {
 
 import {globalStyles} from '../../styles/Styles';
 import {Notification} from '../../types/notification';
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {AppContext} from '../../stores/store';
 import {Container} from '../../components/Container';
 import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
+import {BridgefyContext} from '../../stores/bridgefyStore';
 
 export function ActiveEvent({navigation, activeEvent}) {
   const context = useContext(AppContext);
+  const bridgefyContext = useContext(BridgefyContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
 
   console.log('messages ', context?.globalState.messages);
 
-  // const notifications = context?.globalState.notifications;
+  const notifications = context?.globalState.notifications;
 
+  /*
   const notifications = [
     {
       id: '123',
@@ -49,23 +52,9 @@ export function ActiveEvent({navigation, activeEvent}) {
       date: 1715452835,
     },
   ];
+  */
 
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer.id;
-
-  const archiveEvent = () => {
-    context?.updateGlobalState({events: []});
-    /*
-    const events = context?.globalState.events;
-    if (events) {
-      const newEvents = [...events];
-      const activeEventInd = newEvents.findIndex(
-        event => event.active === true,
-      );
-      newEvents[activeEventInd].active = false;
-      context?.updateGlobalState({events: newEvents});
-    }
-    */
-  };
 
   return (
     <View style={styles.pageContainer}>

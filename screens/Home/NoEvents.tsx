@@ -20,14 +20,13 @@ const fetchData = async () => {
 };
 
 export function NoEvents({navigation}) {
-  /*
   const {
     data: events,
     error,
     isLoading,
   } = useQuery<Event[]>('allEvents', fetchData);
-  */
 
+  /*
   const events = [
     {
       id: '12',
@@ -90,6 +89,7 @@ export function NoEvents({navigation}) {
       endDate: 'June 30',
     },
   ];
+  */
 
   console.log('axios data ', events);
 

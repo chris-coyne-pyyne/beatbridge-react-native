@@ -37,11 +37,11 @@ import {Event} from '../../types/event';
 import {generateRandomString} from '../../utils/randomNumber';
 import {Notification} from '../types/notification';
 
-const showToast = () => {
+const showToast = (message: string) => {
   Toast.show({
     type: 'success',
     text1: 'Received New Notification',
-    text2: 'message...',
+    text2: {message},
   });
 };
 
@@ -194,9 +194,10 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
     subscriptions.push(
       eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
         log(`bridgefyDidReceiveData`, event);
-        showToast();
+
         // add to DB
         const receivedNotification: Notification = JSON.parse(event.data);
+        showToast(receivedNotification.message);
         const oldNotifications = appContext?.globalState.notifications || [];
         const newNotifications = [...oldNotifications, receivedNotification];
         appContext?.updateGlobalState({notifications: newNotifications});

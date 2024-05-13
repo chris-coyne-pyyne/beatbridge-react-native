@@ -42,9 +42,10 @@ export function EventScreen({route, navigation}) {
 
   const addEvent = async () => {
     try {
+      const activeNewEvent = {...selectedEvent, active: true};
       const allEvents = await AsyncStorage.getItem('events');
       const parsedEvents = JSON.parse(allEvents || '[]');
-      const newEvents = [...parsedEvents, selectedEvent];
+      const newEvents = [...parsedEvents, activeNewEvent];
       console.log('new Events ', newEvents);
       await AsyncStorage.setItem('events', JSON.stringify(newEvents));
       context?.updateGlobalState({events: newEvents});

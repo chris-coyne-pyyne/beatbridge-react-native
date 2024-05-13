@@ -7,9 +7,8 @@ export type Message = {
   };
   receiver?: {
     id: string;
-    email: string;
-    name: string;
   };
   title: string;
   message: string;
+  date: number;
 };
