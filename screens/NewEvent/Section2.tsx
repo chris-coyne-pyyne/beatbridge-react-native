@@ -4,38 +4,82 @@ import {useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {BandSet} from '../../types/event';
 import {useFormContext, Controller} from 'react-hook-form';
+import {formatDate} from '../../utils/dates';
 
-export const Section2 = ({
-  setStartVis,
-  setEndVis,
-  endVis,
-  startVis,
-  handleStartConfirm,
-  handleEndConfirm,
-  handleCreate,
-  setStep,
-  endDate,
-  startDate,
-  isLoading,
-  artists,
-  setArtists,
-  handleEndTimeArtistConfirm,
-  handleStartTimeArtistConfirm,
-  timeVisStartArtist,
-  timeVisEndArtist,
-  setTimeVisStartArtist,
-  setTimeVisEndArtist,
-  endTime,
-  startTime,
-  artistDate,
-  setArtistDate,
-  handleDateArtistConfirm,
-  dateVisArtist,
-  setDateVisArtist,
-}: any) => {
+export const Section2 = ({setStep, isLoading}: any) => {
   const {register, watch, setValue, control} = useFormContext();
-  console.log('END IN SEC 2 ', endDate);
+  const allValues = watch();
+
+  console.log('all values ', allValues);
+  // artist states
   const [artist, setArtist] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [artistStartTimeVis, setArtistStartTimeVis] = useState(false);
+  const [artistEndTimeVis, setArtistEndTimeVis] = useState(false);
+  const [artistDateVis, setArtistDateVis] = useState(false);
+  const [artistDate, setArtistDate] = useState('');
+
+  // modal visibility
+  const [startDateVis, setStartDateVis] = useState(false);
+  const [endDateVis, setEndDateVis] = useState(false);
+
+  const handleStartDate = date => {
+    console.log('date ', date);
+    const formatted = formatDate(date).formattedDate;
+    setValue('startDate', formatted);
+    setStartDateVis(false);
+  };
+
+  const handleEndDate = date => {
+    console.log('date ', date);
+    const formatted = formatDate(date).formattedDate;
+    setValue('endDate', formatted);
+    setEndDateVis(false);
+  };
+
+  // artist specific functions
+  const handleStartTimeArtistConfirm = time => {
+    const formattedTime = formatDate(time).formattedTime;
+    console.log('time ', time);
+    setStartTime(formattedTime);
+    setArtistStartTimeVis(false);
+  };
+
+  const handleEndTimeArtistConfirm = time => {
+    const formattedTime = formatDate(time).formattedTime;
+    console.log('time ', time);
+    setEndTime(formattedTime);
+    setArtistEndTimeVis(false);
+  };
+
+  const handleArtistDateConfirm = date => {
+    const formattedDate = formatDate(date).formattedDate;
+    console.log('time ', date);
+    setArtistDate(formattedDate);
+    setArtistDateVis(false);
+  };
+
+  const handleAddArtist = () => {
+    const prevArtists = allValues.artists;
+    const newArtist: BandSet = {
+      date: artistDate,
+      startTime,
+      endTime,
+      player: artist,
+    };
+    const newArtists = [...prevArtists, newArtist];
+    setValue('artists', newArtists);
+
+    // reset all form values
+    setArtistDate('');
+    setEndTime('');
+    setStartTime('');
+    setArtist('');
+  };
+
+  const handleCreate = () => {
+    /*
   const handleAddArtist = () => {
     const testNewSet: BandSet = {
       date: 'May 1st',
@@ -45,58 +89,49 @@ export const Section2 = ({
     };
     setArtists((prev: BandSet[]) => [...prev, testNewSet]);
   };
+  */
+
+    console.log('creating...');
+  };
 
   const removeArtist = (player: string) => {
-    const newArtists = artists.filter(
+    const newArtists = allValues.artists.filter(
       (artist: BandSet) => artist.player !== player,
     );
-    setArtists(newArtists);
+    setValue('artists', newArtists);
   };
 
-  const testStart = date => {
-    console.log('date ', date);
-  };
-
-  console.log('time vis end artist ', timeVisEndArtist);
   return (
     <ScrollView>
       <Text variant="titleLarge" style={styles.marginTop}>
         Event Itinerary
       </Text>
       <View style={styles.dateInputContainer}>
-        <TextInput
-          label="Start Date"
-          value={startDate}
-          style={styles.container}
-          right={
-            <TextInput.Icon icon="calendar" onPress={() => setStartVis(true)} />
-          }
-        />
-        <TextInput
-          label="End Date"
-          style={styles.container}
-          value={endDate}
-          right={
-            <TextInput.Icon icon="calendar" onPress={() => setEndVis(true)} />
-          }
-        />
+        <View>
+          <IconButton icon="calendar" onPress={() => setStartDateVis(true)} />
+          <Text>Start Date {allValues.startDate}</Text>
+        </View>
+        <View>
+          <Text>End Date {allValues.endDate}</Text>
+          <IconButton icon="calendar" onPress={() => setEndDateVis(true)} />
+        </View>
       </View>
       <DateTimePickerModal
-        isVisible={startVis}
+        isVisible={startDateVis}
         mode="date"
-        onConfirm={testStart}
-        onCancel={() => setStartVis(false)}
+        onConfirm={handleStartDate}
+        onCancel={() => setStartDateVis(false)}
       />
       <DateTimePickerModal
-        isVisible={endVis}
+        isVisible={endDateVis}
         mode="date"
-        onConfirm={handleEndConfirm}
-        onCancel={() => setEndVis(false)}
+        onConfirm={handleEndDate}
+        onCancel={() => setEndDateVis(false)}
       />
       <Text variant="titleLarge" style={styles.marginTop}>
         Artists
       </Text>
-      {artists.map((artist: BandSet) => (
+      {allValues.artists.map((artist: BandSet) => (
         <Card key={artist.player}>
           <View style={styles.card}>
             <Text variant="bodyLarge">{artist.player}</Text>
@@ -126,7 +161,7 @@ export const Section2 = ({
             icon="calendar"
             onPress={() => {
               console.log('pressing...');
-              setTimeVisStartArtist(true);
+              setArtistStartTimeVis(true);
             }}
           />
         </View>
@@ -135,8 +170,8 @@ export const Section2 = ({
           <IconButton
             icon="calendar"
             onPress={() => {
-              console.log('here ', timeVisEndArtist);
-              setTimeVisEndArtist(true);
+              console.log('here ');
+              setArtistEndTimeVis(true);
             }}
           />
         </View>
@@ -146,28 +181,28 @@ export const Section2 = ({
         <IconButton
           icon="calendar"
           onPress={() => {
-            setDateVisArtist(true);
+            setArtistDateVis(true);
           }}
         />
       </View>
       {/* artist specific modals */}
       <DateTimePickerModal
-        isVisible={dateVisArtist}
+        isVisible={artistDateVis}
         mode="date"
-        onConfirm={handleDateArtistConfirm}
-        onCancel={() => setDateVisArtist(false)}
+        onConfirm={handleArtistDateConfirm}
+        onCancel={() => setArtistDateVis(false)}
       />
       <DateTimePickerModal
-        isVisible={timeVisStartArtist}
+        isVisible={artistStartTimeVis}
         mode="time"
         onConfirm={handleStartTimeArtistConfirm}
-        onCancel={() => setTimeVisStartArtist(false)}
+        onCancel={() => setArtistEndTimeVis(false)}
       />
       <DateTimePickerModal
-        isVisible={timeVisEndArtist}
+        isVisible={artistEndTimeVis}
         mode="time"
         onConfirm={handleEndTimeArtistConfirm}
-        onCancel={() => setTimeVisEndArtist(false)}
+        onCancel={() => setArtistEndTimeVis(false)}
       />
       <Button
         onPress={() => handleAddArtist()}
