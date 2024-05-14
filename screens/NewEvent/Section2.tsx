@@ -1,15 +1,31 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {TextInput, Button, Text, Card, IconButton} from 'react-native-paper';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {BandSet} from '../../types/event';
-import {useFormContext, Controller} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {formatDate} from '../../utils/dates';
 import {DateInput} from './components/DateInput';
+import {useMutation} from 'react-query';
+import {AppContext} from '../../stores/store';
+import {apiClient} from '../../api/axiosConfig';
+import useAsyncStorage from '../../hooks/useAsyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import {Event} from '../../types/event';
 
-export const Section2 = ({setStep, isLoading}: any) => {
+const showToast = () => {
+  Toast.show({
+    type: 'success',
+    text1: 'Event created',
+    text2: 'Your event has been successfully created',
+  });
+};
+
+export const Section2 = ({setStep, navigation}: any) => {
   const {watch, setValue} = useFormContext();
   const allValues = watch();
+  const {data: events} = useAsyncStorage<Event[]>('events');
 
   // artist states
   const [artist, setArtist] = useState('');
@@ -20,9 +36,63 @@ export const Section2 = ({setStep, isLoading}: any) => {
   const [artistDateVis, setArtistDateVis] = useState(false);
   const [artistDate, setArtistDate] = useState('');
 
+  console.log('ALL VALUES ', allValues);
+
   // modal visibility
   const [startDateVis, setStartDateVis] = useState(false);
   const [endDateVis, setEndDateVis] = useState(false);
+
+  const context = useContext(AppContext);
+  const user = context?.globalState.user;
+  const isUserLoading = context?.globalState.userLoading;
+
+  // axios
+  const {mutate, isLoading, error} = useMutation(
+    async () => {
+      const response = await apiClient.post('event', {
+        name: allValues.name,
+        genre: allValues.genre,
+        description: allValues.description,
+        imageSource: allValues.imageSource,
+        startDate: allValues.startDate,
+        endDate: allValues.endDate,
+        userId: user && !isUserLoading ? user.id : '',
+        artists: allValues.artists,
+      });
+      return response.data;
+    },
+    {
+      onSuccess: async data => {
+        console.log('data ', data);
+        const newLocalEvents = events || [];
+        for (const e of newLocalEvents) {
+          e.active = false;
+        }
+
+        const createdEvent = {...data, active: true};
+
+        console.log('WILL ADD EVENT ', [...newLocalEvents, createdEvent]);
+
+        await AsyncStorage.setItem(
+          'events',
+          JSON.stringify([...newLocalEvents, createdEvent]),
+        );
+        context?.updateGlobalState({
+          events: [...newLocalEvents, createdEvent],
+        });
+
+        showToast();
+        navigation.navigate('Home');
+      },
+      onError: err => {
+        // Optional: Handle error in mutation state
+        console.error(
+          'Error logging in:',
+          err.response ? err.response.data.message : err.message,
+        );
+      },
+    },
+  );
 
   const handleStartDate = date => {
     console.log('date ', date);
@@ -32,7 +102,6 @@ export const Section2 = ({setStep, isLoading}: any) => {
   };
 
   const handleEndDate = date => {
-    console.log('date ', date);
     const formatted = formatDate(date).formattedDate;
     setValue('endDate', formatted);
     setEndDateVis(false);
@@ -41,21 +110,18 @@ export const Section2 = ({setStep, isLoading}: any) => {
   // artist specific functions
   const handleStartTimeArtistConfirm = time => {
     const formattedTime = formatDate(time).formattedTime;
-    console.log('time ', time);
     setStartTime(formattedTime);
     setArtistStartTimeVis(false);
   };
 
   const handleEndTimeArtistConfirm = time => {
     const formattedTime = formatDate(time).formattedTime;
-    console.log('time ', time);
     setEndTime(formattedTime);
     setArtistEndTimeVis(false);
   };
 
   const handleArtistDateConfirm = date => {
     const formattedDate = formatDate(date).formattedDate;
-    console.log('time ', date);
     setArtistDate(formattedDate);
     setArtistDateVis(false);
   };
@@ -76,10 +142,6 @@ export const Section2 = ({setStep, isLoading}: any) => {
     setEndTime('');
     setStartTime('');
     setArtist('');
-  };
-
-  const handleCreate = () => {
-    console.log('creating...');
   };
 
   const removeArtist = (player: string) => {
@@ -196,7 +258,7 @@ export const Section2 = ({setStep, isLoading}: any) => {
         Prev Section
       </Button>
       <Button
-        onPress={() => handleCreate()}
+        onPress={() => mutate()}
         mode="contained"
         loading={isLoading}
         style={styles.container}>

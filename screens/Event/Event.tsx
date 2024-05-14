@@ -15,14 +15,23 @@ function sortEvents(events: any): Event[] {
       const [date, startTime] = [event.date, event.startTime];
       const [time, modifier] = startTime.split(' ');
       let [hours, minutes] = time.split(':').map(Number);
-      if (modifier === 'pm' && hours !== 12) {
+      if (modifier === 'PM' && hours !== 12) {
         hours += 12;
       }
-      if (modifier === 'am' && hours === 12) {
+      if (modifier === 'AM' && hours === 12) {
         hours = 0;
       }
-      // Create a Date object. Assuming the date is in a format like 'May 11'.
-      return new Date(`${date} ${hours}:${minutes}`);
+
+      const [month, day] = date.split(' ');
+      const year = new Date().getFullYear(); // Assuming the events are in the current year
+      const monthIndex = new Date(`${month} 1`).getMonth(); // Get the month index (0-11)
+
+      const fullDateString = `${year}-${monthIndex + 1}-${day}T${hours
+        .toString()
+        .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+      console.log('fullDateString: ', fullDateString);
+
+      return new Date(fullDateString);
     };
 
     return parseDateTime(a).getTime() - parseDateTime(b).getTime();
@@ -74,10 +83,16 @@ export function EventScreen({route, navigation}) {
     selectedEvent = activeEvent;
   }
 
+  console.log('ACTIVE EVENT ', selectedEvent);
+
   let groupedArtists = [];
   const sortedArtists = selectedEvent?.artists
-    ? sortEvents(selectedEvent?.artists)
+    ? [...selectedEvent.artists]
     : [];
+
+  sortEvents(sortedArtists);
+
+  console.log('SORTED ARTSITS ', sortedArtists);
 
   groupedArtists = groupEvents(sortedArtists);
 
@@ -98,11 +113,7 @@ export function EventScreen({route, navigation}) {
     }
   };
 
-  const archiveEvent = () => {
-    // for now - just reset all events. ideally should only deactivate active event tho
-    context?.updateGlobalState({events: []});
-    navigation.navigate('Home');
-    /*
+  const archiveEvent = async () => {
     const events = context?.globalState.events;
     if (events) {
       const newEvents = [...events];
@@ -111,8 +122,9 @@ export function EventScreen({route, navigation}) {
       );
       newEvents[activeEventInd].active = false;
       context?.updateGlobalState({events: newEvents});
+      await AsyncStorage.setItem('events', JSON.stringify(newEvents));
+      navigation.navigate('Home');
     }
-    */
   };
 
   if (!selectedEvent) {
@@ -129,12 +141,14 @@ export function EventScreen({route, navigation}) {
           {selectedEvent.name}
         </Text>
         <View style={[styles.imageContainer, styles.container]}>
-          <Image
-            source={{
-              uri: selectedEvent.pic,
-            }}
-            style={styles.image}
-          />
+          {selectedEvent.pic && (
+            <Image
+              source={{
+                uri: selectedEvent.pic,
+              }}
+              style={styles.image}
+            />
+          )}
         </View>
         <View style={[styles.subtitleContainer, styles.container]}>
           <Chip>{selectedEvent.genre}</Chip>

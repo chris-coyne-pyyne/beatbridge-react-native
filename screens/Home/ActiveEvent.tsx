@@ -69,15 +69,17 @@ export function ActiveEvent({navigation, activeEvent}) {
           <Chip>{isAdmin ? 'Admin' : 'Attendee'}</Chip>
         </View>
         <View style={styles.eventContainer}>
-          <Image
-            source={{
-              uri: activeEvent.pic,
-            }}
-            style={{
-              width: 150,
-              height: 125,
-            }}
-          />
+          {activeEvent?.pic && (
+            <Image
+              source={{
+                uri: activeEvent.pic,
+              }}
+              style={{
+                width: 150,
+                height: 125,
+              }}
+            />
+          )}
           <View style={styles.headerTextContainer}>
             <Text variant="bodyLarge" style={{marginTop: 2}}>
               April 20 - April 30

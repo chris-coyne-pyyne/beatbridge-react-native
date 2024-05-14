@@ -6,13 +6,10 @@ import {
   Image,
 } from 'react-native';
 import {Event} from '../../types/event';
-import {globalStyles} from '../../styles/Styles';
-import {Button} from '../../components/Button';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useQuery} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
-import {Container} from '../../components/Container';
-import {FAB, Card, Text, Searchbar, Chip} from 'react-native-paper';
+import {FAB, Text, Searchbar} from 'react-native-paper';
 
 const fetchData = async () => {
   const {data} = await apiClient.get('events');
@@ -91,9 +88,12 @@ export function NoEvents({navigation}) {
   ];
   */
 
-  console.log('axios data ', events);
+  const [searchText, setSearchText] = useState('');
+  const filteredEvents = !searchText
+    ? events
+    : events.filter(event => event.name.includes(searchText));
 
-  const [text, setText] = useState('');
+  console.log('filtered events ', filteredEvents);
   return (
     <View style={styles.pageContainer}>
       <ScrollView>
@@ -108,14 +108,14 @@ export function NoEvents({navigation}) {
         <View style={styles.container}>
           <Searchbar
             placeholder={'Search Events'}
-            value={text}
-            onChangeText={setText}
+            value={searchText}
+            onChangeText={setSearchText}
             label={'Event'}
           />
         </View>
         <View style={styles.container}>
-          {events &&
-            events.map((event: Event) => {
+          {filteredEvents &&
+            filteredEvents.map((event: Event) => {
               return (
                 <TouchableOpacity
                   key={event.id}
