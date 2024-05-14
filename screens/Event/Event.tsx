@@ -1,7 +1,6 @@
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {globalStyles} from '../../styles/Styles';
 import {Event} from '../../types/event';
 import {useContext} from 'react';
 import {AppContext} from '../../stores/store';
@@ -9,6 +8,41 @@ import {Container} from '../../components/Container';
 import {apiClient} from '../../api/axiosConfig';
 import {Text, Chip, Button, Card} from 'react-native-paper';
 import {useQuery} from 'react-query';
+
+function sortEvents(events: any): Event[] {
+  return events.sort((a, b) => {
+    const parseDateTime = (event: any): Date => {
+      const [date, startTime] = [event.date, event.startTime];
+      const [time, modifier] = startTime.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+      if (modifier === 'pm' && hours !== 12) {
+        hours += 12;
+      }
+      if (modifier === 'am' && hours === 12) {
+        hours = 0;
+      }
+      // Create a Date object. Assuming the date is in a format like 'May 11'.
+      return new Date(`${date} ${hours}:${minutes}`);
+    };
+
+    return parseDateTime(a).getTime() - parseDateTime(b).getTime();
+  });
+}
+
+function groupEvents(events: any) {
+  const months = [];
+  for (const e of events) {
+    // adding a new goup
+    if (!months.length || months[months.length - 1][0].date !== e.date) {
+      months.push([e]);
+    }
+    // appending to existing group
+    else {
+      months[months.length - 1].push(e);
+    }
+  }
+  return months;
+}
 
 export function EventScreen({route, navigation}) {
   const {id} = route.params;
@@ -40,6 +74,15 @@ export function EventScreen({route, navigation}) {
     selectedEvent = activeEvent;
   }
 
+  let groupedArtists = [];
+  const sortedArtists = selectedEvent?.artists
+    ? sortEvents(selectedEvent?.artists)
+    : [];
+
+  groupedArtists = groupEvents(sortedArtists);
+
+  console.log('groupedArtists ', groupedArtists);
+
   const addEvent = async () => {
     try {
       const activeNewEvent = {...selectedEvent, active: true};
@@ -58,6 +101,7 @@ export function EventScreen({route, navigation}) {
   const archiveEvent = () => {
     // for now - just reset all events. ideally should only deactivate active event tho
     context?.updateGlobalState({events: []});
+    navigation.navigate('Home');
     /*
     const events = context?.globalState.events;
     if (events) {
@@ -101,28 +145,57 @@ export function EventScreen({route, navigation}) {
         <Text variant="bodyLarge" style={[styles.container]}>
           {selectedEvent.description}
         </Text>
-        <View style={styles.titleContainer}>
-          <Text variant="titleLarge">Organizer</Text>
+        <View style={styles.section}>
+          <View style={styles.titleContainer}>
+            <Text variant="titleLarge">Itinerary</Text>
+          </View>
+          {groupedArtists &&
+            groupedArtists.map(artistGroup => {
+              return (
+                <View key={artistGroup[0].player}>
+                  <Text style={styles.container}>{artistGroup[0].date}</Text>
+                  {artistGroup.map(artist => (
+                    <Card
+                      style={[styles.card, {padding: 12}]}
+                      key={artist.player}>
+                      <View>
+                        <Text variant="titleLarge">{artist.player}</Text>
+                      </View>
+                      <Text>
+                        {artist.startTime} - {artist.endTime}
+                      </Text>
+                    </Card>
+                  ))}
+                </View>
+              );
+            })}
         </View>
 
-        {selectedEvent.organizer && (
-          <Card style={styles.card}>
-            <View style={styles.cardContainer}>
-              <Image
-                source={{
-                  uri: 'https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=',
-                }}
-                style={styles.profilePic}
-              />
-              <View style={[styles.cardTextContainer]}>
-                <Text variant="bodyLarge" style={{flexWrap: 'wrap'}}>
-                  {selectedEvent.organizer.name}
-                </Text>
-                <Text variant="bodyLarge">{selectedEvent.organizer.email}</Text>
+        <View style={styles.section}>
+          <View style={styles.titleContainer}>
+            <Text variant="titleLarge">Organizer</Text>
+          </View>
+          {selectedEvent.organizer && (
+            <Card style={styles.card}>
+              <View style={styles.cardContainer}>
+                <Image
+                  source={{
+                    uri: 'https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=',
+                  }}
+                  style={styles.profilePic}
+                />
+                <View style={[styles.cardTextContainer]}>
+                  <Text variant="bodyLarge" style={{flexWrap: 'wrap'}}>
+                    {selectedEvent.organizer.name}
+                  </Text>
+                  <Text variant="bodyLarge">
+                    {selectedEvent.organizer.email}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </Card>
-        )}
+            </Card>
+          )}
+        </View>
         {/* show buttons based on login + role */}
         {!context?.globalState.userLoading && (
           /* if active event is not viewed event - let them join */
@@ -221,6 +294,9 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
   buttonContainer: {
+    marginTop: 24,
+  },
+  section: {
     marginTop: 24,
   },
 });

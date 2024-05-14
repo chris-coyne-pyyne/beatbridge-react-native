@@ -20,7 +20,6 @@ export const Section1 = ({setStep}: any) => {
     setValue('imageSource', result);
   };
 
-  console.log('all values ', allValues);
   return (
     <ScrollView>
       <Text variant="titleLarge" style={styles.container}>

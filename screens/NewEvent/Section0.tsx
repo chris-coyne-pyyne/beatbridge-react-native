@@ -1,6 +1,4 @@
-import {useContext, useState} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
-import {AppContext} from '../../stores/store';
 import {useFormContext, Controller} from 'react-hook-form';
 import {TextInput, Button, Text, Chip} from 'react-native-paper';
 
@@ -16,28 +14,9 @@ const sampleGenres = [
   'Indie',
 ];
 
-export const Section0 = ({
-  name,
-  setName,
-  genre,
-  setGenre,
-  description,
-  setDescription,
-  setStep,
-  form,
-  setForm,
-}: any) => {
-  const {register, watch, setValue, control} = useFormContext();
-  const allValues = watch();
-  console.log('all values ', allValues);
+export const Section0 = ({setStep}: any) => {
+  const {setValue, control} = useFormContext();
 
-  const onRegister = (name: string) => {
-    return (text: string) => {
-      setValue(name, text, {
-        shouldValidate: true,
-      });
-    };
-  };
   return (
     <View>
       <ScrollView>

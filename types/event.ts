@@ -20,5 +20,5 @@ export type Event = {
   active: boolean;
   startDate: string;
   endDate: string;
-  itinerary: BandSet[];
+  artists: BandSet[];
 };

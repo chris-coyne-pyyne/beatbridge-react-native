@@ -23,33 +23,6 @@ const showToast = () => {
   });
 };
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  textArea: {
-    height: 100,
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 12,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    gap: 16,
-  },
-});
-
 type Form = {
   name: string;
   genre: string;
@@ -89,9 +62,6 @@ export const NewEventScreen = ({navigation}) => {
 
   const user = context?.globalState.user;
   const isUserLoading = context?.globalState.userLoading;
-
-  // date picker stuff
-  const [timeVisEndArtist, setTimeVisEndArtist] = useState(false);
 
   // axios
   const {mutate, isLoading, error} = useMutation(
@@ -152,17 +122,7 @@ export const NewEventScreen = ({navigation}) => {
       <View style={{padding: 12, flex: 1}}>
         <StepCounter currentStep={step} totalSteps={3} />
         {step === 0 ? (
-          <Section0
-            name={name}
-            setName={setName}
-            genre={genre}
-            setGenre={setGenre}
-            description={description}
-            setDescription={setDescription}
-            setStep={setStep}
-            form={form}
-            setForm={setForm}
-          />
+          <Section0 setStep={setStep} />
         ) : step === 1 ? (
           <Section1
             selectImage={selectImage}

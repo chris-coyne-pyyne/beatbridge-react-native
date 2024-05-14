@@ -11,7 +11,6 @@ export const Section2 = ({setStep, isLoading}: any) => {
   const {watch, setValue} = useFormContext();
   const allValues = watch();
 
-  console.log('all values ', allValues);
   // artist states
   const [artist, setArtist] = useState('');
   const [startTime, setStartTime] = useState('');
