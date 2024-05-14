@@ -1,9 +1,7 @@
 import {useContext, useState} from 'react';
 import {View, ScrollView, StyleSheet, Image} from 'react-native';
-import {Button} from '../../components/Button';
 import {AppContext} from '../../stores/store';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {Container} from '../../components/Container';
+import {launchImageLibrary} from 'react-native-image-picker';
 import StepCounter from './StepCounter';
 import {Section0} from './Section0';
 import {Section1} from './Section1';
@@ -12,13 +10,9 @@ import Toast from 'react-native-toast-message';
 import useAsyncStorage from '../../hooks/useAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Event} from '../../types/event';
-import {generateRandomString} from '../../utils/randomNumber';
-import {formatDate} from '../../utils/dates';
 import {useMutation} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
-import {TextInput} from 'react-native-paper';
 import {BandSet} from '../../types/event';
-import {create} from 'react-test-renderer';
 import {useForm, FormProvider} from 'react-hook-form';
 
 const showToast = () => {
@@ -83,7 +77,6 @@ export const NewEventScreen = ({navigation}) => {
   const {data: events} = useAsyncStorage<Event[]>('events');
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
-  const [artists, setArtists] = useState<BandSet[]>([]);
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
   const [imageSource, setImageSource] = useState(null);
@@ -156,31 +149,29 @@ export const NewEventScreen = ({navigation}) => {
 
   return (
     <FormProvider {...methods}>
-      <View>
-        <Container>
-          <StepCounter currentStep={step} totalSteps={3} />
-          {step === 0 ? (
-            <Section0
-              name={name}
-              setName={setName}
-              genre={genre}
-              setGenre={setGenre}
-              description={description}
-              setDescription={setDescription}
-              setStep={setStep}
-              form={form}
-              setForm={setForm}
-            />
-          ) : step === 1 ? (
-            <Section1
-              selectImage={selectImage}
-              imageSource={imageSource}
-              setStep={setStep}
-            />
-          ) : (
-            <Section2 setStep={setStep} isLoading={isLoading} />
-          )}
-        </Container>
+      <View style={{padding: 12, flex: 1}}>
+        <StepCounter currentStep={step} totalSteps={3} />
+        {step === 0 ? (
+          <Section0
+            name={name}
+            setName={setName}
+            genre={genre}
+            setGenre={setGenre}
+            description={description}
+            setDescription={setDescription}
+            setStep={setStep}
+            form={form}
+            setForm={setForm}
+          />
+        ) : step === 1 ? (
+          <Section1
+            selectImage={selectImage}
+            imageSource={imageSource}
+            setStep={setStep}
+          />
+        ) : (
+          <Section2 setStep={setStep} isLoading={isLoading} />
+        )}
       </View>
     </FormProvider>
   );

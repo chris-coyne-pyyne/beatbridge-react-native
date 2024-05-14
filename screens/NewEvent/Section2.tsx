@@ -5,9 +5,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {BandSet} from '../../types/event';
 import {useFormContext, Controller} from 'react-hook-form';
 import {formatDate} from '../../utils/dates';
+import {DateInput} from './components/DateInput';
 
 export const Section2 = ({setStep, isLoading}: any) => {
-  const {register, watch, setValue, control} = useFormContext();
+  const {watch, setValue} = useFormContext();
   const allValues = watch();
 
   console.log('all values ', allValues);
@@ -79,18 +80,6 @@ export const Section2 = ({setStep, isLoading}: any) => {
   };
 
   const handleCreate = () => {
-    /*
-  const handleAddArtist = () => {
-    const testNewSet: BandSet = {
-      date: 'May 1st',
-      startTime: '11 am',
-      endTime: '12 pm',
-      player: artist,
-    };
-    setArtists((prev: BandSet[]) => [...prev, testNewSet]);
-  };
-  */
-
     console.log('creating...');
   };
 
@@ -103,18 +92,18 @@ export const Section2 = ({setStep, isLoading}: any) => {
 
   return (
     <ScrollView>
-      <Text variant="titleLarge" style={styles.marginTop}>
+      <Text variant="titleLarge" style={styles.container}>
         Event Itinerary
       </Text>
-      <View style={styles.dateInputContainer}>
-        <View>
-          <IconButton icon="calendar" onPress={() => setStartDateVis(true)} />
-          <Text>Start Date {allValues.startDate}</Text>
-        </View>
-        <View>
-          <Text>End Date {allValues.endDate}</Text>
-          <IconButton icon="calendar" onPress={() => setEndDateVis(true)} />
-        </View>
+      <View style={[styles.dateInputContainer, styles.container]}>
+        <DateInput
+          onPress={() => setStartDateVis(true)}
+          text={`Start: ${allValues.startDate}` || 'Start Date'}
+        />
+        <DateInput
+          onPress={() => setEndDateVis(true)}
+          text={`End: ${allValues.endDate}` || 'End Date'}
+        />
       </View>
       <DateTimePickerModal
         isVisible={startDateVis}
@@ -128,7 +117,46 @@ export const Section2 = ({setStep, isLoading}: any) => {
         onConfirm={handleEndDate}
         onCancel={() => setEndDateVis(false)}
       />
-      <Text variant="titleLarge" style={styles.marginTop}>
+
+      <Text variant="titleLarge" style={[styles.marginTop, styles.container]}>
+        Add a New Artist
+      </Text>
+      <View style={[styles.marginTop, styles.container]}>
+        <TextInput
+          label="Artist Name"
+          value={artist}
+          onChangeText={setArtist}
+        />
+      </View>
+      <View style={[styles.dateInputContainer, styles.container]}>
+        <DateInput
+          onPress={() => {
+            console.log('setting start time vis... ', artistStartTimeVis);
+            setArtistStartTimeVis(true);
+          }}
+          text={`Start: ${startTime}` || 'Start Time'}
+        />
+        <DateInput
+          onPress={() => setArtistEndTimeVis(true)}
+          text={`End: ${endTime}` || 'End Time'}
+        />
+      </View>
+      <View style={styles.container}>
+        <DateInput
+          onPress={() => setArtistDateVis(true)}
+          text={`Date: ${artistDate}` || 'Set Date'}
+        />
+      </View>
+      <View style={styles.addArtistBtnContainer}>
+        <Button
+          onPress={() => handleAddArtist()}
+          mode="contained"
+          icon="plus"
+          style={styles.container}>
+          Add Artist
+        </Button>
+      </View>
+      <Text variant="titleLarge" style={[styles.marginTop, styles.container]}>
         Artists
       </Text>
       {allValues.artists.map((artist: BandSet) => (
@@ -143,48 +171,6 @@ export const Section2 = ({setStep, isLoading}: any) => {
           </View>
         </Card>
       ))}
-
-      <Text variant="titleLarge" style={styles.marginTop}>
-        Add a New Artist
-      </Text>
-      <View>
-        <TextInput
-          label="Artist Name"
-          value={artist}
-          onChangeText={setArtist}
-        />
-      </View>
-      <View style={styles.dateInputContainer}>
-        <View>
-          <Text>Start time: {startTime}</Text>
-          <IconButton
-            icon="calendar"
-            onPress={() => {
-              console.log('pressing...');
-              setArtistStartTimeVis(true);
-            }}
-          />
-        </View>
-        <View>
-          <Text>End time: {endTime}</Text>
-          <IconButton
-            icon="calendar"
-            onPress={() => {
-              console.log('here ');
-              setArtistEndTimeVis(true);
-            }}
-          />
-        </View>
-      </View>
-      <View>
-        <Text>Set Date: {artistDate}</Text>
-        <IconButton
-          icon="calendar"
-          onPress={() => {
-            setArtistDateVis(true);
-          }}
-        />
-      </View>
       {/* artist specific modals */}
       <DateTimePickerModal
         isVisible={artistDateVis}
@@ -196,7 +182,7 @@ export const Section2 = ({setStep, isLoading}: any) => {
         isVisible={artistStartTimeVis}
         mode="time"
         onConfirm={handleStartTimeArtistConfirm}
-        onCancel={() => setArtistEndTimeVis(false)}
+        onCancel={() => setArtistStartTimeVis(false)}
       />
       <DateTimePickerModal
         isVisible={artistEndTimeVis}
@@ -205,14 +191,8 @@ export const Section2 = ({setStep, isLoading}: any) => {
         onCancel={() => setArtistEndTimeVis(false)}
       />
       <Button
-        onPress={() => handleAddArtist()}
-        mode="contained"
-        style={styles.container}>
-        Add Artist
-      </Button>
-      <Button
         onPress={() => setStep(1)}
-        mode="contained"
+        mode="outlined"
         style={styles.container}>
         Prev Section
       </Button>
@@ -259,5 +239,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 12,
+  },
+  addArtistBtnContainer: {
+    paddingLeft: '20%',
+    paddingRight: '20%',
   },
 });

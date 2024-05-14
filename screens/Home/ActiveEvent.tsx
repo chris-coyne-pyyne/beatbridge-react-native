@@ -216,6 +216,7 @@ export function ActiveEvent({navigation, activeEvent}) {
           onPress={() => navigation.navigate('NewReport')}
         />
       )}
+      <Button onPress={() => navigation.navigate('NewEvent')}>new event</Button>
     </View>
   );
 }
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space between',
+    justifyContent: 'space-between',
   },
   notificationContainer: {
     display: 'flex',

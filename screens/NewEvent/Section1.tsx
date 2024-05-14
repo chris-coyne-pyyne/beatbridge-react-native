@@ -46,7 +46,7 @@ export const Section1 = ({setStep}: any) => {
       </View>
       <Button
         onPress={() => setStep(0)}
-        mode="contained"
+        mode="outlined"
         style={styles.container}>
         Prev Section
       </Button>
