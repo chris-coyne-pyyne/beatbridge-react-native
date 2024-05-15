@@ -60,22 +60,28 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
 
   // if initialized - try to start
   useEffect(() => {
-    console.log(
-      'should i start?',
-      'initialized ',
-      bridgefyState.initialized,
-      ' , user ',
-      appContext?.globalState.user?.id,
-    );
-    if (
-      bridgefyState.initialized === true &&
-      appContext?.globalState.user?.id
-    ) {
-      console.log('STARTING BRIDGEFY');
-      bridgefy.start(appContext?.globalState.user?.id).catch(error => {
-        log(`Started error`, error.message, true);
-      });
-    }
+    const startUp = async () => {
+      if (
+        bridgefyState.initialized === true &&
+        appContext?.globalState.user?.id
+      ) {
+        const isStarted = await bridgefy.isStarted();
+        console.log('is started ', isStarted);
+        if (!isStarted) {
+          try {
+            console.log('STARTING BRIDGEFY');
+            bridgefy.start(appContext?.globalState.user?.id).catch(error => {
+              log(`Started error`, error.message, true);
+            });
+          } catch (e) {
+            console.log('failure to start Bridgefy');
+          }
+        } else {
+          console.log('Bridgefy is already started - skipping');
+        }
+      }
+    };
+    startUp();
   }, [bridgefyState.initialized, appContext?.globalState.user?.id]);
 
   const log = (event: string, body: any, error = false) => {
