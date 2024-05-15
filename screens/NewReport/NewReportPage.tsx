@@ -43,9 +43,6 @@ export const NewReportPage = () => {
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
 
-  const activeEvent = context?.globalState.events.find(event => event.active);
-  console.log('sending to organizer: ', activeEvent?.organizer?.id);
-
   const handleCreateReport = async () => {
     const currentDate = new Date();
     const newReport: Message = {
@@ -57,12 +54,9 @@ export const NewReportPage = () => {
     };
     const newReportString = JSON.stringify(newReport);
     // send notification with bridgefy TO THE ADMIN of the event
-    console.log('CREATING');
 
     const activeEvent = context?.globalState.events.find(event => event.active);
     const eventAdminId = activeEvent?.organizer?.id;
-
-    console.log('sending to event admin ', eventAdminId);
 
     bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
       type: BridgefyTransmissionModeType.mesh,

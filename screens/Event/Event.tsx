@@ -48,7 +48,6 @@ function sortEvents(bandSets: BandSet[]): BandSet[] {
         .padStart(2, '0')}-${day.padStart(2, '0')}T${hours
         .toString()
         .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-      console.log('fullDateString: ', fullDateString);
 
       return new Date(fullDateString);
     };
@@ -99,20 +98,13 @@ export function EventScreen({route, navigation}: any) {
     selectedEvent = activeEvent;
   }
 
-  console.log('ACTIVE EVENT ', selectedEvent);
-
   let groupedArtists = [];
   const sortedArtists = selectedEvent?.artists
     ? [...selectedEvent.artists]
     : [];
 
   sortEvents(sortedArtists);
-
-  console.log('SORTED ARTSITS ', sortedArtists);
-
   groupedArtists = groupEvents(sortedArtists);
-
-  console.log('groupedArtists ', groupedArtists);
 
   const addEvent = async () => {
     try {
@@ -120,7 +112,6 @@ export function EventScreen({route, navigation}: any) {
       const allEvents = await AsyncStorage.getItem('events');
       const parsedEvents = JSON.parse(allEvents || '[]');
       const newEvents = [...parsedEvents, activeNewEvent];
-      console.log('new Events ', newEvents);
       await AsyncStorage.setItem('events', JSON.stringify(newEvents));
       context?.updateGlobalState({events: newEvents});
       navigation.navigate('Home');

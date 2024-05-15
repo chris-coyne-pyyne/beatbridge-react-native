@@ -18,8 +18,6 @@ export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
 
-  console.log('messages ', context?.globalState.messages);
-
   const notifications = context?.globalState.notifications;
   notifications?.sort((a, b) => b.date - a.date);
 

@@ -46,7 +46,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const loadUserData = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('user');
-        console.log('stored user ', storedUser);
+        // console.log('stored user ', storedUser);
         if (storedUser) {
           setGlobalState(prevState => ({
             ...prevState,
@@ -75,7 +75,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const loadMessagesData = async () => {
       try {
         const storedMessages = await AsyncStorage.getItem('messages');
-        console.log('stored messages ', storedMessages);
+        // console.log('stored messages ', storedMessages);
         if (storedMessages && storedMessages.length) {
           setGlobalState(prevState => ({
             ...prevState,
@@ -99,7 +99,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const loadEventsData = async () => {
       try {
         const storedEvents = await AsyncStorage.getItem('events');
-        console.log('stored events ', storedEvents);
+        // console.log('stored events ', storedEvents);
         if (storedEvents && storedEvents.length) {
           setGlobalState(prevState => ({
             ...prevState,
@@ -123,7 +123,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const loadNotificationsData = async () => {
       try {
         const storedNotifications = await AsyncStorage.getItem('notifications');
-        console.log('stored notifications ', storedNotifications);
+        // console.log('stored notifications ', storedNotifications);
         if (storedNotifications && storedNotifications.length) {
           setGlobalState(prevState => ({
             ...prevState,

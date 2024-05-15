@@ -5,6 +5,7 @@ import {BridgefyContext} from '../../stores/bridgefyStore';
 import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {AppContext} from '../../stores/store';
 
+// TODO - make this proper - show friends if decide to implement that feature
 export const ProfileScreen = () => {
   const context = useContext(BridgefyContext);
   const globalContext = useContext(AppContext);

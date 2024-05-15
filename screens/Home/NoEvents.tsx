@@ -94,7 +94,6 @@ export function NoEvents({navigation}: any) {
       ? events
       : events.filter(event => event.name.includes(searchText));
 
-  console.log('filtered events ', filteredEvents);
   return (
     <View style={styles.pageContainer}>
       <ScrollView>
@@ -169,14 +168,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
 
-    backgroundColor: '#fff', // White background for the card
-    borderRadius: 8, // Rounded corners
-    shadowColor: '#000', // Shadow color
-    shadowOffset: {width: 0, height: 2}, // Shadow offset x, y
-    shadowOpacity: 0.1, // Shadow opacity
-    shadowRadius: 4, // Shadow blur radius
-    elevation: 5, // Elevation for Android (shadow effect)
-    padding: 16, // Padding inside the card
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+    padding: 16,
   },
   image: {
     width: 100,

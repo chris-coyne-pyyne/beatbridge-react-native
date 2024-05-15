@@ -36,8 +36,6 @@ export const Section2 = ({setStep, navigation}: any) => {
   const [artistDateVis, setArtistDateVis] = useState(false);
   const [artistDate, setArtistDate] = useState('');
 
-  console.log('ALL VALUES ', allValues);
-
   // modal visibility
   const [startDateVis, setStartDateVis] = useState(false);
   const [endDateVis, setEndDateVis] = useState(false);
@@ -180,10 +178,7 @@ export const Section2 = ({setStep, navigation}: any) => {
       </View>
       <View style={[styles.dateInputContainer, styles.container]}>
         <DateInput
-          onPress={() => {
-            console.log('setting start time vis... ', artistStartTimeVis);
-            setArtistStartTimeVis(true);
-          }}
+          onPress={() => setArtistStartTimeVis(true)}
           text={`Start: ${startTime}` || 'Start Time'}
         />
         <DateInput
