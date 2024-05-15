@@ -14,7 +14,11 @@ const sampleGenres = [
   'Indie',
 ];
 
-export const Section0 = ({setStep}: any) => {
+type Props = {
+  setStep: (step: number) => {};
+};
+
+export const Section0 = ({setStep}: Props) => {
   const {setValue, control} = useFormContext();
 
   return (
@@ -30,7 +34,7 @@ export const Section0 = ({setStep}: any) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.input, styles.container]}
+              style={[styles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -47,7 +51,7 @@ export const Section0 = ({setStep}: any) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.input, styles.container]}
+              style={[styles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -75,7 +79,7 @@ export const Section0 = ({setStep}: any) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.input, styles.container]}
+              style={[styles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -89,7 +93,6 @@ export const Section0 = ({setStep}: any) => {
         />
 
         <Button
-          title="Next Section"
           onPress={() => setStep(1)}
           style={styles.container}
           mode="contained">

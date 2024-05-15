@@ -1,4 +1,4 @@
-export const formatDate = (isoDateString: string) => {
+export const formatDate = (isoDateString: Date) => {
   // Create a new Date object using the ISO date string
   const date = new Date(isoDateString);
 

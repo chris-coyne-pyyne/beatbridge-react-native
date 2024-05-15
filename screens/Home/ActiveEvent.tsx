@@ -7,11 +7,9 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {globalStyles} from '../../styles/Styles';
 import {Notification} from '../../types/notification';
 import {useContext, useEffect, useState} from 'react';
 import {AppContext} from '../../stores/store';
-import {Container} from '../../components/Container';
 import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {BridgefyContext} from '../../stores/bridgefyStore';
@@ -140,35 +138,36 @@ export function ActiveEvent({navigation, activeEvent}) {
           <Text variant="titleLarge">Messages</Text>
         </View>
 
-        {messages.map(message => {
-          return (
-            <TouchableOpacity
-              key={message.id}
-              id={message.id}
-              style={[styles.notificationContainer, styles.container]}
-              delayPressIn={50}
-              onPress={() => console.log('hello world')}>
-              <View style={styles.dateContainer}>
-                <Text variant="titleLarge">
-                  {formatUnixTimestamp(message.date).day}
-                </Text>
-                <Text variant="titleLarge">
-                  {formatUnixTimestamp(message.date).month}
-                </Text>
-              </View>
-              <View style={styles.notificationTextContainer}>
-                <Text variant="titleLarge">{message.title}</Text>
-                <Text
-                  variant="bodyLarge"
-                  ellipsizeMode="tail"
-                  numberOfLines={4}
-                  style={styles.container}>
-                  {message.message}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+        {messages &&
+          messages.map(message => {
+            return (
+              <TouchableOpacity
+                key={message.id}
+                id={message.id}
+                style={[styles.notificationContainer, styles.container]}
+                delayPressIn={50}
+                onPress={() => console.log('hello world')}>
+                <View style={styles.dateContainer}>
+                  <Text variant="titleLarge">
+                    {formatUnixTimestamp(message.date).day}
+                  </Text>
+                  <Text variant="titleLarge">
+                    {formatUnixTimestamp(message.date).month}
+                  </Text>
+                </View>
+                <View style={styles.notificationTextContainer}>
+                  <Text variant="titleLarge">{message.title}</Text>
+                  <Text
+                    variant="bodyLarge"
+                    ellipsizeMode="tail"
+                    numberOfLines={4}
+                    style={styles.container}>
+                    {message.message}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
 
         {modalOpen && (
           <Modal

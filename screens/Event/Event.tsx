@@ -22,11 +22,30 @@ function sortEvents(events: any): Event[] {
         hours = 0;
       }
 
+      const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'Dececember',
+      ];
       const [month, day] = date.split(' ');
-      const year = new Date().getFullYear(); // Assuming the events are in the current year
-      const monthIndex = new Date(`${month} 1`).getMonth(); // Get the month index (0-11)
+      const monthIndex = monthNames.indexOf(month);
+      if (monthIndex === -1) {
+        throw new Error(`Invalid month name: ${month}`);
+      }
+      const year = new Date().getFullYear();
 
-      const fullDateString = `${year}-${monthIndex + 1}-${day}T${hours
+      const fullDateString = `${year}-${(monthIndex + 1)
+        .toString()
+        .padStart(2, '0')}-${day.padStart(2, '0')}T${hours
         .toString()
         .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
       console.log('fullDateString: ', fullDateString);

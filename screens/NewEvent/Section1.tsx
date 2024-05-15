@@ -5,16 +5,19 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {useFormContext, Controller} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {Button, Text, Icon} from 'react-native-paper';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export const Section1 = ({setStep}: any) => {
-  const {register, watch, setValue, control} = useFormContext();
+  const {watch, setValue} = useFormContext();
   const allValues = watch();
 
   const selectImage = async () => {
-    const result = await launchImageLibrary();
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      selectionLimit: 1,
+    });
 
     console.log('result ', result);
     setValue('imageSource', result);

@@ -63,15 +63,12 @@ export const Section2 = ({setStep, navigation}: any) => {
     },
     {
       onSuccess: async data => {
-        console.log('data ', data);
         const newLocalEvents = events || [];
         for (const e of newLocalEvents) {
           e.active = false;
         }
 
         const createdEvent = {...data, active: true};
-
-        console.log('WILL ADD EVENT ', [...newLocalEvents, createdEvent]);
 
         await AsyncStorage.setItem(
           'events',
@@ -84,43 +81,35 @@ export const Section2 = ({setStep, navigation}: any) => {
         showToast();
         navigation.navigate('Home');
       },
-      onError: err => {
-        // Optional: Handle error in mutation state
-        console.error(
-          'Error logging in:',
-          err.response ? err.response.data.message : err.message,
-        );
-      },
     },
   );
 
-  const handleStartDate = date => {
-    console.log('date ', date);
+  const handleStartDate = (date: Date) => {
     const formatted = formatDate(date).formattedDate;
     setValue('startDate', formatted);
     setStartDateVis(false);
   };
 
-  const handleEndDate = date => {
+  const handleEndDate = (date: Date) => {
     const formatted = formatDate(date).formattedDate;
     setValue('endDate', formatted);
     setEndDateVis(false);
   };
 
   // artist specific functions
-  const handleStartTimeArtistConfirm = time => {
+  const handleStartTimeArtistConfirm = (time: Date) => {
     const formattedTime = formatDate(time).formattedTime;
     setStartTime(formattedTime);
     setArtistStartTimeVis(false);
   };
 
-  const handleEndTimeArtistConfirm = time => {
+  const handleEndTimeArtistConfirm = (time: Date) => {
     const formattedTime = formatDate(time).formattedTime;
     setEndTime(formattedTime);
     setArtistEndTimeVis(false);
   };
 
-  const handleArtistDateConfirm = date => {
+  const handleArtistDateConfirm = (date: Date) => {
     const formattedDate = formatDate(date).formattedDate;
     setArtistDate(formattedDate);
     setArtistDateVis(false);
@@ -179,10 +168,10 @@ export const Section2 = ({setStep, navigation}: any) => {
         onCancel={() => setEndDateVis(false)}
       />
 
-      <Text variant="titleLarge" style={[styles.marginTop, styles.container]}>
+      <Text variant="titleLarge" style={[styles.container]}>
         Add a New Artist
       </Text>
-      <View style={[styles.marginTop, styles.container]}>
+      <View style={[styles.container]}>
         <TextInput
           label="Artist Name"
           value={artist}
@@ -217,7 +206,7 @@ export const Section2 = ({setStep, navigation}: any) => {
           Add Artist
         </Button>
       </View>
-      <Text variant="titleLarge" style={[styles.marginTop, styles.container]}>
+      <Text variant="titleLarge" style={[styles.container]}>
         Artists
       </Text>
       {allValues.artists.map((artist: BandSet) => (
