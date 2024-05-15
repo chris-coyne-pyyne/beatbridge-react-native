@@ -8,15 +8,14 @@ import {
 } from 'react-native';
 
 import {Notification} from '../../types/notification';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import {AppContext} from '../../stores/store';
 import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
-import {BridgefyContext} from '../../stores/bridgefyStore';
+import {NoMessage} from './components/NoMessage';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
-  const bridgefyContext = useContext(BridgefyContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
 
   console.log('messages ', context?.globalState.messages);
@@ -101,38 +100,45 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         </View>
 
         {notifications &&
-          notifications.map(notification => (
-            <TouchableOpacity
-              key={notification.id}
-              id={notification.id}
-              style={[styles.notificationContainer, styles.container]}
-              delayPressIn={50}
-              onPress={() => setModalOpen(notification)}>
-              <View style={styles.dateContainer}>
-                <Text variant="titleLarge">
-                  {formatUnixTimestamp(notification.date).day}
-                </Text>
-                <Text variant="titleLarge">
-                  {formatUnixTimestamp(notification.date).month}
-                </Text>
-              </View>
-              <View style={styles.notificationTextContainer}>
-                <Text variant="titleLarge">{notification.title}</Text>
-                <Text
-                  variant="bodyLarge"
-                  ellipsizeMode="tail"
-                  numberOfLines={4}
-                  style={styles.container}>
-                  {notification.message}
-                </Text>
-                <View
-                  style={[styles.notificationTagsContainer, styles.container]}>
-                  {notification.tags.map(tag => (
-                    <Chip key={tag}>{tag}</Chip>
-                  ))}
+          (!notifications.length ? (
+            <NoMessage text="You have not sent any notifications" />
+          ) : (
+            notifications.map(notification => (
+              <TouchableOpacity
+                key={notification.id}
+                id={notification.id}
+                style={[styles.notificationContainer, styles.container]}
+                delayPressIn={50}
+                onPress={() => setModalOpen(notification)}>
+                <View style={styles.dateContainer}>
+                  <Text variant="titleLarge">
+                    {formatUnixTimestamp(notification.date).day}
+                  </Text>
+                  <Text variant="titleLarge">
+                    {formatUnixTimestamp(notification.date).month}
+                  </Text>
                 </View>
-              </View>
-            </TouchableOpacity>
+                <View style={styles.notificationTextContainer}>
+                  <Text variant="titleLarge">{notification.title}</Text>
+                  <Text
+                    variant="bodyLarge"
+                    ellipsizeMode="tail"
+                    numberOfLines={4}
+                    style={styles.container}>
+                    {notification.message}
+                  </Text>
+                  <View
+                    style={[
+                      styles.notificationTagsContainer,
+                      styles.container,
+                    ]}>
+                    {notification.tags.map(tag => (
+                      <Chip key={tag}>{tag}</Chip>
+                    ))}
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))
           ))}
 
         <View style={styles.notificationTitleContainer}>
@@ -140,35 +146,39 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         </View>
 
         {messages &&
-          messages.map(message => {
-            return (
-              <TouchableOpacity
-                key={message.id}
-                id={message.id}
-                style={[styles.notificationContainer, styles.container]}
-                delayPressIn={50}
-                onPress={() => console.log('hello world')}>
-                <View style={styles.dateContainer}>
-                  <Text variant="titleLarge">
-                    {formatUnixTimestamp(message.date).day}
-                  </Text>
-                  <Text variant="titleLarge">
-                    {formatUnixTimestamp(message.date).month}
-                  </Text>
-                </View>
-                <View style={styles.notificationTextContainer}>
-                  <Text variant="titleLarge">{message.title}</Text>
-                  <Text
-                    variant="bodyLarge"
-                    ellipsizeMode="tail"
-                    numberOfLines={4}
-                    style={styles.container}>
-                    {message.message}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+          (!messages.length ? (
+            <NoMessage text="You have no messages" />
+          ) : (
+            messages.map(message => {
+              return (
+                <TouchableOpacity
+                  key={message.id}
+                  id={message.id}
+                  style={[styles.notificationContainer, styles.container]}
+                  delayPressIn={50}
+                  onPress={() => console.log('hello world')}>
+                  <View style={styles.dateContainer}>
+                    <Text variant="titleLarge">
+                      {formatUnixTimestamp(message.date).day}
+                    </Text>
+                    <Text variant="titleLarge">
+                      {formatUnixTimestamp(message.date).month}
+                    </Text>
+                  </View>
+                  <View style={styles.notificationTextContainer}>
+                    <Text variant="titleLarge">{message.title}</Text>
+                    <Text
+                      variant="bodyLarge"
+                      ellipsizeMode="tail"
+                      numberOfLines={4}
+                      style={styles.container}>
+                      {message.message}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          ))}
 
         {modalOpen && (
           <Modal
