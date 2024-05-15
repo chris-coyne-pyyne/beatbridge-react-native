@@ -9,7 +9,6 @@ import {apiClient} from '../../api/axiosConfig';
 
 export function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const context = useContext(AppContext);
 
@@ -18,7 +17,6 @@ export function LoginScreen({navigation}: any) {
     async () => {
       const response = await apiClient.post('login', {
         email,
-        name,
         password,
       });
       return response.data;
@@ -40,8 +38,10 @@ export function LoginScreen({navigation}: any) {
 
   return (
     <View>
-      <View style={{width: '100%', height: '35%'}}>
-        <Text variant="headlineLarge">Welcome{'\n'}Back</Text>
+      <View style={{width: '100%', height: '45%'}}>
+        <Text variant="headlineLarge" style={styles.title}>
+          Welcome{'\n'}Back
+        </Text>
         <Image
           source={require('../../assets/background-abstract.png')}
           style={{width: '100%', height: '100%'}}
@@ -53,14 +53,6 @@ export function LoginScreen({navigation}: any) {
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
-            mode="flat"
-          />
-        </View>
-        <View style={styles.container}>
-          <TextInput
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
             mode="flat"
           />
         </View>
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
     left: '10%',
     zIndex: 2,
     color: 'white',
-    fontWeight: 700,
+    fontWeight: 'bold',
   },
   container: {
     marginTop: 12,

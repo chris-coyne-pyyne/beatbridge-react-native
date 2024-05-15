@@ -125,7 +125,7 @@ function App(): React.JSX.Element {
               <Stack.Navigator
                 initialRouteName="Home"
                 screenOptions={({navigation, route}) => {
-                  const isIntro = route.name === 'Intro';
+                  const isIntro: boolean = route.name === 'Intro';
                   return {
                     // Conditionally set the header style and header right component
                     headerStyle: {backgroundColor: '#fff'}, // Apply no style if it's 'Intro'
@@ -170,73 +170,3 @@ function App(): React.JSX.Element {
 }
 
 export default App;
-
-/*
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next: abc
-          </Section>
-          <Section title="HELLO">Is initialized: {initialized}</Section>
-          <LearnMoreLinks />
-        </View>
-        <View style={styles.buttonBar}>
-          <Button
-            disabled={!initialized || started}
-            title="Start"
-            onPress={() =>
-              bridgefy.start().catch(error => {
-                log(`Started error`, error.message, true);
-              })
-            }
-          />
-          <Button
-            disabled={!initialized || !started}
-            title="Stop"
-            onPress={() =>
-              bridgefy.stop().catch(error => {
-                log(`Stopped error`, error.message, true);
-              })
-            }
-          />
-          <Button
-            title="Send data"
-            disabled={initialized && !started}
-            onPress={() =>
-              bridgefy
-                .send('Hello world', {
-                  type: BridgefyTransmissionModeType.broadcast,
-                  uuid: userId.current,
-                })
-                .then(result => {
-                  log(`Sent message`, result);
-                })
-            }
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-  */
