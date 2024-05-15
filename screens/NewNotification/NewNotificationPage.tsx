@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 });
 
 // notifications allow the admin to send messages to event attendees
-export function NewNotificationScreen({navigation}) {
+export function NewNotificationScreen({navigation}: any) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [tags, setTags] = useState('');
@@ -57,7 +57,7 @@ export function NewNotificationScreen({navigation}) {
 
     const currentDate = new Date();
     const newNotification: Notification = {
-      id: uuid.v4(),
+      id: uuid.v4() as string,
       message,
       title,
       mode: 'notification',
@@ -129,8 +129,7 @@ export function NewNotificationScreen({navigation}) {
         <Button
           onPress={handleCreateNotification}
           style={styles.container}
-          mode="contained"
-          filled>
+          mode="contained">
           Create Notification
         </Button>
       </View>

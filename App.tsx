@@ -5,27 +5,19 @@
  * @format
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import type {PropsWithChildren} from 'react';
-import {ScrollView} from 'react-native';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {HomeScreen} from './screens/Home/Homepage';
 import {LoginScreen} from './screens/Login/LoginPage';
 import {SignupScreen} from './screens/Signup/SignupPage';
 import {NewEventScreen} from './screens/NewEvent/NewEventScreen';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import Toast, {BaseToast, BaseToastProps} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
-import {
-  Provider as PaperProvider,
-  Avatar,
-  IconButton,
-} from 'react-native-paper';
+import {Provider as PaperProvider, IconButton} from 'react-native-paper';
 
-import {Bridgefy} from 'bridgefy-react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {EventScreen} from './screens/Event/Event';
 import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
 import {AppProvider} from './stores/store';
@@ -35,7 +27,7 @@ import {DefaultTheme} from 'react-native-paper';
 import {IntroScreen} from './screens/Intro/Intro';
 
 const toastConfig = {
-  success: props => (
+  success: (props: BaseToastProps) => (
     <BaseToast
       {...props}
       style={{borderLeftColor: 'green'}}
@@ -55,8 +47,6 @@ const toastConfig = {
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
-
-const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
   const theme = {

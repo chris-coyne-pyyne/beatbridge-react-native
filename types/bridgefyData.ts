@@ -1,4 +1,4 @@
 export interface BridgefyData {
   mode: 'message' | 'notification';
-  id: 'string';
+  id: string;
 }

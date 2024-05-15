@@ -1,22 +1,12 @@
-import {View, Image, StyleSheet} from 'react-native';
-// import {Button} from '../../components/Button';
-// import {Text} from '../../components/Text';
-import useAsyncStorage from '../../hooks/useAsyncStorage';
-
-import {globalStyles} from '../../styles/Styles';
-import {User} from '../../types/user';
+import {StyleSheet, View} from 'react-native';
 import {NoEvents} from './NoEvents';
-import {Event} from '../../types/event';
 import {ActiveEvent} from './ActiveEvent';
-import {useContext, useState} from 'react';
-import {AppContext, AppProvider} from '../../stores/store';
-import {Container} from '../../components/Container';
-import {Button, Text} from 'react-native-paper';
+import {useContext} from 'react';
+import {AppContext} from '../../stores/store';
+import {Text} from 'react-native-paper';
 
-export function HomeScreen({navigation}) {
+export const HomeScreen = ({navigation}: any) => {
   const context = useContext(AppContext);
-
-  console.log('global state events ', context?.globalState.events);
 
   const activeEvent = context?.globalState.events
     ? context.globalState.events.find(event => event.active === true)
@@ -71,9 +61,17 @@ export function HomeScreen({navigation}) {
       </View>
     );
     */
+
+    //  return <View><Text>test</Text></View>
     navigation.navigate('Intro');
   }
-}
+
+  return (
+    <View>
+      <Text>test</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

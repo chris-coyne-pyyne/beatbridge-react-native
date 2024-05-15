@@ -1,7 +1,7 @@
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {Event} from '../../types/event';
+import {BandSet, Event} from '../../types/event';
 import {useContext} from 'react';
 import {AppContext} from '../../stores/store';
 import {Container} from '../../components/Container';
@@ -9,10 +9,10 @@ import {apiClient} from '../../api/axiosConfig';
 import {Text, Chip, Button, Card} from 'react-native-paper';
 import {useQuery} from 'react-query';
 
-function sortEvents(events: any): Event[] {
-  return events.sort((a, b) => {
-    const parseDateTime = (event: any): Date => {
-      const [date, startTime] = [event.date, event.startTime];
+function sortEvents(bandSets: BandSet[]): BandSet[] {
+  return bandSets.sort((a: BandSet, b: BandSet) => {
+    const parseDateTime = (bandSet: BandSet): Date => {
+      const [date, startTime] = [bandSet.date, bandSet.startTime];
       const [time, modifier] = startTime.split(' ');
       let [hours, minutes] = time.split(':').map(Number);
       if (modifier === 'PM' && hours !== 12) {
@@ -72,7 +72,7 @@ function groupEvents(events: any) {
   return months;
 }
 
-export function EventScreen({route, navigation}) {
+export function EventScreen({route, navigation}: any) {
   const {id} = route.params;
   const context = useContext(AppContext);
 
@@ -82,17 +82,14 @@ export function EventScreen({route, navigation}) {
   };
 
   // TODO - should only be called if coming from the main event picker component
-  const {
-    data: apiEvent,
-    error,
-    isLoading,
-  } = useQuery<Event[]>(['event', id], fetchData);
+  const {data: apiEvent} = useQuery<Event>(['event', id], fetchData);
 
-  let selectedEvent: Event | null;
+  let selectedEvent: Event | undefined;
 
   const activeEvent = context?.globalState.events
-    ? context.globalState.events.find(event => event.active === true) || null
-    : null;
+    ? context.globalState.events.find(event => event.active === true) ||
+      undefined
+    : undefined;
 
   // if this is not the active event for the user - just set selected event to API request
   // refactor in future - just do now for convenience

@@ -16,7 +16,7 @@ const fetchData = async () => {
   return data;
 };
 
-export function NoEvents({navigation}) {
+export function NoEvents({navigation}: any) {
   const {
     data: events,
     error,
@@ -89,9 +89,10 @@ export function NoEvents({navigation}) {
   */
 
   const [searchText, setSearchText] = useState('');
-  const filteredEvents = !searchText
-    ? events
-    : events.filter(event => event.name.includes(searchText));
+  const filteredEvents =
+    !searchText || !events
+      ? events
+      : events.filter(event => event.name.includes(searchText));
 
   console.log('filtered events ', filteredEvents);
   return (
@@ -110,7 +111,6 @@ export function NoEvents({navigation}) {
             placeholder={'Search Events'}
             value={searchText}
             onChangeText={setSearchText}
-            label={'Event'}
           />
         </View>
         <View style={styles.container}>

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewReportPage = ({navigation}) => {
+export const NewReportPage = () => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const context = useContext(AppContext);
@@ -49,7 +49,7 @@ export const NewReportPage = ({navigation}) => {
   const handleCreateReport = async () => {
     const currentDate = new Date();
     const newReport: Message = {
-      id: uuid.v4(),
+      id: uuid.v4() as string,
       message,
       title,
       mode: 'message',

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {useFormContext} from 'react-hook-form';
 import {Button, Text, Icon} from 'react-native-paper';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 export const Section1 = ({setStep}: any) => {
   const {watch, setValue} = useFormContext();
@@ -19,7 +19,6 @@ export const Section1 = ({setStep}: any) => {
       selectionLimit: 1,
     });
 
-    console.log('result ', result);
     setValue('imageSource', result);
   };
 

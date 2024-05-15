@@ -39,7 +39,7 @@ type Props = {
 type Props2 = NativeStackScreenProps<RootStackParamList, 'Profile', 'MyStack'>;
 */
 
-export const NewEventScreen = ({navigation}) => {
+export const NewEventScreen = ({navigation}: any) => {
   const [step, setStep] = useState(0);
 
   const methods = useForm({defaultValues: emptyForm, mode: 'onSubmit'});

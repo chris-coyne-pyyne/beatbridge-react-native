@@ -2,11 +2,7 @@ import {useContext} from 'react';
 import {View, Button} from 'react-native';
 import {Text} from 'react-native-paper';
 import {BridgefyContext} from '../../stores/bridgefyStore';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
+import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {AppContext} from '../../stores/store';
 
 export const ProfileScreen = () => {
@@ -35,7 +31,7 @@ export const ProfileScreen = () => {
       <Text>
         Initialized: {context?.bridgefyState?.initialized ? 'TRUE' : 'FALSE'}
       </Text>
-      {globalContext?.globalState.user !== 'loading' && (
+      {!globalContext?.globalState.userLoading && (
         <Button
           title="Send data"
           onPress={() =>
@@ -44,10 +40,10 @@ export const ProfileScreen = () => {
                 type: BridgefyTransmissionModeType.broadcast,
                 uuid: '123e4567-e89b-12d3-a456-426614174000',
               })
-              .then(result => {
+              .then((result: any) => {
                 log(`Sent message`, result);
               })
-              .catch(e => {
+              .catch((e: any) => {
                 log('error ', e);
               })
           }

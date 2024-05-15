@@ -3,39 +3,19 @@ import React, {
   createContext,
   useState,
   ReactNode,
-  Dispatch,
-  SetStateAction,
   useEffect,
   useContext,
   useRef,
 } from 'react';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
+import {Bridgefy, BridgefyEvents} from 'bridgefy-react-native';
 import * as RNPermissions from 'react-native-permissions';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button,
   type EmitterSubscription,
   NativeEventEmitter,
   NativeModules,
-  Touchable,
 } from 'react-native';
 import {AppContext} from './store';
 import Toast from 'react-native-toast-message';
-import useAsyncStorage from '../../hooks/useAsyncStorage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Event} from '../../types/event';
-import {generateRandomString} from '../../utils/randomNumber';
-import {Notification} from '../types/notification';
 
 const showToast = (title: string, message: string) => {
   Toast.show({

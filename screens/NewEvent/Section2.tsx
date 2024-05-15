@@ -47,7 +47,7 @@ export const Section2 = ({setStep, navigation}: any) => {
   const isUserLoading = context?.globalState.userLoading;
 
   // axios
-  const {mutate, isLoading, error} = useMutation(
+  const {mutate, isLoading} = useMutation(
     async () => {
       const response = await apiClient.post('event', {
         name: allValues.name,

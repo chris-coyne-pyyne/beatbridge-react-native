@@ -15,7 +15,7 @@ const sampleGenres = [
 ];
 
 type Props = {
-  setStep: (step: number) => {};
+  setStep: (step: number) => void;
 };
 
 export const Section0 = ({setStep}: Props) => {

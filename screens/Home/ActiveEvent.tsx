@@ -14,7 +14,7 @@ import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {BridgefyContext} from '../../stores/bridgefyStore';
 
-export function ActiveEvent({navigation, activeEvent}) {
+export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
@@ -86,8 +86,9 @@ export function ActiveEvent({navigation, activeEvent}) {
               Rock and Roll
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Event', {id: activeEvent.id})}
-              mode="contained">
+              onPress={() =>
+                navigation.navigate('Event', {id: activeEvent.id})
+              }>
               <Text variant="bodyLarge" style={{marginTop: 2, color: 'orange'}}>
                 Event Page
               </Text>

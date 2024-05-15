@@ -1,9 +1,7 @@
 import {View, Image, StyleSheet} from 'react-native';
-// import {Button} from '../../components/Button';
-// import {Text} from '../../components/Text';
 import {Button, Text} from 'react-native-paper';
 
-export const IntroScreen = ({navigation}) => {
+export const IntroScreen = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <Image
@@ -19,19 +17,12 @@ export const IntroScreen = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.view}>
-        <Button
-          title="Sign Up"
-          mode="contained"
-          onPress={() => navigation.navigate('Signup')}>
+        <Button mode="contained" onPress={() => navigation.navigate('Signup')}>
           Sign Up
         </Button>
       </View>
       <View style={styles.view}>
-        <Button
-          type="outlined"
-          title="Log In"
-          mode="outlined"
-          onPress={() => navigation.navigate('Login')}>
+        <Button mode="outlined" onPress={() => navigation.navigate('Login')}>
           Log In
         </Button>
       </View>
@@ -41,9 +32,9 @@ export const IntroScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Takes full height of the screen
-    justifyContent: 'center', // Centers content vertically in the container
-    alignItems: 'center', // Centers content horizontally in the container
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
   },
   view: {
