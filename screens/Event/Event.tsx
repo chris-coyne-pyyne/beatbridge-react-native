@@ -130,6 +130,11 @@ export function EventScreen({route, navigation}: any) {
       newEvents[activeEventInd].active = false;
       context?.updateGlobalState({events: newEvents});
       await AsyncStorage.setItem('events', JSON.stringify(newEvents));
+
+      // also clear all notifications
+      context?.updateGlobalState({notifications: []});
+      await AsyncStorage.setItem('notifications', JSON.stringify([]));
+
       navigation.navigate('Home');
     }
   };

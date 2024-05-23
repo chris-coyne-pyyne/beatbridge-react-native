@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 
 import {Notification} from '../../types/notification';
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import {AppContext} from '../../stores/store';
 import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {NoMessage} from './components/NoMessage';
+import {BridgefyContext} from '../../stores/bridgefyStore';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
@@ -23,6 +24,25 @@ export function ActiveEvent({navigation, activeEvent}: any) {
 
   const messages = context?.globalState.messages;
   messages?.sort((a, b) => b.date - a.date);
+
+  const bridgefyContext = useContext(BridgefyContext);
+
+  /*
+  useEffect(() => {
+    const getConnectedPeers = async () => {
+      if (bridgefyContext?.bridgefyState.initialized) {
+        const isStarted = await bridgefyContext?.bridgefyState.bridgefy.isStarted()
+        if (isStarted) {
+
+        }
+        const peers =
+          await bridgefyContext?.bridgefyState.bridgefy.connectedPeers();
+        console.log('PEERS ', peers);
+      }
+    };
+    getConnectedPeers();
+  }, [bridgefyContext?.bridgefyState.initialized]);
+  */
 
   /*
   const messages = [
@@ -227,6 +247,22 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         />
       )}
       <Button onPress={() => navigation.navigate('NewEvent')}>new event</Button>
+      <Button
+        onPress={async () => {
+          const peers =
+            await bridgefyContext?.bridgefyState.bridgefy.connectedPeers();
+          console.log('peers ', peers);
+
+          const isInitialized =
+            await bridgefyContext?.bridgefyState.bridgefy.isInitialized();
+          console.log('is initialized ', isInitialized);
+
+          const expireDate =
+            await bridgefyContext?.bridgefyState.bridgefy.licenseExpirationDate();
+          console.log('expireDate ', expireDate);
+        }}>
+        get peers
+      </Button>
     </View>
   );
 }

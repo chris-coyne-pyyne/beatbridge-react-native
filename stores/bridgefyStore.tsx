@@ -56,8 +56,6 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
 
   const appContext = useContext(AppContext);
 
-  console.log('BRIDGEFY USER ', appContext?.globalState.user);
-
   // if initialized - try to start
   useEffect(() => {
     const startUp = async () => {
