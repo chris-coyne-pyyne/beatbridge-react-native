@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {Container} from '../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {Report} from '../../types/report';
 import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
 import {BridgefyContext} from '../../stores/bridgefyStore';
@@ -37,54 +36,57 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewReportPage = () => {
+export const NewMessagePage = () => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
 
-  const handleCreateReport = async () => {
+  const handleCreateMessage = async () => {
     const currentDate = new Date();
-    const newReport: Report = {
-      id: uuid.v4() as string,
-      message,
-      title,
-      mode: 'message',
-      date: Math.floor(currentDate.getTime() / 1000),
-    };
-    const newReportString = JSON.stringify(newReport);
-    // send notification with bridgefy TO THE ADMIN of the event
+    const user = context?.globalState.user;
 
-    const activeEvent = context?.globalState.events.find(event => event.active);
-    const eventAdminId = activeEvent?.organizer?.id;
+    if (user) {
+      const newMessage: Message = {
+        id: uuid.v4() as string,
+        message,
+        mode: 'message',
+        sender: {
+          id: user?.id,
+          email: user?.email,
+          name: user?.name,
+        },
+        date: Math.floor(currentDate.getTime() / 1000),
+      };
+      const newMessageString = JSON.stringify(newMessage);
 
-    bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
-      type: BridgefyTransmissionModeType.mesh,
-      uuid: eventAdminId,
-    });
+      bridgefyContext?.bridgefyState.bridgefy.send(newMessageString, {
+        type: BridgefyTransmissionModeType.broadcast,
+        uuid: user.id,
+      });
+    }
   };
 
   return (
     <Container>
-      <Text variant="titleLarge">Report</Text>
+      <Text variant="titleLarge">Message</Text>
       <Text variant="bodyLarge">
-        Send a message to the administrators letting them know if theres a
-        problem
+        Send a message to everyone else in your vicinity
       </Text>
       <View style={styles.container}>
         <TextInput
           placeholder="Enter title"
           value={title}
           onChangeText={setTitle}
-          label="Report Title"
+          label="Message title"
         />
         <TextInput
-          label="Report Message"
-          placeholder="Enter message"
+          label="Message contents"
+          placeholder="Enter Message"
           value={message}
           onChangeText={setMessage}
         />
-        <Button onPress={handleCreateReport} mode="contained">
+        <Button onPress={handleCreateMessage} mode="contained">
           Send Report
         </Button>
       </View>

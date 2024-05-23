@@ -165,7 +165,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
 
         {messages &&
           (!messages.length ? (
-            <NoMessage text="You have no messages" />
+            <NoMessage text="No Messages have been detected" />
           ) : (
             messages.map(message => {
               return (
@@ -184,7 +184,6 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                     </Text>
                   </View>
                   <View style={styles.notificationTextContainer}>
-                    <Text variant="titleLarge">{message.title}</Text>
                     <Text
                       variant="bodyLarge"
                       ellipsizeMode="tail"
@@ -197,6 +196,10 @@ export function ActiveEvent({navigation, activeEvent}: any) {
               );
             })
           ))}
+
+        <Button onPress={() => navigation.navigate('MessageBoard')}>
+          All Messages
+        </Button>
 
         {modalOpen && (
           <Modal
