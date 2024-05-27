@@ -3,7 +3,7 @@ import {NoEvents} from './NoEvents';
 import {ActiveEvent} from './ActiveEvent';
 import {useContext, useEffect} from 'react';
 import {AppContext} from '../../stores/store';
-import {Text} from 'react-native-paper';
+import {ActivityIndicator, Text} from 'react-native-paper';
 
 export const HomeScreen = ({navigation}: any) => {
   const context = useContext(AppContext);
@@ -20,7 +20,11 @@ export const HomeScreen = ({navigation}: any) => {
   }, [context?.globalState.user, context?.globalState.userLoading, navigation]);
 
   if (context?.globalState.userLoading === true) {
-    return <Text>loading...</Text>;
+    return (
+      <View style={{flex: 1, paddingTop: 48}}>
+        <ActivityIndicator size={48} />
+      </View>
+    );
   }
 
   if (context?.globalState.user?.email && activeEvent) {

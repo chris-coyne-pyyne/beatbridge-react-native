@@ -83,7 +83,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
         if (storedMessages && storedMessages.length) {
           setGlobalState(prevState => ({
             ...prevState,
-            events: JSON.parse(storedMessages),
+            messages: JSON.parse(storedMessages),
           }));
         } else {
           setGlobalState(prevState => ({

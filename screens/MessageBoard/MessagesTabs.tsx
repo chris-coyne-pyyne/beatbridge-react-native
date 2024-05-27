@@ -10,7 +10,6 @@ export const MessagesTabs = ({navigation}: any) => {
   const value = params?.messageType || 'Messages';
 
   const updateParams = (newVal: string) => {
-    console.log('NEW VAL ', newVal);
     navigation.setParams({messageType: newVal});
   };
   return (

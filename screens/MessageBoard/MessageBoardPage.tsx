@@ -9,12 +9,14 @@ import {apiClient} from '../../api/axiosConfig';
 import {Message} from '../../types/message';
 import {MessagesTabs} from './MessagesTabs';
 import {Container} from '../../components/Container';
+import {NoMessage} from '../Home/components/NoMessage';
 
 export function MessageBoardScreen({navigation}: any) {
   const context = useContext(AppContext);
 
-  // const messages = context?.globalState.messages;
+  const messages = context?.globalState.messages;
 
+  /*
   const messages: Message[] = [
     {
       mode: 'report',
@@ -106,12 +108,15 @@ export function MessageBoardScreen({navigation}: any) {
       },
     },
   ];
+  */
 
   return (
     <View style={styles.pageContainer}>
-      <Text variant="titleLarge">Message Board</Text>
+      <Text variant="titleLarge" style={styles.container}>
+        Message Board
+      </Text>
       <View style={styles.messagesContainer}>
-        {messages &&
+        {messages && messages.length ? (
           messages.map(message => (
             <View key={message.id} style={styles.messageContainer}>
               <Avatar.Image
@@ -123,7 +128,10 @@ export function MessageBoardScreen({navigation}: any) {
                 <Text variant="bodyLarge">{message.message}</Text>
               </View>
             </View>
-          ))}
+          ))
+        ) : (
+          <NoMessage text="No messages were found" />
+        )}
       </View>
       <View style={styles.buttonContainer}>
         <Button
@@ -141,6 +149,9 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
   },
+  container: {
+    marginTop: 12,
+  },
   messageContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -152,7 +163,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   messagesContainer: {
-    marginBottom: 12,
+    marginVertical: 12,
   },
   buttonContainer: {
     paddingVertical: 12,

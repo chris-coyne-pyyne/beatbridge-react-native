@@ -6,6 +6,7 @@ import {ReportsPage} from '../Reports/ReportsPage';
 import {NewNotificationScreen} from '../NewNotification/NewNotificationPage';
 import {BottomNav} from '../../components/BottomNav';
 import {Container} from '../../components/Container';
+import {NotificationPage} from '../Notification/NotificationPage';
 
 export const MessagesPage = ({navigation}: any) => {
   const route = useRoute();
@@ -22,9 +23,9 @@ export const MessagesPage = ({navigation}: any) => {
       ]}>
       <MessagesTabs navigation={navigation} />
       <ScrollView>
-        {value === 'Board' && <MessageBoardScreen />}
-        {value === 'Alerts' && <NewNotificationScreen />}
-        {value === 'Reports' && <ReportsPage />}
+        {value === 'Board' && <MessageBoardScreen navigation={navigation} />}
+        {value === 'Alerts' && <NotificationPage navigation={navigation} />}
+        {value === 'Reports' && <ReportsPage navigation={navigation} />}
       </ScrollView>
       <BottomNav navigation={navigation} />
     </View>

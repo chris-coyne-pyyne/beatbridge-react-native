@@ -137,10 +137,10 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                 delayPressIn={50}
                 onPress={() => setModalOpen(notification)}>
                 <View style={styles.dateContainer}>
-                  <Text variant="titleLarge">
+                  <Text variant="bodyLarge">
                     {formatUnixTimestamp(notification.date).day}
                   </Text>
-                  <Text variant="titleLarge">
+                  <Text variant="bodyLarge">
                     {formatUnixTimestamp(notification.date).month}
                   </Text>
                 </View>
@@ -184,10 +184,10 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                   delayPressIn={50}
                   onPress={() => console.log('hello world')}>
                   <View style={styles.dateContainer}>
-                    <Text variant="titleLarge">
+                    <Text variant="bodyLarge">
                       {formatUnixTimestamp(message.date).day}
                     </Text>
-                    <Text variant="titleLarge">
+                    <Text variant="bodyLarge">
                       {formatUnixTimestamp(message.date).month}
                     </Text>
                   </View>
@@ -323,8 +323,8 @@ const styles = StyleSheet.create({
   dateContainer: {
     backgroundColor: '#E1E1E1',
     borderRadius: 50,
-    height: 90,
-    width: 90,
+    height: 65,
+    width: 65,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

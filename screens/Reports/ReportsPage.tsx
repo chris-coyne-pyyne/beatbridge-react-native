@@ -28,14 +28,7 @@ const reports = [];
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    gap: 16,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
+    marginTop: 12,
   },
   pageContainer: {
     padding: 0,
@@ -59,7 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ReportsPage = () => {
+export const ReportsPage = ({navigation}: any) => {
   const context = useContext(AppContext);
   const reports = context?.globalState.reports;
 
@@ -87,14 +80,23 @@ export const ReportsPage = () => {
       mode: 'report',
     },
   ];
+
+  const activeEvent = context?.globalState.events
+    ? context.globalState.events.find(event => event.active === true)
+    : null;
+
+  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
   return (
     <Container>
-      <Text variant="titleLarge">Report</Text>
-      <Text variant="bodyLarge">
+      <Text variant="titleLarge" style={styles.container}>
+        Report
+      </Text>
+      <Text variant="bodyLarge" style={styles.container}>
         Problems that festival attendees have, and have sent directly to the
         admin
       </Text>
-      {fakeReports &&
+      {isAdmin &&
+        fakeReports &&
         fakeReports.map(message => (
           <View key={message.id} style={styles.messageContainer}>
             <Avatar.Image
@@ -107,6 +109,14 @@ export const ReportsPage = () => {
             </View>
           </View>
         ))}
+      {!isAdmin && (
+        <Button
+          onPress={() => navigation.navigate('NewReport')}
+          mode="contained"
+          style={styles.container}>
+          New Report
+        </Button>
+      )}
     </Container>
   );
 };

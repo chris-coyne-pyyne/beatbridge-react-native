@@ -76,11 +76,11 @@ export const NewMessagePage = ({navigation}: any) => {
       );
       // sync context notifications
       context?.updateGlobalState({
-        notifications: [...parsedOldMessages, newMessage],
+        messages: [...parsedOldMessages, newMessage],
       });
 
       showToast();
-      navigation.navigate('MessageBoard');
+      // navigation.navigate('MessageBoard');
     }
   };
 
@@ -98,7 +98,7 @@ export const NewMessagePage = ({navigation}: any) => {
           onChangeText={setMessage}
         />
         <Button onPress={handleCreateMessage} mode="contained">
-          Send Report
+          Send Message
         </Button>
       </View>
     </Container>
