@@ -46,6 +46,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const loadUserData = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('user');
+        console.log('stored user ', storedUser);
         // console.log('stored user ', storedUser);
         if (storedUser) {
           setGlobalState(prevState => ({

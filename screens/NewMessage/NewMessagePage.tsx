@@ -14,14 +14,7 @@ import {
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
 import {Message} from '../../types/message';
-
-const showToast = () => {
-  Toast.show({
-    type: 'success',
-    text1: 'Sent notification',
-    text2: 'Your notification has been sent to all users within your area',
-  });
-};
+import {BottomNav} from '../../components/BottomNav';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,8 +29,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewMessagePage = () => {
-  const [title, setTitle] = useState('');
+const showToast = () => {
+  Toast.show({
+    type: 'success',
+    text1: 'Sent Message',
+    text2: 'Your message has been sent to all users within your area',
+  });
+};
+
+export const NewMessagePage = ({navigation}: any) => {
   const [message, setMessage] = useState('');
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
@@ -60,10 +60,27 @@ export const NewMessagePage = () => {
       };
       const newMessageString = JSON.stringify(newMessage);
 
-      bridgefyContext?.bridgefyState.bridgefy.send(newMessageString, {
+      await bridgefyContext?.bridgefyState.bridgefy.send(newMessageString, {
         type: BridgefyTransmissionModeType.broadcast,
         uuid: user.id,
       });
+
+      // save locally
+      const oldMessages = await AsyncStorage.getItem('messages');
+      const parsedOldMessages = JSON.parse(oldMessages || '[]');
+
+      // add notification to local db
+      await AsyncStorage.setItem(
+        'messages',
+        JSON.stringify([...parsedOldMessages, newMessage]),
+      );
+      // sync context notifications
+      context?.updateGlobalState({
+        notifications: [...parsedOldMessages, newMessage],
+      });
+
+      showToast();
+      navigation.navigate('MessageBoard');
     }
   };
 
@@ -74,12 +91,6 @@ export const NewMessagePage = () => {
         Send a message to everyone else in your vicinity
       </Text>
       <View style={styles.container}>
-        <TextInput
-          placeholder="Enter title"
-          value={title}
-          onChangeText={setTitle}
-          label="Message title"
-        />
         <TextInput
           label="Message contents"
           placeholder="Enter Message"

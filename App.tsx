@@ -15,7 +15,12 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import Toast, {BaseToast, BaseToastProps} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
-import {Provider as PaperProvider, IconButton} from 'react-native-paper';
+import {
+  Provider as PaperProvider,
+  IconButton,
+  BottomNavigation,
+  Text,
+} from 'react-native-paper';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {EventScreen} from './screens/Event/Event';
@@ -51,6 +56,13 @@ const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {key: 'music', title: 'Music', icon: 'music'},
+    {key: 'albums', title: 'Albums', icon: 'album'},
+    {key: 'recents', title: 'Recents', icon: 'history'},
+  ]);
+
   const theme = {
     ...DefaultTheme,
     colors: {

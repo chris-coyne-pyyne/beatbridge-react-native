@@ -10,10 +10,18 @@ import {
 import {Notification} from '../../types/notification';
 import {useContext, useState, useEffect} from 'react';
 import {AppContext} from '../../stores/store';
-import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
+import {
+  FAB,
+  Text,
+  Chip,
+  Button,
+  Divider,
+  BottomNavigation,
+} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {NoMessage} from './components/NoMessage';
 import {BridgefyContext} from '../../stores/bridgefyStore';
+import {BottomNav} from '../../components/BottomNav';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
@@ -232,23 +240,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
           </Modal>
         )}
       </ScrollView>
-      {isAdmin ? (
-        <FAB
-          style={styles.fab}
-          small
-          icon="pencil"
-          label="Notification"
-          onPress={() => navigation.navigate('NewNotification')}
-        />
-      ) : (
-        <FAB
-          style={styles.fab}
-          small
-          icon="pencil"
-          label="Report"
-          onPress={() => navigation.navigate('NewReport')}
-        />
-      )}
+      {/*
       <Button onPress={() => navigation.navigate('NewEvent')}>new event</Button>
       <Button
         onPress={async () => {
@@ -266,6 +258,8 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         }}>
         get peers
       </Button>
+      */}
+      <BottomNav navigation={navigation} />
     </View>
   );
 }
