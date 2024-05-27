@@ -7,6 +7,6 @@ export interface Report extends BridgefyData {
     name: string;
   };
   message: string;
-  title: string;
   date: number;
+  mode: 'report';
 }

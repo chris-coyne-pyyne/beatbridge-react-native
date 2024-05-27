@@ -33,6 +33,7 @@ import {IntroScreen} from './screens/Intro/Intro';
 import {MessageBoardScreen} from './screens/MessageBoard/MessageBoardPage';
 import {NewMessagePage} from './screens/NewMessage/NewMessagePage';
 import {ReportsPage} from './screens/Reports/ReportsPage';
+import {MessagesPage} from './screens/Messages/Messages';
 
 const toastConfig = {
   success: (props: BaseToastProps) => (
@@ -179,6 +180,7 @@ function App(): React.JSX.Element {
                   component={MessageBoardScreen}
                 />
                 <Stack.Screen name="NewMessage" component={NewMessagePage} />
+                <Stack.Screen name="Messages" component={MessagesPage} />
                 <Stack.Screen name="Reports" component={ReportsPage} />
               </Stack.Navigator>
             </NavigationContainer>

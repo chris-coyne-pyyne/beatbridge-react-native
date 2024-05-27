@@ -7,7 +7,7 @@ import {Report} from '../../types/report';
 import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
 import {BridgefyContext} from '../../stores/bridgefyStore';
-import {TextInput, Button, Text} from 'react-native-paper';
+import {TextInput, Button, Text, Avatar} from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import {
   Bridgefy,
@@ -37,9 +37,56 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  pageContainer: {
+    padding: 0,
+    paddingBottom: 24,
+  },
+  messageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    padding: 12,
+    borderColor: '#E1E1E1',
+  },
+  messageTextContainer: {
+    marginLeft: 8,
+  },
+  messagesContainer: {
+    marginBottom: 12,
+  },
+  buttonContainer: {
+    paddingVertical: 12,
+  },
 });
 
 export const ReportsPage = () => {
+  const context = useContext(AppContext);
+  const reports = context?.globalState.reports;
+
+  const fakeReports = [
+    {
+      id: '123123123sdfs',
+      sender: {
+        id: '123',
+        email: 'chris',
+        name: 'chris',
+      },
+      message: 'something about xyz...',
+      date: 100,
+      mode: 'report',
+    },
+    {
+      id: '123123123',
+      sender: {
+        id: '123',
+        email: 'chris',
+        name: 'chris',
+      },
+      message: 'something about xyz...',
+      date: 100,
+      mode: 'report',
+    },
+  ];
   return (
     <Container>
       <Text variant="titleLarge">Report</Text>
@@ -47,6 +94,19 @@ export const ReportsPage = () => {
         Problems that festival attendees have, and have sent directly to the
         admin
       </Text>
+      {fakeReports &&
+        fakeReports.map(message => (
+          <View key={message.id} style={styles.messageContainer}>
+            <Avatar.Image
+              size={70}
+              source={require('../../assets/avatar.jpeg')}
+            />
+            <View style={styles.messageTextContainer}>
+              <Text variant="titleLarge">{message.sender?.name}</Text>
+              <Text variant="bodyLarge">{message.message}</Text>
+            </View>
+          </View>
+        ))}
     </Container>
   );
 };

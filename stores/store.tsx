@@ -12,6 +12,7 @@ import {User} from '../types/user';
 import {Event} from '../types/event';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Message} from '../types/message';
+import {Report} from '../types/report';
 
 // Define an interface for your global state
 interface GlobalState {
@@ -20,6 +21,7 @@ interface GlobalState {
   notifications: Notification[];
   events: Event[];
   messages: Message[];
+  reports: Report[];
 }
 
 // Define the context type
@@ -39,6 +41,7 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     notifications: [],
     events: [],
     messages: [],
+    reports: [],
   });
 
   // TODO: turn useeffects into custom, reusable hooks
@@ -142,6 +145,30 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({children}) => {
     };
 
     loadNotificationsData();
+  }, []);
+
+  useEffect(() => {
+    const loadReportsData = async () => {
+      try {
+        const storedNotifications = await AsyncStorage.getItem('reports');
+        // console.log('stored notifications ', storedNotifications);
+        if (storedNotifications && storedNotifications.length) {
+          setGlobalState(prevState => ({
+            ...prevState,
+            reports: JSON.parse(storedNotifications),
+          }));
+        } else {
+          setGlobalState(prevState => ({
+            ...prevState,
+            reports: [],
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load notifications from AsyncStorage', error);
+      }
+    };
+
+    loadReportsData();
   }, []);
 
   const updateGlobalState = (newState: Partial<GlobalState>) => {

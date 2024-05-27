@@ -108,40 +108,37 @@ export function MessageBoardScreen({navigation}: any) {
   ];
 
   return (
-    <Container>
-      <MessagesTabs navigation={navigation} />
-      <ScrollView style={styles.pageContainer}>
-        <Text variant="headlineLarge">Message Board</Text>
-        <View style={styles.messagesContainer}>
-          {messages &&
-            messages.map(message => (
-              <View key={message.id} style={styles.messageContainer}>
-                <Avatar.Image
-                  size={70}
-                  source={require('../../assets/avatar.jpeg')}
-                />
-                <View style={styles.messageTextContainer}>
-                  <Text variant="titleLarge">{message.sender?.name}</Text>
-                  <Text variant="bodyLarge">{message.message}</Text>
-                </View>
+    <View style={styles.pageContainer}>
+      <Text variant="titleLarge">Message Board</Text>
+      <View style={styles.messagesContainer}>
+        {messages &&
+          messages.map(message => (
+            <View key={message.id} style={styles.messageContainer}>
+              <Avatar.Image
+                size={70}
+                source={require('../../assets/avatar.jpeg')}
+              />
+              <View style={styles.messageTextContainer}>
+                <Text variant="titleLarge">{message.sender?.name}</Text>
+                <Text variant="bodyLarge">{message.message}</Text>
               </View>
-            ))}
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('NewMessage')}>
-            Send New Message
-          </Button>
-        </View>
-      </ScrollView>
-    </Container>
+            </View>
+          ))}
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('NewMessage')}>
+          Send New Message
+        </Button>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   pageContainer: {
-    padding: 0,
+    padding: 16,
     paddingBottom: 24,
   },
   messageContainer: {

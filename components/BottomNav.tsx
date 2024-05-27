@@ -16,9 +16,9 @@ export function BottomNav({navigation}: any) {
     <View
       style={{
         flexDirection: 'row',
-        padding: 16,
+        padding: 8,
         backgroundColor: '#d5fbff',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
       }}>
       <TouchableOpacity
         accessibilityRole="button"
@@ -30,16 +30,9 @@ export function BottomNav({navigation}: any) {
       <TouchableOpacity
         accessibilityRole="button"
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('MessageBoard')}>
+        onPress={() => navigation.navigate('Messages')}>
         <Icon source="message" size={20} />
         <Text>Messages</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        accessibilityRole="button"
-        style={styles.buttonContainer}
-        onPress={() => navigation.navigate(isAdmin ? 'Reports' : 'NewReport')}>
-        <Icon source="exclamation-thick" size={20} />
-        <Text>Reports</Text>
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
