@@ -1,11 +1,11 @@
 import {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Container} from '../../components/Container';
+import {Container} from '../../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {generateRandomString} from '../../utils/randomNumber';
-import {AppContext} from '../../stores/store';
-import {BridgefyContext} from '../../stores/bridgefyStore';
+import {generateRandomString} from '../../../utils/randomNumber';
+import {AppContext} from '../../../stores/store';
+import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Button, Text} from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import {
@@ -13,8 +13,8 @@ import {
   BridgefyEvents,
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
-import {Message} from '../../types/message';
-import {BottomNav} from '../../components/BottomNav';
+import {Message} from '../../../types/message';
+import {BottomNav} from '../../../components/BottomNav';
 
 const styles = StyleSheet.create({
   container: {

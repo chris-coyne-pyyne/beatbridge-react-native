@@ -5,14 +5,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import {Container} from '../../components/Container';
+import {Container} from '../../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {Notification} from '../../types/notification';
-import {generateRandomString} from '../../utils/randomNumber';
-import {AppContext} from '../../stores/store';
+import {Notification} from '../../../types/notification';
+import {generateRandomString} from '../../../utils/randomNumber';
+import {AppContext} from '../../../stores/store';
 import uuid from 'react-native-uuid';
-import {BridgefyContext} from '../../stores/bridgefyStore';
+import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Text, Button} from 'react-native-paper';
 import {
   Bridgefy,

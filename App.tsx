@@ -10,7 +10,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {HomeScreen} from './screens/Home/Homepage';
 import {LoginScreen} from './screens/Login/LoginPage';
 import {SignupScreen} from './screens/Signup/SignupPage';
-import {NewEventScreen} from './screens/NewEvent/NewEventScreen';
+import {NewEventScreen} from './screens/Event/NewEvent/NewEventScreen';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Toast, {BaseToast, BaseToastProps} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
@@ -24,14 +24,14 @@ import {
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {EventScreen} from './screens/Event/Event';
-import {NewNotificationScreen} from './screens/NewNotification/NewNotificationPage';
+import {NewNotificationScreen} from './screens/Notifications/NewNotification/NewNotificationPage';
 import {AppProvider} from './stores/store';
-import {NewReportPage} from './screens/NewReport/NewReportPage';
+import {NewReportPage} from './screens/Reports/NewReport/NewReportPage';
 
 import {DefaultTheme} from 'react-native-paper';
 import {IntroScreen} from './screens/Intro/Intro';
 import {MessageBoardScreen} from './screens/MessageBoard/MessageBoardPage';
-import {NewMessagePage} from './screens/NewMessage/NewMessagePage';
+import {NewMessagePage} from './screens/Messages/NewMessage/NewMessagePage';
 import {ReportsPage} from './screens/Reports/ReportsPage';
 import {MessagesPage} from './screens/Messages/Messages';
 

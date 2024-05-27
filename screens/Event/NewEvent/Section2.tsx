@@ -2,17 +2,17 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {TextInput, Button, Text, Card, IconButton} from 'react-native-paper';
 import {useContext, useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {BandSet} from '../../types/event';
+import {BandSet} from '../../../types/event';
 import {useFormContext} from 'react-hook-form';
-import {formatDate} from '../../utils/dates';
+import {formatDate} from '../../../utils/dates';
 import {DateInput} from './components/DateInput';
 import {useMutation} from 'react-query';
-import {AppContext} from '../../stores/store';
-import {apiClient} from '../../api/axiosConfig';
-import useAsyncStorage from '../../hooks/useAsyncStorage';
+import {AppContext} from '../../../stores/store';
+import {apiClient} from '../../../api/axiosConfig';
+import useAsyncStorage from '../../../hooks/useAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {Event} from '../../types/event';
+import {Event} from '../../../types/event';
 
 const showToast = () => {
   Toast.show({

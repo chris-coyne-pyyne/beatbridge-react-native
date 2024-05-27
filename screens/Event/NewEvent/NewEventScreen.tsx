@@ -4,7 +4,7 @@ import StepCounter from './StepCounter';
 import {Section0} from './Section0';
 import {Section1} from './Section1';
 import {Section2} from './Section2';
-import {BandSet} from '../../types/event';
+import {BandSet} from '../../../types/event';
 import {useForm, FormProvider} from 'react-hook-form';
 import {
   NativeStackNavigationProp,

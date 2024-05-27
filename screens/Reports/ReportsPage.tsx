@@ -15,6 +15,7 @@ import {
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
 import {Message} from '../../types/message';
+import {NoMessage} from '../Home/components/NoMessage';
 
 const showToast = () => {
   Toast.show({
@@ -56,31 +57,6 @@ export const ReportsPage = ({navigation}: any) => {
   const context = useContext(AppContext);
   const reports = context?.globalState.reports;
 
-  const fakeReports = [
-    {
-      id: '123123123sdfs',
-      sender: {
-        id: '123',
-        email: 'chris',
-        name: 'chris',
-      },
-      message: 'something about xyz...',
-      date: 100,
-      mode: 'report',
-    },
-    {
-      id: '123123123',
-      sender: {
-        id: '123',
-        email: 'chris',
-        name: 'chris',
-      },
-      message: 'something about xyz...',
-      date: 100,
-      mode: 'report',
-    },
-  ];
-
   const activeEvent = context?.globalState.events
     ? context.globalState.events.find(event => event.active === true)
     : null;
@@ -96,18 +72,21 @@ export const ReportsPage = ({navigation}: any) => {
         admin
       </Text>
       {isAdmin &&
-        fakeReports &&
-        fakeReports.map(message => (
-          <View key={message.id} style={styles.messageContainer}>
-            <Avatar.Image
-              size={70}
-              source={require('../../assets/avatar.jpeg')}
-            />
-            <View style={styles.messageTextContainer}>
-              <Text variant="titleLarge">{message.sender?.name}</Text>
-              <Text variant="bodyLarge">{message.message}</Text>
+        (reports && reports.length ? (
+          reports.map(message => (
+            <View key={message.id} style={styles.messageContainer}>
+              <Avatar.Image
+                size={70}
+                source={require('../../assets/avatar.jpeg')}
+              />
+              <View style={styles.messageTextContainer}>
+                <Text variant="titleLarge">{message.sender?.name}</Text>
+                <Text variant="bodyLarge">{message.message}</Text>
+              </View>
             </View>
-          </View>
+          ))
+        ) : (
+          <NoMessage text="No attendees have sent reports" />
         ))}
       {!isAdmin && (
         <Button

@@ -3,10 +3,10 @@ import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {MessageBoardScreen} from '../MessageBoard/MessageBoardPage';
 import {ReportsPage} from '../Reports/ReportsPage';
-import {NewNotificationScreen} from '../NewNotification/NewNotificationPage';
+import {NewNotificationScreen} from '../Notifications/NewNotification/NewNotificationPage';
 import {BottomNav} from '../../components/BottomNav';
 import {Container} from '../../components/Container';
-import {NotificationPage} from '../Notification/NotificationPage';
+import {NotificationPage} from '../Notifications/NotificationPage';
 
 export const MessagesPage = ({navigation}: any) => {
   const route = useRoute();
