@@ -122,7 +122,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         </View>
 
         <View style={styles.notificationTitleContainer}>
-          <Text variant="titleLarge">Notifications</Text>
+          <Text variant="titleLarge">Admin Notifications</Text>
         </View>
 
         {notifications &&
@@ -204,10 +204,6 @@ export function ActiveEvent({navigation, activeEvent}: any) {
               );
             })
           ))}
-
-        <Button onPress={() => navigation.navigate('MessageBoard')}>
-          All Messages
-        </Button>
 
         {modalOpen && (
           <Modal

@@ -32,6 +32,7 @@ import {DefaultTheme} from 'react-native-paper';
 import {IntroScreen} from './screens/Intro/Intro';
 import {MessageBoardScreen} from './screens/MessageBoard/MessageBoardPage';
 import {NewMessagePage} from './screens/NewMessage/NewMessagePage';
+import {ReportsPage} from './screens/Reports/ReportsPage';
 
 const toastConfig = {
   success: (props: BaseToastProps) => (
@@ -178,6 +179,7 @@ function App(): React.JSX.Element {
                   component={MessageBoardScreen}
                 />
                 <Stack.Screen name="NewMessage" component={NewMessagePage} />
+                <Stack.Screen name="Reports" component={ReportsPage} />
               </Stack.Navigator>
             </NavigationContainer>
           </PaperProvider>
