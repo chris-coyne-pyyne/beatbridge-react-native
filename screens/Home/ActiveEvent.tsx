@@ -99,21 +99,22 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         </View>
         <View style={styles.eventContainer}>
           {activeEvent?.pic && (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Event', {id: activeEvent.id})
-              }>
-              <Image
-                source={{
-                  uri: activeEvent.pic,
-                }}
-                style={{
-                  width: '100%',
-                  height: 200,
-                }}
-              />
-            </TouchableOpacity>
+            <Image
+              source={{
+                uri: activeEvent.pic,
+              }}
+              style={{
+                width: '100%',
+                height: 200,
+              }}
+            />
           )}
+          <Button
+            style={globalStyles.container}
+            onPress={() => navigation.navigate('Event', {id: activeEvent.id})}
+            mode="contained">
+            View Event Page
+          </Button>
         </View>
 
         <View style={styles.notificationTitleContainer}>

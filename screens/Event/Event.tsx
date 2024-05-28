@@ -10,6 +10,7 @@ import {apiClient} from '../../api/axiosConfig';
 import {Text, Chip, Button, Card} from 'react-native-paper';
 import {useQuery} from 'react-query';
 
+// utility for sorting events based on date format
 function sortEvents(bandSets: BandSet[]): BandSet[] {
   return bandSets.sort((a: BandSet, b: BandSet) => {
     const parseDateTime = (bandSet: BandSet): Date => {
@@ -132,9 +133,13 @@ export function EventScreen({route, navigation}: any) {
       context?.updateGlobalState({events: newEvents});
       await AsyncStorage.setItem('events', JSON.stringify(newEvents));
 
-      // also clear all notifications
+      // clear all messages - could keep them around, simplifies if we just delete
       context?.updateGlobalState({notifications: []});
       await AsyncStorage.setItem('notifications', JSON.stringify([]));
+      context?.updateGlobalState({messages: []});
+      await AsyncStorage.setItem('messages', JSON.stringify([]));
+      context?.updateGlobalState({reports: []});
+      await AsyncStorage.setItem('reports', JSON.stringify([]));
 
       navigation.navigate('Home');
     }
