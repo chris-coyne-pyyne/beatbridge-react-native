@@ -130,7 +130,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
               }
             />
           ) : (
-            notifications.map(notification => (
+            notifications.slice(1, 4).map(notification => (
               <TouchableOpacity
                 key={notification.id}
                 id={notification.id}
@@ -177,9 +177,11 @@ export function ActiveEvent({navigation, activeEvent}: any) {
             (!messages.length ? (
               <NoMessage text="No Messages have been detected" />
             ) : (
-              messages.map(message => (
-                <DateMessageContainer key={message.id} message={message} />
-              ))
+              messages
+                .slice(1, 4)
+                .map(message => (
+                  <DateMessageContainer key={message.id} message={message} />
+                ))
             ))}
         </View>
 

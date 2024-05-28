@@ -26,6 +26,13 @@ const showToast = () => {
   });
 };
 
+/*
+  behavior:
+  onsubmit, should put timeout of a couple of seconds to see if the message can be sent
+    put message into the async queue
+
+*/
+
 export const NewReportPage = ({navigation}: any) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -80,16 +87,19 @@ export const NewReportPage = ({navigation}: any) => {
             value={title}
             onChangeText={setTitle}
             label="Report Title"
+            style={globalStyles.container}
           />
           <TextInput
             label="Report Message"
             placeholder="Enter message"
             value={message}
             onChangeText={setMessage}
+            style={globalStyles.container}
           />
           <Button
             onPress={handleCreateReport}
             mode="contained"
+            style={globalStyles.container}
             loading={loading}>
             Send Report
           </Button>

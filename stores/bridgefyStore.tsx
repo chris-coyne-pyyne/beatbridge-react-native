@@ -201,7 +201,7 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
         log(`bridgefyDidReceiveData`, event);
         console.log('RECEIVED DATA ');
 
-        // add to DB
+        // TO DO - add to async storage as well. currently not implemented for ease of testing
         const receivedData: BridgefyData = JSON.parse(event.data);
         if (receivedData.mode === 'message') {
           showToast('Received New Message ', receivedData.message);

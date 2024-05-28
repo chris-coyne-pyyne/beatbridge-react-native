@@ -82,7 +82,10 @@ export const NewMessagePage = ({navigation}: any) => {
             value={message}
             onChangeText={setMessage}
           />
-          <Button onPress={handleCreateMessage} mode="contained" style={global}>
+          <Button
+            onPress={handleCreateMessage}
+            mode="contained"
+            style={globalStyles.container}>
             Send Message
           </Button>
         </View>
