@@ -35,9 +35,5 @@ export const HomeScreen = ({navigation}: any) => {
     return <NoEvents navigation={navigation} />;
   }
 
-  return (
-    <View>
-      <Text>HERE</Text>
-    </View>
-  );
+  return <View></View>;
 };

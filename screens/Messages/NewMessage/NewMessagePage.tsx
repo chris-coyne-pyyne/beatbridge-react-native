@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {Container} from '../../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -15,17 +15,11 @@ import {
 } from 'bridgefy-react-native';
 import {Message} from '../../../types/message';
 import {BottomNav} from '../../../components/BottomNav';
+import {PageContainer} from '../../../components/PageContainer';
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    gap: 16,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
+    marginTop: 16,
   },
 });
 
@@ -85,22 +79,29 @@ export const NewMessagePage = ({navigation}: any) => {
   };
 
   return (
-    <Container>
-      <Text variant="titleLarge">Message</Text>
-      <Text variant="bodyLarge">
-        Send a message to everyone else in your vicinity
-      </Text>
-      <View style={styles.container}>
-        <TextInput
-          label="Message contents"
-          placeholder="Enter Message"
-          value={message}
-          onChangeText={setMessage}
-        />
-        <Button onPress={handleCreateMessage} mode="contained">
-          Send Message
-        </Button>
+    <PageContainer navigation={navigation}>
+      <View style={{padding: 16}}>
+        <Text variant="titleLarge" style={styles.container}>
+          Message
+        </Text>
+        <Text variant="bodyLarge" style={styles.container}>
+          Send a message to everyone else in your vicinity
+        </Text>
+        <View style={styles.container}>
+          <TextInput
+            label="Message contents"
+            placeholder="Enter Message"
+            value={message}
+            onChangeText={setMessage}
+          />
+          <Button
+            onPress={handleCreateMessage}
+            mode="contained"
+            style={styles.container}>
+            Send Message
+          </Button>
+        </View>
       </View>
-    </Container>
+    </PageContainer>
   );
 };

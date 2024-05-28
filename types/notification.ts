@@ -5,4 +5,5 @@ export interface Notification extends BridgefyData {
   title: string;
   tags: string[];
   date: number;
+  mode: 'notification';
 }

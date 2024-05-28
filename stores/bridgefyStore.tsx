@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import {AppContext} from './store';
 import Toast from 'react-native-toast-message';
+import {BridgefyData} from '../types/bridgefyData';
 
 const showToast = (title: string, message: string) => {
   Toast.show({
@@ -181,17 +182,23 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
         console.log('RECEIVED DATA ');
 
         // add to DB
-        const receivedData: any = JSON.parse(event.data);
+        const receivedData: BridgefyData = JSON.parse(event.data);
         if (receivedData.mode === 'message') {
           showToast('Received New Message ', receivedData.message);
           const oldMessages = appContext?.globalState.messages || [];
           const newMessages = [...oldMessages, receivedData];
           appContext?.updateGlobalState({messages: newMessages});
-        } else {
-          showToast('Received New Report ', receivedData.message);
+        } else if (receivedData.mode === 'notification') {
+          showToast('Received New Notification ', receivedData.message);
           const oldNotifications = appContext?.globalState.notifications || [];
           const newNotifications = [...oldNotifications, receivedData];
           appContext?.updateGlobalState({notifications: newNotifications});
+        } else {
+          // in this case it is a report
+          showToast('Received New Report ', receivedData.message);
+          const oldReports = appContext?.globalState.reports || [];
+          const newReports = [...oldReports, receivedData];
+          appContext?.updateGlobalState({reports: newReports});
         }
       }),
     );

@@ -15,6 +15,7 @@ import {
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
 import {Message} from '../../../types/message';
+import {PageContainer} from '../../../components/PageContainer';
 
 const showToast = () => {
   Toast.show({
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewReportPage = () => {
+export const NewReportPage = ({navigation}: any) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const context = useContext(AppContext);
@@ -61,32 +62,36 @@ export const NewReportPage = () => {
       type: BridgefyTransmissionModeType.mesh,
       uuid: eventAdminId,
     });
+
+    navigation.navigate('Messages');
   };
 
   return (
-    <Container>
-      <Text variant="titleLarge">Report</Text>
-      <Text variant="bodyLarge">
-        Send a message to the administrators letting them know if theres a
-        problem
-      </Text>
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Enter title"
-          value={title}
-          onChangeText={setTitle}
-          label="Report Title"
-        />
-        <TextInput
-          label="Report Message"
-          placeholder="Enter message"
-          value={message}
-          onChangeText={setMessage}
-        />
-        <Button onPress={handleCreateReport} mode="contained">
-          Send Report
-        </Button>
-      </View>
-    </Container>
+    <PageContainer navigation={navigation}>
+      <Container>
+        <Text variant="titleLarge">Report</Text>
+        <Text variant="bodyLarge">
+          Send a message to the administrators letting them know if theres a
+          problem
+        </Text>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Enter title"
+            value={title}
+            onChangeText={setTitle}
+            label="Report Title"
+          />
+          <TextInput
+            label="Report Message"
+            placeholder="Enter message"
+            value={message}
+            onChangeText={setMessage}
+          />
+          <Button onPress={handleCreateReport} mode="contained">
+            Send Report
+          </Button>
+        </View>
+      </Container>
+    </PageContainer>
   );
 };

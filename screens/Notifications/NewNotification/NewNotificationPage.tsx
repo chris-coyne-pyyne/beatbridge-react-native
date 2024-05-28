@@ -19,6 +19,7 @@ import {
   BridgefyEvents,
   BridgefyTransmissionModeType,
 } from 'bridgefy-react-native';
+import {PageContainer} from '../../../components/PageContainer';
 
 const showToast = () => {
   Toast.show({
@@ -94,45 +95,49 @@ export function NewNotificationScreen({navigation}: any) {
   };
 
   return (
-    <Container>
-      <Text style={styles.container} variant="titleLarge">
-        Send new notification
-      </Text>
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Enter title"
-          value={title}
-          onChangeText={setTitle}
-          label="Notification Title"
-          style={styles.container}
-        />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View>
-            <TextInput
-              label="Notification Message"
-              placeholder="Enter message"
-              multiline
-              numberOfLines={4}
-              value={message}
-              onChangeText={setMessage}
-              style={styles.container}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-        <TextInput
-          label="Notification Tags"
-          placeholder="Enter tags separated by space"
-          value={tags}
-          onChangeText={setTags}
-          style={styles.container}
-        />
-        <Button
-          onPress={handleCreateNotification}
-          style={styles.container}
-          mode="contained">
-          Create Notification
-        </Button>
-      </View>
-    </Container>
+    <PageContainer navigation={navigation}>
+      <Container>
+        <Text style={styles.container} variant="titleLarge">
+          Send new notification
+        </Text>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Enter title"
+            value={title}
+            onChangeText={setTitle}
+            label="Notification Title"
+            style={styles.container}
+          />
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}>
+            <View>
+              <TextInput
+                label="Notification Message"
+                placeholder="Enter message"
+                multiline
+                numberOfLines={4}
+                value={message}
+                onChangeText={setMessage}
+                style={styles.container}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+          <TextInput
+            label="Notification Tags"
+            placeholder="Enter tags separated by space"
+            value={tags}
+            onChangeText={setTags}
+            style={styles.container}
+          />
+          <Button
+            onPress={handleCreateNotification}
+            style={styles.container}
+            mode="contained">
+            Create Notification
+          </Button>
+        </View>
+      </Container>
+    </PageContainer>
   );
 }

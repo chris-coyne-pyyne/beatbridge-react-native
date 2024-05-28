@@ -22,6 +22,7 @@ import {formatUnixTimestamp} from '../../utils/dates';
 import {NoMessage} from './components/NoMessage';
 import {BridgefyContext} from '../../stores/bridgefyStore';
 import {BottomNav} from '../../components/BottomNav';
+import {PageContainer} from '../../components/PageContainer';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
@@ -84,8 +85,8 @@ export function ActiveEvent({navigation, activeEvent}: any) {
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer.id;
 
   return (
-    <View style={styles.pageContainer}>
-      <ScrollView>
+    <PageContainer navigation={navigation}>
+      <ScrollView style={styles.page}>
         <Text variant="headlineLarge">{activeEvent.name}</Text>
         <View
           style={[{display: 'flex', flexDirection: 'row'}, styles.container]}>
@@ -195,6 +196,12 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                     <Text
                       variant="bodyLarge"
                       ellipsizeMode="tail"
+                      numberOfLines={4}>
+                      {message.sender?.name}
+                    </Text>
+                    <Text
+                      variant="bodyLarge"
+                      ellipsizeMode="tail"
                       numberOfLines={4}
                       style={styles.container}>
                       {message.message}
@@ -255,12 +262,14 @@ export function ActiveEvent({navigation, activeEvent}: any) {
         get peers
       </Button>
       */}
-      <BottomNav navigation={navigation} />
-    </View>
+    </PageContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    padding: 16,
+  },
   headerTextContainer: {
     paddingLeft: 12,
   },

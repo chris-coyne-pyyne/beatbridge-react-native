@@ -8,4 +8,5 @@ export interface Message extends BridgefyData {
   };
   message: string;
   date: number;
+  mode: 'message';
 }

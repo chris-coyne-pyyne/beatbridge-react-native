@@ -7,34 +7,20 @@ import {NewNotificationScreen} from '../Notifications/NewNotification/NewNotific
 import {BottomNav} from '../../components/BottomNav';
 import {Container} from '../../components/Container';
 import {NotificationPage} from '../Notifications/NotificationPage';
+import {PageContainer} from '../../components/PageContainer';
 
 export const MessagesPage = ({navigation}: any) => {
   const route = useRoute();
   const params = route.params;
   const value = params?.messageType || 'Board';
   return (
-    <View
-      style={[
-        {
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        },
-      ]}>
+    <PageContainer navigation={navigation}>
       <MessagesTabs navigation={navigation} />
       <ScrollView>
         {value === 'Board' && <MessageBoardScreen navigation={navigation} />}
         {value === 'Alerts' && <NotificationPage navigation={navigation} />}
         {value === 'Reports' && <ReportsPage navigation={navigation} />}
       </ScrollView>
-      <BottomNav navigation={navigation} />
-    </View>
+    </PageContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    borderWidth: 2,
-  },
-});

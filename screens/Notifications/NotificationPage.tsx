@@ -12,9 +12,12 @@ export const NotificationPage = ({navigation}: any) => {
 
   return (
     <View style={{padding: 16}}>
+      <Text style={styles.container} variant="titleLarge">
+        Notifications
+      </Text>
       {notifications &&
         (!notifications.length ? (
-          <NoMessage text="You have not sent any notifications" />
+          <NoMessage text="No notifications" />
         ) : (
           notifications.map(notification => (
             <TouchableOpacity
