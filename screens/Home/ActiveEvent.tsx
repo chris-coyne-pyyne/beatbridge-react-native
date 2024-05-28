@@ -23,7 +23,7 @@ import {NoMessage} from './components/NoMessage';
 import {BridgefyContext} from '../../stores/bridgefyStore';
 import {BottomNav} from '../../components/BottomNav';
 import {PageContainer} from '../../components/PageContainer';
-import {DateMessageContainer} from '../../components/messages/DateMessageContainer';
+import {DateMessageCard} from '../../components/messages/DateMessageCard';
 import {globalStyles} from '../../styles/Styles';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
@@ -130,7 +130,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
               }
             />
           ) : (
-            notifications.slice(1, 4).map(notification => (
+            notifications.slice(0, 4).map(notification => (
               <TouchableOpacity
                 key={notification.id}
                 id={notification.id}
@@ -178,9 +178,9 @@ export function ActiveEvent({navigation, activeEvent}: any) {
               <NoMessage text="No Messages have been detected" />
             ) : (
               messages
-                .slice(1, 4)
+                .slice(0, 4)
                 .map(message => (
-                  <DateMessageContainer key={message.id} message={message} />
+                  <DateMessageCard key={message.id} message={message} />
                 ))
             ))}
         </View>

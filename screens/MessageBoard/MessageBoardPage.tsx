@@ -4,7 +4,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {AppContext} from '../../stores/store';
 import {NoMessage} from '../Home/components/NoMessage';
-import {DateMessageContainer} from '../../components/messages/DateMessageContainer';
+import {DateMessageCard} from '../../components/messages/DateMessageCard';
 import {globalStyles} from '../../styles/Styles';
 
 export function MessageBoardScreen({navigation}: any) {
@@ -114,7 +114,7 @@ export function MessageBoardScreen({navigation}: any) {
       <View style={styles.messagesContainer}>
         {messages && messages.length ? (
           messages.map(message => (
-            <DateMessageContainer message={message} key={message.id} />
+            <DateMessageCard message={message} key={message.id} />
           ))
         ) : (
           <NoMessage text="No messages were found" />

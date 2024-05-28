@@ -27,12 +27,10 @@ export const NotificationPage = ({navigation}: any) => {
           <NoMessage text="No notifications" />
         ) : (
           notifications.map(notification => (
-            <TouchableOpacity
+            <View
               key={notification.id}
               id={notification.id}
-              style={[styles.notificationContainer, globalStyles.container]}
-              delayPressIn={50}
-              onPress={() => console.log('hello world')}>
+              style={[styles.notificationContainer, globalStyles.container]}>
               <View style={styles.dateContainer}>
                 <Text variant="bodyLarge">
                   {formatUnixTimestamp(notification.date).day}
@@ -60,7 +58,7 @@ export const NotificationPage = ({navigation}: any) => {
                   ))}
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           ))
         ))}
       {isAdmin && (
