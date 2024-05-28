@@ -17,6 +17,7 @@ import {
 import {AppContext} from './store';
 import Toast from 'react-native-toast-message';
 import {BridgefyData} from '../types/bridgefyData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const showToast = (title: string, message: string) => {
   Toast.show({
@@ -164,9 +165,28 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
       ),
     );
     subscriptions.push(
-      eventEmitter.addListener(BridgefyEvents.bridgefyDidSendMessage, event => {
-        log(`bridgefyDidSendMessage`, event);
-      }),
+      eventEmitter.addListener(
+        BridgefyEvents.bridgefyDidSendMessage,
+        async event => {
+          // check the queued messages
+          /*
+          const queuedMsgString =
+            (await AsyncStorage.getItem('queuedMsgs')) || '[]';
+          const queuedMsgObj = JSON.parse(queuedMsgString);
+
+          if (queuedMsgObj.includes(event.messageId)) {
+            // remove
+            const newMsgObj = queuedMsgObj.filter(
+              (msg: any) => msg !== event.messageId,
+            );
+            await AsyncStorage.setItem('queuedMsgs', JSON.stringify(newMsgObj));
+            showToast('Sent message! ', 'Your message has been sent!');
+          }
+          */
+
+          log(`bridgefyDidSendMessage`, event);
+        },
+      ),
     );
     subscriptions.push(
       eventEmitter.addListener(

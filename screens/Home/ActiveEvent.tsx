@@ -23,6 +23,8 @@ import {NoMessage} from './components/NoMessage';
 import {BridgefyContext} from '../../stores/bridgefyStore';
 import {BottomNav} from '../../components/BottomNav';
 import {PageContainer} from '../../components/PageContainer';
+import {DateMessageContainer} from '../../components/messages/DateMessageContainer';
+import {globalStyles} from '../../styles/Styles';
 
 export function ActiveEvent({navigation, activeEvent}: any) {
   const context = useContext(AppContext);
@@ -86,40 +88,32 @@ export function ActiveEvent({navigation, activeEvent}: any) {
 
   return (
     <PageContainer navigation={navigation}>
-      <ScrollView style={styles.page}>
+      <ScrollView style={globalStyles.pageContainer}>
         <Text variant="headlineLarge">{activeEvent.name}</Text>
         <View
-          style={[{display: 'flex', flexDirection: 'row'}, styles.container]}>
+          style={[
+            {display: 'flex', flexDirection: 'row'},
+            globalStyles.container,
+          ]}>
           <Chip>{isAdmin ? 'Admin' : 'Attendee'}</Chip>
         </View>
         <View style={styles.eventContainer}>
           {activeEvent?.pic && (
-            <Image
-              source={{
-                uri: activeEvent.pic,
-              }}
-              style={{
-                width: 150,
-                height: 125,
-              }}
-            />
-          )}
-          <View style={styles.headerTextContainer}>
-            <Text variant="bodyLarge" style={{marginTop: 2}}>
-              April 20 - April 30
-            </Text>
-            <Text variant="bodyLarge" style={{marginTop: 2}}>
-              Rock and Roll
-            </Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Event', {id: activeEvent.id})
               }>
-              <Text variant="bodyLarge" style={{marginTop: 2, color: 'orange'}}>
-                Event Page
-              </Text>
+              <Image
+                source={{
+                  uri: activeEvent.pic,
+                }}
+                style={{
+                  width: '100%',
+                  height: 200,
+                }}
+              />
             </TouchableOpacity>
-          </View>
+          )}
         </View>
 
         <View style={styles.notificationTitleContainer}>
@@ -128,13 +122,19 @@ export function ActiveEvent({navigation, activeEvent}: any) {
 
         {notifications &&
           (!notifications.length ? (
-            <NoMessage text="You have not sent any notifications" />
+            <NoMessage
+              text={
+                isAdmin
+                  ? 'You have not sent any notifications'
+                  : 'The admin has not sent any notifications'
+              }
+            />
           ) : (
             notifications.map(notification => (
               <TouchableOpacity
                 key={notification.id}
                 id={notification.id}
-                style={[styles.notificationContainer, styles.container]}
+                style={[styles.notificationContainer, globalStyles.container]}
                 delayPressIn={50}
                 onPress={() => setModalOpen(notification)}>
                 <View style={styles.dateContainer}>
@@ -151,13 +151,13 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                     variant="bodyLarge"
                     ellipsizeMode="tail"
                     numberOfLines={4}
-                    style={styles.container}>
+                    style={globalStyles.container}>
                     {notification.message}
                   </Text>
                   <View
                     style={[
                       styles.notificationTagsContainer,
-                      styles.container,
+                      globalStyles.container,
                     ]}>
                     {notification.tags.map(tag => (
                       <Chip key={tag}>{tag}</Chip>
@@ -172,45 +172,16 @@ export function ActiveEvent({navigation, activeEvent}: any) {
           <Text variant="titleLarge">Messages</Text>
         </View>
 
-        {messages &&
-          (!messages.length ? (
-            <NoMessage text="No Messages have been detected" />
-          ) : (
-            messages.map(message => {
-              return (
-                <TouchableOpacity
-                  key={message.id}
-                  id={message.id}
-                  style={[styles.notificationContainer, styles.container]}
-                  delayPressIn={50}
-                  onPress={() => console.log('hello world')}>
-                  <View style={styles.dateContainer}>
-                    <Text variant="bodyLarge">
-                      {formatUnixTimestamp(message.date).day}
-                    </Text>
-                    <Text variant="bodyLarge">
-                      {formatUnixTimestamp(message.date).month}
-                    </Text>
-                  </View>
-                  <View style={styles.notificationTextContainer}>
-                    <Text
-                      variant="bodyLarge"
-                      ellipsizeMode="tail"
-                      numberOfLines={4}>
-                      {message.sender?.name}
-                    </Text>
-                    <Text
-                      variant="bodyLarge"
-                      ellipsizeMode="tail"
-                      numberOfLines={4}
-                      style={styles.container}>
-                      {message.message}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })
-          ))}
+        <View style={styles.messagesContainer}>
+          {messages &&
+            (!messages.length ? (
+              <NoMessage text="No Messages have been detected" />
+            ) : (
+              messages.map(message => (
+                <DateMessageContainer key={message.id} message={message} />
+              ))
+            ))}
+        </View>
 
         {modalOpen && (
           <Modal
@@ -230,7 +201,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                     <View
                       style={[
                         {display: 'flex', flexDirection: 'row'},
-                        styles.container,
+                        globalStyles.container,
                       ]}>
                       {modalOpen.tags.map(tag => (
                         <Chip key={tag}>{tag}</Chip>
@@ -267,29 +238,15 @@ export function ActiveEvent({navigation, activeEvent}: any) {
 }
 
 const styles = StyleSheet.create({
-  page: {
-    padding: 16,
-  },
-  headerTextContainer: {
-    paddingLeft: 12,
-  },
   notificationTitleContainer: {
     borderBottomWidth: 2,
     borderColor: '#E1E1E1',
     padding: 6,
   },
-  container: {
-    marginTop: 12,
-  },
-  pageContainer: {
-    display: 'flex',
-    padding: 12,
-    flex: 1,
-  },
   eventContainer: {
     paddingVertical: 24,
-    display: 'flex',
-    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   notificationContainer: {
@@ -340,5 +297,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     maxHeight: 100,
+  },
+  messagesContainer: {
+    marginBottom: 24,
   },
 });

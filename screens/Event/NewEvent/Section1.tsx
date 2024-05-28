@@ -8,6 +8,7 @@ import {
 import {useFormContext} from 'react-hook-form';
 import {Button, Text, Icon} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {globalStyles} from '../../../styles/Styles';
 
 export const Section1 = ({setStep}: any) => {
   const {watch, setValue} = useFormContext();
@@ -24,10 +25,10 @@ export const Section1 = ({setStep}: any) => {
 
   return (
     <ScrollView>
-      <Text variant="titleLarge" style={styles.container}>
+      <Text variant="titleLarge" style={globalStyles.container}>
         Event Thumbnail
       </Text>
-      <View style={styles.container}>
+      <View style={globalStyles.container}>
         {/* TODO - add a way to reselect image if they want to change */}
         {allValues?.imageSource.assets ? (
           <View style={styles.imageContainer}>
@@ -48,13 +49,13 @@ export const Section1 = ({setStep}: any) => {
       <Button
         onPress={() => setStep(0)}
         mode="outlined"
-        style={styles.container}>
+        style={globalStyles.container}>
         Prev Section
       </Button>
       <Button
         onPress={() => setStep(2)}
         mode="contained"
-        style={styles.container}>
+        style={globalStyles.container}>
         Next Section
       </Button>
     </ScrollView>
@@ -62,9 +63,6 @@ export const Section1 = ({setStep}: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
   imagePicker: {
     height: 150,
     display: 'flex',

@@ -4,15 +4,22 @@ import {AppContext} from '../../stores/store';
 import {NoMessage} from '../Home/components/NoMessage';
 import {Button, Chip, Text} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
+import {globalStyles} from '../../styles/Styles';
 
 export const NotificationPage = ({navigation}: any) => {
   const context = useContext(AppContext);
   const notifications = context?.globalState.notifications;
   notifications?.sort((a, b) => b.date - a.date);
 
+  const activeEvent = context?.globalState.events
+    ? context.globalState.events.find(event => event.active === true)
+    : null;
+
+  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
+
   return (
     <View style={{padding: 16}}>
-      <Text style={styles.container} variant="titleLarge">
+      <Text style={globalStyles.container} variant="titleLarge">
         Notifications
       </Text>
       {notifications &&
@@ -23,7 +30,7 @@ export const NotificationPage = ({navigation}: any) => {
             <TouchableOpacity
               key={notification.id}
               id={notification.id}
-              style={[styles.notificationContainer, styles.container]}
+              style={[styles.notificationContainer, globalStyles.container]}
               delayPressIn={50}
               onPress={() => console.log('hello world')}>
               <View style={styles.dateContainer}>
@@ -40,11 +47,14 @@ export const NotificationPage = ({navigation}: any) => {
                   variant="bodyLarge"
                   ellipsizeMode="tail"
                   numberOfLines={4}
-                  style={styles.container}>
+                  style={globalStyles.container}>
                   {notification.message}
                 </Text>
                 <View
-                  style={[styles.notificationTagsContainer, styles.container]}>
+                  style={[
+                    styles.notificationTagsContainer,
+                    globalStyles.container,
+                  ]}>
                   {notification.tags.map(tag => (
                     <Chip key={tag}>{tag}</Chip>
                   ))}
@@ -53,39 +63,19 @@ export const NotificationPage = ({navigation}: any) => {
             </TouchableOpacity>
           ))
         ))}
-      <Button
-        onPress={() => navigation.navigate('NewNotification')}
-        style={styles.container}
-        mode="contained">
-        New Notification
-      </Button>
+      {isAdmin && (
+        <Button
+          onPress={() => navigation.navigate('NewNotification')}
+          style={globalStyles.container}
+          mode="contained">
+          New Notification
+        </Button>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerTextContainer: {
-    paddingLeft: 12,
-  },
-  notificationTitleContainer: {
-    borderBottomWidth: 2,
-    borderColor: '#E1E1E1',
-    padding: 6,
-  },
-  container: {
-    marginTop: 12,
-  },
-  pageContainer: {
-    display: 'flex',
-    padding: 12,
-    flex: 1,
-  },
-  eventContainer: {
-    paddingVertical: 24,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   notificationContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -103,26 +93,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
-    maxHeight: 400,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
   dateContainer: {
     backgroundColor: '#E1E1E1',
     borderRadius: 50,
@@ -131,8 +101,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modal: {
-    maxHeight: 100,
   },
 });

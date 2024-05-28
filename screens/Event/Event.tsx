@@ -1,6 +1,7 @@
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {globalStyles} from '../../styles/Styles';
 import {BandSet, Event} from '../../types/event';
 import {useContext} from 'react';
 import {AppContext} from '../../stores/store';
@@ -149,10 +150,10 @@ export function EventScreen({route, navigation}: any) {
   return (
     <Container>
       <ScrollView>
-        <Text variant="headlineLarge" style={styles.container}>
+        <Text variant="headlineLarge" style={globalStyles.container}>
           {selectedEvent.name}
         </Text>
-        <View style={[styles.imageContainer, styles.container]}>
+        <View style={[styles.imageContainer, globalStyles.container]}>
           {selectedEvent.pic && (
             <Image
               source={{
@@ -162,13 +163,13 @@ export function EventScreen({route, navigation}: any) {
             />
           )}
         </View>
-        <View style={[styles.subtitleContainer, styles.container]}>
+        <View style={[styles.subtitleContainer, globalStyles.container]}>
           <Chip>{selectedEvent.genre}</Chip>
           <Text variant="bodyLarge">
             {selectedEvent.startDate} - {selectedEvent.endDate}
           </Text>
         </View>
-        <Text variant="bodyLarge" style={[styles.container]}>
+        <Text variant="bodyLarge" style={[globalStyles.container]}>
           {selectedEvent.description}
         </Text>
         <View style={styles.section}>
@@ -179,10 +180,12 @@ export function EventScreen({route, navigation}: any) {
             groupedArtists.map(artistGroup => {
               return (
                 <View key={artistGroup[0].player}>
-                  <Text style={styles.container}>{artistGroup[0].date}</Text>
+                  <Text style={globalStyles.container}>
+                    {artistGroup[0].date}
+                  </Text>
                   {artistGroup.map(artist => (
                     <Card
-                      style={[styles.card, {padding: 12}]}
+                      style={[globalStyles.container, {padding: 12}]}
                       key={artist.player}>
                       <View>
                         <Text variant="titleLarge">{artist.player}</Text>
@@ -202,7 +205,7 @@ export function EventScreen({route, navigation}: any) {
             <Text variant="titleLarge">Organizer</Text>
           </View>
           {selectedEvent.organizer && (
-            <Card style={styles.card}>
+            <Card style={globalStyles.container}>
               <View style={styles.cardContainer}>
                 <Image
                   source={{
@@ -230,7 +233,7 @@ export function EventScreen({route, navigation}: any) {
               <Button
                 onPress={() => addEvent()}
                 mode="contained"
-                style={styles.container}>
+                style={globalStyles.container}>
                 Add Event
               </Button>
             ) : selectedEvent.organizer?.id ===
@@ -240,7 +243,7 @@ export function EventScreen({route, navigation}: any) {
                   onPress={() => navigation.navigate('NewNotification')}
                   mode="contained"
                   icon="pencil"
-                  style={styles.container}>
+                  style={globalStyles.container}>
                   Send Notification{' '}
                 </Button>
                 <Button
@@ -248,7 +251,7 @@ export function EventScreen({route, navigation}: any) {
                   mode="outlined"
                   textColor="red"
                   icon="trash-can"
-                  style={styles.container}>
+                  style={globalStyles.container}>
                   {' '}
                   Archive Event{' '}
                 </Button>
@@ -259,7 +262,7 @@ export function EventScreen({route, navigation}: any) {
                   onPress={() => navigation.navigate('NewReport')}
                   mode="contained"
                   icon="pencil"
-                  style={styles.container}>
+                  style={globalStyles.container}>
                   Send Report{' '}
                 </Button>
                 <Button
@@ -267,7 +270,7 @@ export function EventScreen({route, navigation}: any) {
                   mode="outlined"
                   textColor="red"
                   icon="trash-can"
-                  style={styles.container}>
+                  style={globalStyles.container}>
                   {' '}
                   Archive Event{' '}
                 </Button>
@@ -281,9 +284,6 @@ export function EventScreen({route, navigation}: any) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -303,9 +303,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  card: {
-    marginTop: 12,
   },
   cardContainer: {
     padding: 12,

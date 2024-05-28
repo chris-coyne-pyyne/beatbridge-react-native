@@ -1,20 +1,10 @@
-import {useContext, useState} from 'react';
+import {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Container} from '../../components/Container';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {Report} from '../../types/report';
-import {generateRandomString} from '../../utils/randomNumber';
 import {AppContext} from '../../stores/store';
-import {BridgefyContext} from '../../stores/bridgefyStore';
-import {TextInput, Button, Text, Avatar} from 'react-native-paper';
-import uuid from 'react-native-uuid';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
-import {Message} from '../../types/message';
+import {Button, Text, Avatar} from 'react-native-paper';
+import {globalStyles} from '../../styles/Styles';
 import {NoMessage} from '../Home/components/NoMessage';
 
 const showToast = () => {
@@ -24,34 +14,6 @@ const showToast = () => {
     text2: 'Your notification has been sent to all users within your area',
   });
 };
-
-const reports = [];
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
-  pageContainer: {
-    padding: 0,
-    paddingBottom: 24,
-  },
-  messageContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    borderBottomWidth: 2,
-    padding: 12,
-    borderColor: '#E1E1E1',
-  },
-  messageTextContainer: {
-    marginLeft: 8,
-  },
-  messagesContainer: {
-    marginBottom: 12,
-  },
-  buttonContainer: {
-    paddingVertical: 12,
-  },
-});
 
 export const ReportsPage = ({navigation}: any) => {
   const context = useContext(AppContext);
@@ -64,10 +26,10 @@ export const ReportsPage = ({navigation}: any) => {
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
   return (
     <Container>
-      <Text variant="titleLarge" style={styles.container}>
+      <Text variant="titleLarge" style={globalStyles.container}>
         Report
       </Text>
-      <Text variant="bodyLarge" style={styles.container}>
+      <Text variant="bodyLarge" style={globalStyles.container}>
         Problems that festival attendees have, and have sent directly to the
         admin
       </Text>
@@ -92,10 +54,23 @@ export const ReportsPage = ({navigation}: any) => {
         <Button
           onPress={() => navigation.navigate('NewReport')}
           mode="contained"
-          style={styles.container}>
+          style={globalStyles.container}>
           New Report
         </Button>
       )}
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  messageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    padding: 12,
+    borderColor: '#E1E1E1',
+  },
+  messageTextContainer: {
+    marginLeft: 8,
+  },
+});

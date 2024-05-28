@@ -1,15 +1,11 @@
-import {useContext, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useMutation} from 'react-query';
+import {useContext} from 'react';
+import {View, StyleSheet} from 'react-native';
 
-import {Button, Text, Avatar} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 import {AppContext} from '../../stores/store';
-import {apiClient} from '../../api/axiosConfig';
-import {Message} from '../../types/message';
-import {MessagesTabs} from './MessagesTabs';
-import {Container} from '../../components/Container';
 import {NoMessage} from '../Home/components/NoMessage';
+import {DateMessageContainer} from '../../components/messages/DateMessageContainer';
+import {globalStyles} from '../../styles/Styles';
 
 export function MessageBoardScreen({navigation}: any) {
   const context = useContext(AppContext);
@@ -111,23 +107,14 @@ export function MessageBoardScreen({navigation}: any) {
   */
 
   return (
-    <View style={styles.pageContainer}>
-      <Text variant="titleLarge" style={styles.container}>
+    <View style={globalStyles.pageContainer}>
+      <Text variant="titleLarge" style={globalStyles.container}>
         Message Board
       </Text>
       <View style={styles.messagesContainer}>
         {messages && messages.length ? (
           messages.map(message => (
-            <View key={message.id} style={styles.messageContainer}>
-              <Avatar.Image
-                size={70}
-                source={require('../../assets/avatar.jpeg')}
-              />
-              <View style={styles.messageTextContainer}>
-                <Text variant="titleLarge">{message.sender?.name}</Text>
-                <Text variant="bodyLarge">{message.message}</Text>
-              </View>
-            </View>
+            <DateMessageContainer message={message} key={message.id} />
           ))
         ) : (
           <NoMessage text="No messages were found" />
@@ -145,13 +132,6 @@ export function MessageBoardScreen({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
-  pageContainer: {
-    padding: 16,
-    paddingBottom: 24,
-  },
-  container: {
-    marginTop: 12,
-  },
   messageContainer: {
     display: 'flex',
     flexDirection: 'row',

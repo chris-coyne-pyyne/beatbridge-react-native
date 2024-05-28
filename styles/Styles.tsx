@@ -1,6 +1,16 @@
 import {StyleSheet} from 'react-native';
 
 export const globalStyles = StyleSheet.create({
+  pageContainer: {
+    padding: 16,
+  },
+  container: {
+    marginTop: 12,
+  },
+});
+
+/*
+export const globalStyles = StyleSheet.create({
   container: {
     flex: 1, // Takes up all available space in the flex container
     justifyContent: 'center', // Centers children vertically in the container
@@ -32,3 +42,4 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 20, // Margin at the bottom of the card
   },
 });
+*/

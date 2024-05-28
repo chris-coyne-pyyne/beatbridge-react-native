@@ -6,6 +6,7 @@ import {useMutation} from 'react-query';
 import {Button, Text, TextInput} from 'react-native-paper';
 import {AppContext} from '../../stores/store';
 import {apiClient} from '../../api/axiosConfig';
+import {globalStyles} from '../../styles/Styles';
 
 export function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState('');
@@ -48,7 +49,7 @@ export function LoginScreen({navigation}: any) {
         />
       </View>
       <View style={styles.loginContainer}>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TextInput
             placeholder="Email"
             value={email}
@@ -56,7 +57,7 @@ export function LoginScreen({navigation}: any) {
             mode="flat"
           />
         </View>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TextInput
             placeholder="Password"
             value={password}
@@ -66,7 +67,7 @@ export function LoginScreen({navigation}: any) {
           />
         </View>
         <View style={{marginTop: 24}}>
-          <View style={styles.container}>
+          <View style={globalStyles.container}>
             <Button
               mode="contained"
               onPress={() => mutate()}
@@ -74,10 +75,10 @@ export function LoginScreen({navigation}: any) {
               Login
             </Button>
           </View>
-          <View style={[styles.container, styles.dividerContainer]}>
+          <View style={[globalStyles.container, styles.dividerContainer]}>
             <Text>Or</Text>
           </View>
-          <View style={styles.container}>
+          <View style={globalStyles.container}>
             <Button
               mode="outlined"
               onPress={() => navigation.navigate('Signup')}>
@@ -98,9 +99,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     color: 'white',
     fontWeight: 'bold',
-  },
-  container: {
-    marginTop: 12,
   },
   dividerContainer: {
     display: 'flex',

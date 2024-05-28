@@ -10,6 +10,7 @@ import {useState} from 'react';
 import {useQuery} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
 import {FAB, Text, Searchbar} from 'react-native-paper';
+import {globalStyles} from '../../styles/Styles';
 
 const fetchData = async () => {
   const {data} = await apiClient.get('events');
@@ -95,31 +96,31 @@ export function NoEvents({navigation}: any) {
       : events.filter(event => event.name.includes(searchText));
 
   return (
-    <View style={styles.pageContainer}>
+    <View style={globalStyles.pageContainer}>
       <ScrollView>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <Text variant="headlineLarge">Let's get started</Text>
         </View>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <Text variant="bodyLarge">
             Search by name, genre, or location to find an event near you
           </Text>
         </View>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <Searchbar
             placeholder={'Search Events'}
             value={searchText}
             onChangeText={setSearchText}
           />
         </View>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           {filteredEvents &&
             filteredEvents.map((event: Event) => {
               return (
                 <TouchableOpacity
                   key={event.id}
                   onPress={() => navigation.navigate('Event', {id: event.id})}
-                  style={styles.card}>
+                  style={[styles.card, globalStyles.container]}>
                   <Image
                     style={styles.image}
                     source={{
@@ -150,13 +151,6 @@ export function NoEvents({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
-  pageContainer: {
-    flex: 1,
-    padding: 16,
-  },
-  container: {
-    marginTop: 12,
-  },
   fab: {
     position: 'absolute',
     margin: 16,
@@ -164,7 +158,6 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   card: {
-    marginTop: 12,
     display: 'flex',
     flexDirection: 'row',
 

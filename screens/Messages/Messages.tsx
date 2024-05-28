@@ -1,11 +1,8 @@
 import {MessagesTabs} from './MessagesTabs';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {MessageBoardScreen} from '../MessageBoard/MessageBoardPage';
 import {ReportsPage} from '../Reports/ReportsPage';
-import {NewNotificationScreen} from '../Notifications/NewNotification/NewNotificationPage';
-import {BottomNav} from '../../components/BottomNav';
-import {Container} from '../../components/Container';
 import {NotificationPage} from '../Notifications/NotificationPage';
 import {PageContainer} from '../../components/PageContainer';
 

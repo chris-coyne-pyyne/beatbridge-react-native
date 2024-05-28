@@ -1,6 +1,7 @@
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {useFormContext, Controller} from 'react-hook-form';
 import {TextInput, Button, Text, Chip} from 'react-native-paper';
+import {globalStyles} from '../../../styles/Styles';
 
 const sampleGenres = [
   'Jazz',
@@ -24,7 +25,7 @@ export const Section0 = ({setStep}: Props) => {
   return (
     <View>
       <ScrollView>
-        <Text variant="titleLarge" style={styles.container}>
+        <Text variant="titleLarge" style={globalStyles.container}>
           Event Description
         </Text>
         <Controller
@@ -34,7 +35,7 @@ export const Section0 = ({setStep}: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.container]}
+              style={[globalStyles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -51,7 +52,7 @@ export const Section0 = ({setStep}: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.container]}
+              style={[globalStyles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -79,7 +80,7 @@ export const Section0 = ({setStep}: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              style={[styles.container]}
+              style={[globalStyles.container]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -94,7 +95,7 @@ export const Section0 = ({setStep}: Props) => {
 
         <Button
           onPress={() => setStep(1)}
-          style={styles.container}
+          style={globalStyles.container}
           mode="contained">
           Next Section
         </Button>
@@ -104,9 +105,6 @@ export const Section0 = ({setStep}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',

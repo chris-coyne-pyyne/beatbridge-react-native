@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
+import {globalStyles} from '../../../styles/Styles';
 
 type StepCounterProps = {
   currentStep: number;
@@ -12,7 +13,7 @@ const StepCounter = ({currentStep, totalSteps}: StepCounterProps) => {
   const percentageCompleted = ((currentStep + 1) / totalSteps) * 100;
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Text variant="bodyLarge">
         {currentStep + 1} Steps of {totalSteps}
       </Text>
@@ -26,10 +27,6 @@ const StepCounter = ({currentStep, totalSteps}: StepCounterProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'relative', // Added position relative
-    marginBottom: 12,
-  },
   progressBarContainer: {
     width: '100%',
     height: 30,

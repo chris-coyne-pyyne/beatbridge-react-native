@@ -13,6 +13,7 @@ import useAsyncStorage from '../../../hooks/useAsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Event} from '../../../types/event';
+import {globalStyles} from '../../../styles/Styles';
 
 const showToast = () => {
   Toast.show({
@@ -140,10 +141,10 @@ export const Section2 = ({setStep, navigation}: any) => {
 
   return (
     <ScrollView>
-      <Text variant="titleLarge" style={styles.container}>
+      <Text variant="titleLarge" style={globalStyles.container}>
         Event Itinerary
       </Text>
-      <View style={[styles.dateInputContainer, styles.container]}>
+      <View style={[styles.dateInputContainer, globalStyles.container]}>
         <DateInput
           onPress={() => setStartDateVis(true)}
           text={`Start: ${allValues.startDate}` || 'Start Date'}
@@ -166,17 +167,17 @@ export const Section2 = ({setStep, navigation}: any) => {
         onCancel={() => setEndDateVis(false)}
       />
 
-      <Text variant="titleLarge" style={[styles.container]}>
+      <Text variant="titleLarge" style={[globalStyles.container]}>
         Add a New Artist
       </Text>
-      <View style={[styles.container]}>
+      <View style={[globalStyles.container]}>
         <TextInput
           label="Artist Name"
           value={artist}
           onChangeText={setArtist}
         />
       </View>
-      <View style={[styles.dateInputContainer, styles.container]}>
+      <View style={[styles.dateInputContainer, globalStyles.container]}>
         <DateInput
           onPress={() => setArtistStartTimeVis(true)}
           text={`Start: ${startTime}` || 'Start Time'}
@@ -186,7 +187,7 @@ export const Section2 = ({setStep, navigation}: any) => {
           text={`End: ${endTime}` || 'End Time'}
         />
       </View>
-      <View style={styles.container}>
+      <View style={globalStyles.container}>
         <DateInput
           onPress={() => setArtistDateVis(true)}
           text={`Date: ${artistDate}` || 'Set Date'}
@@ -197,11 +198,11 @@ export const Section2 = ({setStep, navigation}: any) => {
           onPress={() => handleAddArtist()}
           mode="contained"
           icon="plus"
-          style={styles.container}>
+          style={globalStyles.container}>
           Add Artist
         </Button>
       </View>
-      <Text variant="titleLarge" style={[styles.container]}>
+      <Text variant="titleLarge" style={[globalStyles.container]}>
         Artists
       </Text>
       {allValues.artists.map((artist: BandSet) => (
@@ -238,14 +239,14 @@ export const Section2 = ({setStep, navigation}: any) => {
       <Button
         onPress={() => setStep(1)}
         mode="outlined"
-        style={styles.container}>
+        style={globalStyles.container}>
         Prev Section
       </Button>
       <Button
         onPress={() => mutate()}
         mode="contained"
         loading={isLoading}
-        style={styles.container}>
+        style={globalStyles.container}>
         Create Event
       </Button>
     </ScrollView>
@@ -253,26 +254,6 @@ export const Section2 = ({setStep, navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  textArea: {
-    height: 100,
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 12,
-  },
   dateInputContainer: {
     display: 'flex',
     flexDirection: 'row',

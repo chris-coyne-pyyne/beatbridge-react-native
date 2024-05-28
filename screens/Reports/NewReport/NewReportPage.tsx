@@ -16,31 +16,20 @@ import {
 } from 'bridgefy-react-native';
 import {Message} from '../../../types/message';
 import {PageContainer} from '../../../components/PageContainer';
+import {globalStyles} from '../../../styles/Styles';
 
 const showToast = () => {
   Toast.show({
     type: 'success',
-    text1: 'Sent notification',
-    text2: 'Your notification has been sent to all users within your area',
+    text1: 'Sent Report',
+    text2: 'Your report has been successfully sent to the admin',
   });
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    gap: 16,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
 
 export const NewReportPage = ({navigation}: any) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
 
@@ -58,12 +47,23 @@ export const NewReportPage = ({navigation}: any) => {
     const activeEvent = context?.globalState.events.find(event => event.active);
     const eventAdminId = activeEvent?.organizer?.id;
 
-    bridgefyContext?.bridgefyState.bridgefy.send(newReportString, {
-      type: BridgefyTransmissionModeType.mesh,
-      uuid: eventAdminId,
-    });
+    setLoading(true);
+    const sentId = await bridgefyContext?.bridgefyState.bridgefy.send(
+      newReportString,
+      {
+        type: BridgefyTransmissionModeType.mesh,
+        uuid: eventAdminId,
+      },
+    );
 
-    navigation.navigate('Messages');
+    // add report to queued messages - and wait for a response
+    const queuedMsgString = (await AsyncStorage.getItem('queuedMsgs')) || '[]';
+    const queuedMsgObj = JSON.parse(queuedMsgString);
+    const newMsgs = [...queuedMsgObj, sentId];
+    await AsyncStorage.setItem('queuedMsgs', JSON.stringify(newMsgs));
+
+    showToast();
+    navigation.navigate('Messages', {messageType: 'Board'});
   };
 
   return (
@@ -74,7 +74,7 @@ export const NewReportPage = ({navigation}: any) => {
           Send a message to the administrators letting them know if theres a
           problem
         </Text>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TextInput
             placeholder="Enter title"
             value={title}
@@ -87,7 +87,10 @@ export const NewReportPage = ({navigation}: any) => {
             value={message}
             onChangeText={setMessage}
           />
-          <Button onPress={handleCreateReport} mode="contained">
+          <Button
+            onPress={handleCreateReport}
+            mode="contained"
+            loading={loading}>
             Send Report
           </Button>
         </View>

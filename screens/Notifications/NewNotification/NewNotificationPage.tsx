@@ -14,6 +14,7 @@ import {AppContext} from '../../../stores/store';
 import uuid from 'react-native-uuid';
 import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Text, Button} from 'react-native-paper';
+import {globalStyles} from '../../../styles/Styles';
 import {
   Bridgefy,
   BridgefyEvents,
@@ -28,18 +29,6 @@ const showToast = () => {
     text2: 'Your notification has been sent to all users within your area',
   });
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 12,
-  },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
 
 // notifications allow the admin to send messages to event attendees
 export function NewNotificationScreen({navigation}: any) {
@@ -97,16 +86,16 @@ export function NewNotificationScreen({navigation}: any) {
   return (
     <PageContainer navigation={navigation}>
       <Container>
-        <Text style={styles.container} variant="titleLarge">
+        <Text style={globalStyles.container} variant="titleLarge">
           Send new notification
         </Text>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TextInput
             placeholder="Enter title"
             value={title}
             onChangeText={setTitle}
             label="Notification Title"
-            style={styles.container}
+            style={globalStyles.container}
           />
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
@@ -119,7 +108,7 @@ export function NewNotificationScreen({navigation}: any) {
                 numberOfLines={4}
                 value={message}
                 onChangeText={setMessage}
-                style={styles.container}
+                style={globalStyles.container}
               />
             </View>
           </TouchableWithoutFeedback>
@@ -128,11 +117,11 @@ export function NewNotificationScreen({navigation}: any) {
             placeholder="Enter tags separated by space"
             value={tags}
             onChangeText={setTags}
-            style={styles.container}
+            style={globalStyles.container}
           />
           <Button
             onPress={handleCreateNotification}
-            style={styles.container}
+            style={globalStyles.container}
             mode="contained">
             Create Notification
           </Button>

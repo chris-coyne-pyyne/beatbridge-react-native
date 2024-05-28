@@ -1,27 +1,15 @@
 import {useContext, useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
-import {Container} from '../../../components/Container';
+import {View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {generateRandomString} from '../../../utils/randomNumber';
 import {AppContext} from '../../../stores/store';
 import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Button, Text} from 'react-native-paper';
 import uuid from 'react-native-uuid';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
+import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {Message} from '../../../types/message';
-import {BottomNav} from '../../../components/BottomNav';
 import {PageContainer} from '../../../components/PageContainer';
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-  },
-});
+import {globalStyles} from '../../../styles/Styles';
 
 const showToast = () => {
   Toast.show({
@@ -81,23 +69,20 @@ export const NewMessagePage = ({navigation}: any) => {
   return (
     <PageContainer navigation={navigation}>
       <View style={{padding: 16}}>
-        <Text variant="titleLarge" style={styles.container}>
+        <Text variant="titleLarge" style={globalStyles.container}>
           Message
         </Text>
-        <Text variant="bodyLarge" style={styles.container}>
+        <Text variant="bodyLarge" style={globalStyles.container}>
           Send a message to everyone else in your vicinity
         </Text>
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TextInput
             label="Message contents"
             placeholder="Enter Message"
             value={message}
             onChangeText={setMessage}
           />
-          <Button
-            onPress={handleCreateMessage}
-            mode="contained"
-            style={styles.container}>
+          <Button onPress={handleCreateMessage} mode="contained" style={global}>
             Send Message
           </Button>
         </View>
