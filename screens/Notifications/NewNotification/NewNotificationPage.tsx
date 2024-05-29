@@ -15,18 +15,14 @@ import uuid from 'react-native-uuid';
 import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Text, Button} from 'react-native-paper';
 import {globalStyles} from '../../../styles/Styles';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
+import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {PageContainer} from '../../../components/PageContainer';
 
 const showToast = () => {
   Toast.show({
-    type: 'success',
-    text1: 'Sent notification',
-    text2: 'Your notification has been sent to all users within your area',
+    type: 'info',
+    text1: 'Processing Message',
+    text2: 'Waiting for nearby users...',
   });
 };
 

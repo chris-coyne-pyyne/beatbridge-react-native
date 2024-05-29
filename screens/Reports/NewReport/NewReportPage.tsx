@@ -9,20 +9,15 @@ import {AppContext} from '../../../stores/store';
 import {BridgefyContext} from '../../../stores/bridgefyStore';
 import {TextInput, Button, Text} from 'react-native-paper';
 import uuid from 'react-native-uuid';
-import {
-  Bridgefy,
-  BridgefyEvents,
-  BridgefyTransmissionModeType,
-} from 'bridgefy-react-native';
-import {Message} from '../../../types/message';
+import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {PageContainer} from '../../../components/PageContainer';
 import {globalStyles} from '../../../styles/Styles';
 
 const showToast = () => {
   Toast.show({
-    type: 'success',
-    text1: 'Sent Report',
-    text2: 'Your report has been successfully sent to the admin',
+    type: 'info',
+    text1: 'Processing Message',
+    text2: 'Waiting for nearby users...',
   });
 };
 

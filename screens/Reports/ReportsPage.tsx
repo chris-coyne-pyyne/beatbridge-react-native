@@ -7,14 +7,6 @@ import {Button, Text, Avatar} from 'react-native-paper';
 import {globalStyles} from '../../styles/Styles';
 import {NoMessage} from '../Home/components/NoMessage';
 
-const showToast = () => {
-  Toast.show({
-    type: 'success',
-    text1: 'Sent notification',
-    text2: 'Your notification has been sent to all users within your area',
-  });
-};
-
 export const ReportsPage = ({navigation}: any) => {
   const context = useContext(AppContext);
   const reports = context?.globalState.reports;

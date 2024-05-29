@@ -13,9 +13,9 @@ import {globalStyles} from '../../../styles/Styles';
 
 const showToast = () => {
   Toast.show({
-    type: 'success',
-    text1: 'Sent Message',
-    text2: 'Your message has been sent to all users within your area',
+    type: 'info',
+    text1: 'Processing Message',
+    text2: 'Waiting for nearby users...',
   });
 };
 
@@ -62,7 +62,7 @@ export const NewMessagePage = ({navigation}: any) => {
       });
 
       showToast();
-      // navigation.navigate('MessageBoard');
+      navigation.navigate('Messages', {messageType: 'Board'});
     }
   };
 
