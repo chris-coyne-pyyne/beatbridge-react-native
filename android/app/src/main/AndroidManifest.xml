@@ -16,7 +16,7 @@
       android:theme="@style/AppTheme">
       <meta-data
         android:name="com.bridgefy.sdk.API_KEY"
-        android:value=""/>
+        android:value="355b1a15-76c0-4c4f-8f65-fbb1e08458eb"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
