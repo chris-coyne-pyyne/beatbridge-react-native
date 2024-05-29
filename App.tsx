@@ -51,6 +51,21 @@ const toastConfig = {
       }}
     />
   ),
+  info: (props: BaseToastProps) => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: 'yellow'}}
+      contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 16}}
+      text1Style={{
+        fontSize: 24,
+        fontWeight: '400',
+      }}
+      text2Style={{
+        fontSize: 16,
+        fontWeight: '400',
+      }}
+    />
+  ),
 };
 
 const queryClient = new QueryClient();
@@ -58,13 +73,6 @@ const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'music', title: 'Music', icon: 'music'},
-    {key: 'albums', title: 'Albums', icon: 'album'},
-    {key: 'recents', title: 'Recents', icon: 'history'},
-  ]);
-
   const theme = {
     ...DefaultTheme,
     colors: {
