@@ -168,21 +168,10 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
       eventEmitter.addListener(
         BridgefyEvents.bridgefyDidSendMessage,
         async event => {
-          // check the queued messages
-          /*
-          const queuedMsgString =
-            (await AsyncStorage.getItem('queuedMsgs')) || '[]';
-          const queuedMsgObj = JSON.parse(queuedMsgString);
+          // TODO - implement array of sent messages, so that messages already sent are not
+          // double counted by the toasts
 
-          if (queuedMsgObj.includes(event.messageId)) {
-            // remove
-            const newMsgObj = queuedMsgObj.filter(
-              (msg: any) => msg !== event.messageId,
-            );
-            await AsyncStorage.setItem('queuedMsgs', JSON.stringify(newMsgObj));
-            showToast('Sent message! ', 'Your message has been sent!');
-          }
-          */
+          showToast('Sent message! ', 'Your message has been sent!');
 
           log(`bridgefyDidSendMessage`, event);
         },
