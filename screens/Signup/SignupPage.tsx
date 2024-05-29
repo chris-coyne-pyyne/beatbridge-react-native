@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useMutation} from 'react-query';
 
@@ -7,12 +7,22 @@ import {Button, Text, TextInput} from 'react-native-paper';
 import {AppContext} from '../../stores/store';
 import {apiClient} from '../../api/axiosConfig';
 import {globalStyles} from '../../styles/Styles';
+import {ErrorMsg} from '../../components/ErrorMsg';
 
 export function SignupScreen({navigation}: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [formError, setFormError] = useState(false);
   const context = useContext(AppContext);
+
+  const handleSubmit = () => {
+    if (!email || !password || !name) {
+      setFormError(true);
+    } else {
+      mutate();
+    }
+  };
 
   // Setup the mutation with React Query
   const {mutate, isLoading, error} = useMutation(
@@ -41,16 +51,16 @@ export function SignupScreen({navigation}: any) {
 
   return (
     <View>
-      <View style={{width: '100%', height: '40%'}}>
+      <View style={{width: '100%', height: '35%'}}>
         <Text variant="headlineLarge" style={styles.title}>
-          Sign Up
+          Welcome to{'\n'} BeatBridge
         </Text>
         <Image
           source={require('../../assets/background-abstract.png')}
           style={{width: '100%', height: '100%'}}
         />
       </View>
-      <View style={styles.signupContainer}>
+      <ScrollView style={styles.signupContainer}>
         <View style={globalStyles.container}>
           <TextInput
             placeholder="Email"
@@ -76,11 +86,12 @@ export function SignupScreen({navigation}: any) {
             mode="flat"
           />
         </View>
+        {formError && <ErrorMsg text="Please enter all fields" />}
         <View style={{marginTop: 24}}>
           <View style={globalStyles.container}>
             <Button
               mode="contained"
-              onPress={() => mutate()}
+              onPress={() => handleSubmit()}
               loading={isLoading}>
               Sign Up
             </Button>
@@ -96,7 +107,7 @@ export function SignupScreen({navigation}: any) {
             </Button>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

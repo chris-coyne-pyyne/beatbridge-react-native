@@ -108,9 +108,14 @@ export function MessageBoardScreen({navigation}: any) {
 
   return (
     <View style={globalStyles.pageContainer}>
-      <Text variant="titleLarge" style={globalStyles.container}>
-        Message Board
-      </Text>
+      <View style={styles.introContainer}>
+        <Text variant="displaySmall" style={globalStyles.container}>
+          Message Board
+        </Text>
+        <Text variant="bodyLarge">
+          Message received by people in your vicinity
+        </Text>
+      </View>
       <View style={styles.messagesContainer}>
         {messages && messages.length ? (
           messages.map(message => (
@@ -148,4 +153,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingVertical: 12,
   },
+  introContainer: {
+    padding: 12,
+    backgroundColor: '#aef8ff',
+  },
+  introTitle: {},
 });

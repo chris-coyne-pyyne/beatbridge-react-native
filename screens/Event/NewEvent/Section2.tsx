@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Event} from '../../../types/event';
 import {globalStyles} from '../../../styles/Styles';
+import {ErrorMsg} from '../../../components/ErrorMsg';
 
 const showToast = () => {
   Toast.show({
@@ -27,6 +28,7 @@ export const Section2 = ({setStep, navigation}: any) => {
   const {watch, setValue} = useFormContext();
   const allValues = watch();
   const {data: events} = useAsyncStorage<Event[]>('events');
+  const [formError, setFormError] = useState(false);
 
   // artist states
   const [artist, setArtist] = useState('');
@@ -44,6 +46,22 @@ export const Section2 = ({setStep, navigation}: any) => {
   const context = useContext(AppContext);
   const user = context?.globalState.user;
   const isUserLoading = context?.globalState.userLoading;
+
+  // lazy solution for MVP - find better way of doing this in future
+  const handleSubmit = () => {
+    if (
+      !allValues.name ||
+      !allValues.genre ||
+      !allValues.description ||
+      !allValues.imageSource ||
+      !allValues.startDate ||
+      !allValues.endDate
+    ) {
+      setFormError(true);
+    } else {
+      mutate();
+    }
+  };
 
   // axios
   const {mutate, isLoading} = useMutation(
@@ -236,6 +254,7 @@ export const Section2 = ({setStep, navigation}: any) => {
         onConfirm={handleEndTimeArtistConfirm}
         onCancel={() => setArtistEndTimeVis(false)}
       />
+      {formError && <ErrorMsg text="Please enter all form fields" />}
       <Button
         onPress={() => setStep(1)}
         mode="outlined"
@@ -243,7 +262,7 @@ export const Section2 = ({setStep, navigation}: any) => {
         Prev Section
       </Button>
       <Button
-        onPress={() => mutate()}
+        onPress={() => handleSubmit()}
         mode="contained"
         loading={isLoading}
         style={globalStyles.container}>

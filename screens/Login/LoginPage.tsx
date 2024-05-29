@@ -7,11 +7,21 @@ import {Button, Text, TextInput} from 'react-native-paper';
 import {AppContext} from '../../stores/store';
 import {apiClient} from '../../api/axiosConfig';
 import {globalStyles} from '../../styles/Styles';
+import {ErrorMsg} from '../../components/ErrorMsg';
 
 export function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const context = useContext(AppContext);
+  const [formError, setFormError] = useState(false);
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      setFormError(true);
+    } else {
+      mutate();
+    }
+  };
 
   // Setup the mutation with React Query
   const {mutate, isLoading, error} = useMutation(
@@ -66,11 +76,12 @@ export function LoginScreen({navigation}: any) {
             mode="flat"
           />
         </View>
+        {formError && <ErrorMsg text="Please enter all fields" />}
         <View style={{marginTop: 24}}>
           <View style={globalStyles.container}>
             <Button
               mode="contained"
-              onPress={() => mutate()}
+              onPress={() => handleLogin()}
               loading={isLoading}>
               Login
             </Button>
