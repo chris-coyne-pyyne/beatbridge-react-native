@@ -1,5 +1,5 @@
 import {MessagesTabs} from './MessagesTabs';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {MessageBoardScreen} from '../MessageBoard/MessageBoardPage';
 import {ReportsPage} from '../Reports/ReportsPage';

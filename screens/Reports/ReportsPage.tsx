@@ -26,10 +26,10 @@ export const ReportsPage = ({navigation}: any) => {
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
   return (
     <Container>
-      <Text variant="titleLarge" style={globalStyles.container}>
+      <Text variant="headlineMedium" style={globalStyles.container}>
         Report
       </Text>
-      <Text variant="bodyLarge" style={globalStyles.container}>
+      <Text variant="bodyLarge">
         Problems that festival attendees have, and have sent directly to the
         admin
       </Text>
@@ -51,12 +51,14 @@ export const ReportsPage = ({navigation}: any) => {
           <NoMessage text="No attendees have sent reports" />
         ))}
       {!isAdmin && (
-        <Button
-          onPress={() => navigation.navigate('NewReport')}
-          mode="contained"
-          style={globalStyles.container}>
-          New Report
-        </Button>
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={() => navigation.navigate('NewReport')}
+            mode="contained"
+            style={globalStyles.container}>
+            New Report
+          </Button>
+        </View>
       )}
     </Container>
   );
@@ -72,5 +74,10 @@ const styles = StyleSheet.create({
   },
   messageTextContainer: {
     marginLeft: 8,
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

@@ -19,8 +19,12 @@ export const NotificationPage = ({navigation}: any) => {
 
   return (
     <View style={{padding: 16}}>
-      <Text style={globalStyles.container} variant="titleLarge">
+      <Text style={globalStyles.container} variant="headlineMedium">
         Notifications
+      </Text>
+      <Text variant="bodyLarge">
+        Notifications let admins send messages to a large amount of attendees at
+        one time
       </Text>
       {notifications &&
         (!notifications.length ? (
@@ -62,12 +66,14 @@ export const NotificationPage = ({navigation}: any) => {
           ))
         ))}
       {isAdmin && (
-        <Button
-          onPress={() => navigation.navigate('NewNotification')}
-          style={globalStyles.container}
-          mode="contained">
-          New Notification
-        </Button>
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={() => navigation.navigate('NewNotification')}
+            style={globalStyles.container}
+            mode="contained">
+            New Notification
+          </Button>
+        </View>
       )}
     </View>
   );
@@ -99,5 +105,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

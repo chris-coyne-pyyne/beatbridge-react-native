@@ -12,108 +12,14 @@ export function MessageBoardScreen({navigation}: any) {
 
   const messages = context?.globalState.messages;
 
-  /*
-  const messages: Message[] = [
-    {
-      mode: 'report',
-      id: '123',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123123',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123333',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123asdf',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-
-    {
-      mode: 'report',
-      id: '123asdfas',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123123fdd',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123333we',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-    {
-      mode: 'report',
-      id: '123asdfsfdm',
-      date: 123,
-      message: 'test message please ignore',
-      sender: {
-        id: '123',
-        email: 'chris@gmail.com',
-        name: 'chris coyne',
-      },
-    },
-  ];
-  */
-
   return (
     <View style={globalStyles.pageContainer}>
-      <View style={styles.introContainer}>
-        <Text variant="displaySmall" style={globalStyles.container}>
+      <View>
+        <Text variant="headlineMedium" style={[globalStyles.container]}>
           Message Board
         </Text>
         <Text variant="bodyLarge">
-          Message received by people in your vicinity
+          Messages received by people in your vicinity
         </Text>
       </View>
       <View style={styles.messagesContainer}>
@@ -129,7 +35,7 @@ export function MessageBoardScreen({navigation}: any) {
         <Button
           mode="contained"
           onPress={() => navigation.navigate('NewMessage')}>
-          Send New Message
+          New Message
         </Button>
       </View>
     </View>
@@ -151,7 +57,9 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   buttonContainer: {
-    paddingVertical: 12,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   introContainer: {
     padding: 12,
