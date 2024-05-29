@@ -40,7 +40,6 @@ export function NewNotificationScreen({navigation}: any) {
 
   const handleCreateNotification = async () => {
     // send notification with bridgefy, then add it locally
-    console.log('sending notification...');
 
     const oldNotifications = await AsyncStorage.getItem('notifications');
     const parsedOldNotifications = JSON.parse(oldNotifications || '[]');

@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
@@ -45,6 +45,14 @@ yarn ios
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+
+### Setting up the server
+
+In order for the app to fully work with backend functionality - a node server must be set up. This will allow users to add new events, and to join the events made by other users. A sample mock server is shown here:
+
+https://github.com/chris-coyne-pyyne/Beatbridge-backend
+
+In addition, when working with a backend server, the axiosConfig.ts file must be updated with the correct IP address of the server being connected to.
 
 ## Step 3: Modifying your App
 

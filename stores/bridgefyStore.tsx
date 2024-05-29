@@ -65,19 +65,18 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
         bridgefyState.initialized === true &&
         appContext?.globalState.user?.id
       ) {
+        // sometimes this chunk of code does not work and there is a "bridgefy already started" error
         const isStarted = await bridgefy.isStarted();
-        console.log('is started ', isStarted);
+        // console.log('is started ', isStarted);
         if (!isStarted) {
           try {
-            console.log('STARTING BRIDGEFY');
+            // console.log('STARTING BRIDGEFY');
             bridgefy.start(appContext?.globalState.user?.id).catch(error => {
               log(`Started error`, error.message, true);
             });
           } catch (e) {
             console.log('failure to start Bridgefy');
           }
-        } else {
-          console.log('Bridgefy is already started - skipping');
         }
       }
     };
@@ -188,7 +187,6 @@ export const BridgefyProvider: React.FC<{children: ReactNode}> = ({
     subscriptions.push(
       eventEmitter.addListener(BridgefyEvents.bridgefyDidReceiveData, event => {
         log(`bridgefyDidReceiveData`, event);
-        console.log('RECEIVED DATA ');
 
         // TO DO - add to async storage as well. currently not implemented for ease of testing
         const receivedData: BridgefyData = JSON.parse(event.data);
