@@ -54,6 +54,8 @@ https://github.com/chris-coyne-pyyne/Beatbridge-backend
 
 In addition, when working with a backend server, the axiosConfig.ts file must be updated with the correct IP address of the server being connected to.
 
+The Bridgefy API key will also have to be added in the AndroidManifest.xml file.
+
 ## Step 3: Modifying your App
 
 Now that you have successfully run the app, let's modify it.
