@@ -1,15 +1,9 @@
 import {useContext, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import {View, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Container} from '../../../components/Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Notification} from '../../../types/notification';
-import {generateRandomString} from '../../../utils/randomNumber';
 import {AppContext} from '../../../stores/store';
 import uuid from 'react-native-uuid';
 import {BridgefyContext} from '../../../stores/bridgefyStore';
@@ -18,6 +12,8 @@ import {globalStyles} from '../../../styles/Styles';
 import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {PageContainer} from '../../../components/PageContainer';
 import {ErrorMsg} from '../../../components/ErrorMsg';
+import {RootStackParamList} from '../../../types/nav';
+import {NavigationProp} from '@react-navigation/native';
 
 const showToast = () => {
   Toast.show({
@@ -27,8 +23,12 @@ const showToast = () => {
   });
 };
 
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
 // notifications allow the admin to send messages to event attendees
-export function NewNotificationScreen({navigation}: any) {
+export function NewNotificationScreen({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [tags, setTags] = useState('');

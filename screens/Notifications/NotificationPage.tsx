@@ -1,12 +1,18 @@
 import {useContext} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {AppContext} from '../../stores/store';
 import {NoMessage} from '../Home/components/NoMessage';
 import {Button, Chip, Text} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {globalStyles} from '../../styles/Styles';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
 
-export const NotificationPage = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const NotificationPage = ({navigation}: Props) => {
   const context = useContext(AppContext);
   const notifications = context?.globalState.notifications;
   notifications?.sort((a, b) => b.date - a.date);
@@ -16,8 +22,6 @@ export const NotificationPage = ({navigation}: any) => {
     : null;
 
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
-
-  notifications?.map(n => console.log('note tags ', n.tags));
 
   return (
     <View style={{padding: 16}}>

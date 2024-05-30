@@ -15,12 +15,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import Toast, {BaseToast, BaseToastProps} from 'react-native-toast-message';
 import {ProfileScreen} from './screens/Profile/ProfileScreen';
 import {BridgefyProvider} from './stores/bridgefyStore';
-import {
-  Provider as PaperProvider,
-  IconButton,
-  BottomNavigation,
-  Text,
-} from 'react-native-paper';
+import {Provider as PaperProvider, IconButton} from 'react-native-paper';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {EventScreen} from './screens/Event/Event';
@@ -34,6 +29,7 @@ import {MessageBoardScreen} from './screens/MessageBoard/MessageBoardPage';
 import {NewMessagePage} from './screens/Messages/NewMessage/NewMessagePage';
 import {ReportsPage} from './screens/Reports/ReportsPage';
 import {MessagesPage} from './screens/Messages/Messages';
+import {RootStackParamList} from './types/nav';
 
 const toastConfig = {
   success: (props: BaseToastProps) => (
@@ -70,7 +66,7 @@ const toastConfig = {
 
 const queryClient = new QueryClient();
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
   const theme = {

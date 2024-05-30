@@ -1,3 +1,4 @@
+import {NavigationProp} from '@react-navigation/native';
 import {useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {
@@ -10,8 +11,13 @@ import {
 import {PageContainer} from '../../components/PageContainer';
 import {AppContext} from '../../stores/store';
 import {globalStyles} from '../../styles/Styles';
+import {RootStackParamList} from '../../types/nav';
 
-export const ProfileScreen = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const ProfileScreen = ({navigation}: Props) => {
   const globalContext = useContext(AppContext);
   const user = globalContext?.globalState.user;
 

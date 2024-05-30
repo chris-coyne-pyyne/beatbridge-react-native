@@ -10,23 +10,23 @@ import {
 import {Notification} from '../../types/notification';
 import {useContext, useState, useEffect} from 'react';
 import {AppContext} from '../../stores/store';
-import {
-  FAB,
-  Text,
-  Chip,
-  Button,
-  Divider,
-  BottomNavigation,
-} from 'react-native-paper';
+import {FAB, Text, Chip, Button, Divider} from 'react-native-paper';
 import {formatUnixTimestamp} from '../../utils/dates';
 import {NoMessage} from './components/NoMessage';
 import {BridgefyContext} from '../../stores/bridgefyStore';
-import {BottomNav} from '../../components/BottomNav';
 import {PageContainer} from '../../components/PageContainer';
 import {DateMessageCard} from '../../components/messages/DateMessageCard';
 import {globalStyles} from '../../styles/Styles';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
+import {Event} from '../../types/event';
 
-export function ActiveEvent({navigation, activeEvent}: any) {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+  activeEvent: Event;
+};
+
+export function ActiveEvent({navigation, activeEvent}: Props) {
   const context = useContext(AppContext);
   const [modalOpen, setModalOpen] = useState<Notification | null>(null);
 
@@ -84,7 +84,7 @@ export function ActiveEvent({navigation, activeEvent}: any) {
   ];
   */
 
-  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer.id;
+  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
 
   return (
     <PageContainer navigation={navigation}>

@@ -3,9 +3,15 @@ import {NoEvents} from './NoEvents';
 import {ActiveEvent} from './ActiveEvent';
 import {useContext, useEffect} from 'react';
 import {AppContext} from '../../stores/store';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
 
-export const HomeScreen = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const HomeScreen = ({navigation}: Props) => {
   const context = useContext(AppContext);
 
   const activeEvent = context?.globalState.events

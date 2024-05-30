@@ -1,7 +1,13 @@
+import {NavigationProp} from '@react-navigation/native';
 import {View, Image, StyleSheet} from 'react-native';
 import {Button, Text} from 'react-native-paper';
+import {RootStackParamList} from '../../types/nav';
 
-export const IntroScreen = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const IntroScreen = ({navigation}: Props) => {
   return (
     <View style={styles.container}>
       <Image

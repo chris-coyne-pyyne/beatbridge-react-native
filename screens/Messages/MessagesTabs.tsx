@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {SegmentedButtons} from 'react-native-paper';
-import {useRoute} from '@react-navigation/native';
+import {NavigationProp, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
+
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
 
 export const MessagesTabs = ({navigation}: any) => {
   // const [value, setValue] = React.useState('');

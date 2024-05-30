@@ -6,8 +6,14 @@ import {AppContext} from '../../stores/store';
 import {Button, Text, Avatar} from 'react-native-paper';
 import {globalStyles} from '../../styles/Styles';
 import {NoMessage} from '../Home/components/NoMessage';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
 
-export const ReportsPage = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const ReportsPage = ({navigation}: Props) => {
   const context = useContext(AppContext);
   const reports = context?.globalState.reports;
 

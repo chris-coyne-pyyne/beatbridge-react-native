@@ -11,13 +11,19 @@ import {useQuery} from 'react-query';
 import {apiClient} from '../../api/axiosConfig';
 import {FAB, Text, Searchbar} from 'react-native-paper';
 import {globalStyles} from '../../styles/Styles';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
 
 const fetchData = async () => {
   const {data} = await apiClient.get('events');
   return data;
 };
 
-export function NoEvents({navigation}: any) {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export function NoEvents({navigation}: Props) {
   const {
     data: events,
     error,

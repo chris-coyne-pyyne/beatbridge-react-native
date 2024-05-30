@@ -11,6 +11,8 @@ import {Message} from '../../../types/message';
 import {PageContainer} from '../../../components/PageContainer';
 import {globalStyles} from '../../../styles/Styles';
 import {ErrorMsg} from '../../../components/ErrorMsg';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../../types/nav';
 
 const showToast = () => {
   Toast.show({
@@ -20,7 +22,11 @@ const showToast = () => {
   });
 };
 
-export const NewMessagePage = ({navigation}: any) => {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export const NewMessagePage = ({navigation}: Props) => {
   const [message, setMessage] = useState('');
   const [formError, setFormError] = useState(false);
   const context = useContext(AppContext);

@@ -6,6 +6,12 @@ import {AppContext} from '../../stores/store';
 import {NoMessage} from '../Home/components/NoMessage';
 import {DateMessageCard} from '../../components/messages/DateMessageCard';
 import {globalStyles} from '../../styles/Styles';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../types/nav';
+
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
 
 export function MessageBoardScreen({navigation}: any) {
   const context = useContext(AppContext);

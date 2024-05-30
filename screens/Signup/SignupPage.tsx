@@ -9,8 +9,14 @@ import {apiClient} from '../../api/axiosConfig';
 import {globalStyles} from '../../styles/Styles';
 import {ErrorMsg} from '../../components/ErrorMsg';
 import * as Keychain from 'react-native-keychain';
+import {RootStackParamList} from '../../types/nav';
+import {NavigationProp} from '@react-navigation/native';
 
-export function SignupScreen({navigation}: any) {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export function SignupScreen({navigation}: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');

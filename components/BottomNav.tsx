@@ -1,17 +1,20 @@
-import {useState, useContext} from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeScreen} from '../screens/Home/Homepage';
+import {useContext} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import {Button, Icon, Text} from 'react-native-paper';
+import {Icon, Text} from 'react-native-paper';
 import {AppContext} from '../stores/store';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../types/nav';
 
-export function BottomNav({navigation}: any) {
+type Props = {
+  navigation: NavigationProp<RootStackParamList>;
+};
+
+export function BottomNav({navigation}: Props) {
   const context = useContext(AppContext);
   const activeEvent = context?.globalState.events
     ? context.globalState.events.find(event => event.active === true)
     : null;
 
-  const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
   return (
     <View
       style={{
@@ -37,7 +40,11 @@ export function BottomNav({navigation}: any) {
       <TouchableOpacity
         accessibilityRole="button"
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Event', {id: activeEvent?.id})}>
+        onPress={() => {
+          if (activeEvent?.id) {
+            navigation.navigate('Event', {id: activeEvent?.id});
+          }
+        }}>
         <Icon source="nature-people" size={20} />
         <Text>Event</Text>
       </TouchableOpacity>
