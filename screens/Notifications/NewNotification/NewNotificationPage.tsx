@@ -17,6 +17,7 @@ import {TextInput, Text, Button} from 'react-native-paper';
 import {globalStyles} from '../../../styles/Styles';
 import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {PageContainer} from '../../../components/PageContainer';
+import {ErrorMsg} from '../../../components/ErrorMsg';
 
 const showToast = () => {
   Toast.show({
@@ -33,9 +34,14 @@ export function NewNotificationScreen({navigation}: any) {
   const [tags, setTags] = useState('');
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
+  const [formError, setFormError] = useState(false);
 
   const handleCreateNotification = async () => {
     // send notification with bridgefy, then add it locally
+    if (!message || !title) {
+      setFormError(true);
+      return;
+    }
 
     const oldNotifications = await AsyncStorage.getItem('notifications');
     const parsedOldNotifications = JSON.parse(oldNotifications || '[]');
@@ -46,7 +52,7 @@ export function NewNotificationScreen({navigation}: any) {
       message,
       title,
       mode: 'notification',
-      tags: [tags],
+      tags: tags ? [tags] : [],
       date: Math.floor(currentDate.getTime() / 1000),
     };
 
@@ -114,6 +120,7 @@ export function NewNotificationScreen({navigation}: any) {
             onChangeText={setTags}
             style={globalStyles.container}
           />
+          {formError && <ErrorMsg text="Please enter a title and message" />}
           <Button
             onPress={handleCreateNotification}
             style={globalStyles.container}

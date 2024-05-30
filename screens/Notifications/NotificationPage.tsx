@@ -17,6 +17,8 @@ export const NotificationPage = ({navigation}: any) => {
 
   const isAdmin = context?.globalState.user?.id === activeEvent?.organizer?.id;
 
+  notifications?.map(n => console.log('note tags ', n.tags));
+
   return (
     <View style={{padding: 16}}>
       <Text style={globalStyles.container} variant="headlineMedium">
@@ -57,9 +59,8 @@ export const NotificationPage = ({navigation}: any) => {
                     styles.notificationTagsContainer,
                     globalStyles.container,
                   ]}>
-                  {notification.tags.map(tag => (
-                    <Chip key={tag}>{tag}</Chip>
-                  ))}
+                  {!!notification.tags.length &&
+                    notification.tags.map(tag => <Chip key={tag}>{tag}</Chip>)}
                 </View>
               </View>
             </View>

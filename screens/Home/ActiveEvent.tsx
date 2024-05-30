@@ -160,9 +160,10 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                       styles.notificationTagsContainer,
                       globalStyles.container,
                     ]}>
-                    {notification.tags.map(tag => (
-                      <Chip key={tag}>{tag}</Chip>
-                    ))}
+                    {!!notification.tags.length &&
+                      notification.tags.map(tag => (
+                        <Chip key={tag}>{tag}</Chip>
+                      ))}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -206,9 +207,8 @@ export function ActiveEvent({navigation, activeEvent}: any) {
                         {display: 'flex', flexDirection: 'row'},
                         globalStyles.container,
                       ]}>
-                      {modalOpen.tags.map(tag => (
-                        <Chip key={tag}>{tag}</Chip>
-                      ))}
+                      {!!modalOpen.tags.length &&
+                        modalOpen.tags.map(tag => <Chip key={tag}>{tag}</Chip>)}
                     </View>
                   </TouchableOpacity>
                 </ScrollView>

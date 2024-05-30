@@ -10,6 +10,7 @@ import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {Message} from '../../../types/message';
 import {PageContainer} from '../../../components/PageContainer';
 import {globalStyles} from '../../../styles/Styles';
+import {ErrorMsg} from '../../../components/ErrorMsg';
 
 const showToast = () => {
   Toast.show({
@@ -21,10 +22,15 @@ const showToast = () => {
 
 export const NewMessagePage = ({navigation}: any) => {
   const [message, setMessage] = useState('');
+  const [formError, setFormError] = useState(false);
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
 
   const handleCreateMessage = async () => {
+    if (!message) {
+      setFormError(true);
+      return;
+    }
     const currentDate = new Date();
     const user = context?.globalState.user;
 
@@ -82,6 +88,7 @@ export const NewMessagePage = ({navigation}: any) => {
             value={message}
             onChangeText={setMessage}
           />
+          {formError && <ErrorMsg text="Please enter a message" />}
           <Button
             onPress={handleCreateMessage}
             mode="contained"

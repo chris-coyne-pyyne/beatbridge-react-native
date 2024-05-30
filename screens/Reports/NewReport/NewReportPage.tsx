@@ -12,6 +12,7 @@ import uuid from 'react-native-uuid';
 import {BridgefyTransmissionModeType} from 'bridgefy-react-native';
 import {PageContainer} from '../../../components/PageContainer';
 import {globalStyles} from '../../../styles/Styles';
+import {ErrorMsg} from '../../../components/ErrorMsg';
 
 const showToast = () => {
   Toast.show({
@@ -31,11 +32,16 @@ const showToast = () => {
 export const NewReportPage = ({navigation}: any) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
+  const [formError, setFormError] = useState(false);
   const [loading, setLoading] = useState(false);
   const context = useContext(AppContext);
   const bridgefyContext = useContext(BridgefyContext);
 
   const handleCreateReport = async () => {
+    if (!title || !message) {
+      setFormError(true);
+      return;
+    }
     const currentDate = new Date();
     const newReport: Report = {
       id: uuid.v4() as string,
@@ -91,6 +97,7 @@ export const NewReportPage = ({navigation}: any) => {
             onChangeText={setMessage}
             style={globalStyles.container}
           />
+          {formError && <ErrorMsg text="Please enter all fields" />}
           <Button
             onPress={handleCreateReport}
             mode="contained"
