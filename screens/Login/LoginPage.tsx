@@ -8,6 +8,7 @@ import {AppContext} from '../../stores/store';
 import {apiClient} from '../../api/axiosConfig';
 import {globalStyles} from '../../styles/Styles';
 import {ErrorMsg} from '../../components/ErrorMsg';
+import * as Keychain from 'react-native-keychain';
 
 export function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState('');
@@ -35,6 +36,9 @@ export function LoginScreen({navigation}: any) {
     {
       onSuccess: async data => {
         await AsyncStorage.setItem('user', JSON.stringify(data));
+
+        console.log('setting token ', data.token);
+        await Keychain.setGenericPassword('authToken', data.token);
 
         // update store
         context?.updateGlobalState({
