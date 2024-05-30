@@ -38,7 +38,7 @@ const toastConfig = {
       style={{borderLeftColor: 'green'}}
       contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 16}}
       text1Style={{
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: '400',
       }}
       text2Style={{
@@ -53,7 +53,22 @@ const toastConfig = {
       style={{borderLeftColor: 'yellow'}}
       contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 16}}
       text1Style={{
-        fontSize: 24,
+        fontSize: 20,
+        fontWeight: '400',
+      }}
+      text2Style={{
+        fontSize: 16,
+        fontWeight: '400',
+      }}
+    />
+  ),
+  error: (props: BaseToastProps) => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: 'red'}}
+      contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 16}}
+      text1Style={{
+        fontSize: 20,
         fontWeight: '400',
       }}
       text2Style={{
@@ -91,6 +106,7 @@ function App(): React.JSX.Element {
     },
   };
 
+  // reference theme
   /*
   const theme = {
     ...DefaultTheme,

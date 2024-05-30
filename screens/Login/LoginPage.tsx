@@ -11,9 +11,18 @@ import {ErrorMsg} from '../../components/ErrorMsg';
 import * as Keychain from 'react-native-keychain';
 import {RootStackParamList} from '../../types/nav';
 import {NavigationProp} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 type Props = {
   navigation: NavigationProp<RootStackParamList>;
+};
+
+const showErrorToast = () => {
+  Toast.show({
+    type: 'error',
+    text1: 'Login Failed',
+    text2: 'Could not login successfully',
+  });
 };
 
 export function LoginScreen({navigation}: Props) {
@@ -31,7 +40,7 @@ export function LoginScreen({navigation}: Props) {
   };
 
   // Setup the mutation with React Query
-  const {mutate, isLoading, error} = useMutation(
+  const {mutate, isLoading} = useMutation(
     async () => {
       const response = await apiClient.post('login', {
         email,
@@ -54,12 +63,15 @@ export function LoginScreen({navigation}: Props) {
         // after - go to home
         navigation.navigate('Home');
       },
+      onError: () => {
+        showErrorToast();
+      },
     },
   );
 
   return (
     <View>
-      <View style={{width: '100%', height: '45%'}}>
+      <View style={{width: '100%', height: '35%'}}>
         <Text variant="headlineLarge" style={styles.title}>
           Welcome{'\n'}Back
         </Text>
